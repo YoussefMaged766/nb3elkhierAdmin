@@ -1,12 +1,11 @@
-package com.devYoussef.nb3elkhieradmin
+package com.devYoussef.nb3elkhieradmin.ui
 
-import android.content.IntentFilter
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
-import androidx.localbroadcastmanager.content.LocalBroadcastManager
-import com.google.firebase.messaging.FirebaseMessaging
+import com.devYoussef.nb3elkhieradmin.R
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
 

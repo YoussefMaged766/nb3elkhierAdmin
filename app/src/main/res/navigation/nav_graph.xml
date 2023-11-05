@@ -100,6 +100,9 @@
         <action
             android:id="@+id/action_productsFragment_to_searchResultFragment"
             app:destination="@id/searchResultFragment" />
+        <action
+            android:id="@+id/action_productsFragment_to_addAndEditFragment"
+            app:destination="@id/addAndEditFragment" />
     </fragment>
     <fragment
         android:id="@+id/promoCodesFragment"
@@ -133,5 +136,13 @@
         <argument
             android:name="query"
             app:argType="string" />
+        <action
+            android:id="@+id/action_searchResultFragment_to_addAndEditFragment"
+            app:destination="@id/addAndEditFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/addAndEditFragment"
+        android:name="com.devYoussef.nb3elkhieradmin.ui.home.product.add.AddAndEditFragment"
+        android:label="fragment_add_and_edit"
+        tools:layout="@layout/fragment_add_and_edit" />
 </navigation>

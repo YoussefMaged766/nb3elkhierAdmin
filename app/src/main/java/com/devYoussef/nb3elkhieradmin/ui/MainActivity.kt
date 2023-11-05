@@ -81,6 +81,10 @@ class MainActivity : AppCompatActivity() {
                     binding.appBar.visibility = View.VISIBLE
                     binding.txtTitleToolBar.text = "القائمه السوداء"
                 }
+                R.id.addAndEditFragment -> {
+                    binding.appBar.visibility = View.VISIBLE
+                    binding.txtTitleToolBar.text = "اضافه منتج"
+                }
             }
         }
 

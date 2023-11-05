@@ -94,7 +94,7 @@ class ProductsViewModel @Inject constructor(
                     )
                 }
 
-            ).flow.collect {
+            ).flow.cachedIn(viewModelScope).collect {
                 _data.value = it
             }
         }
@@ -113,7 +113,7 @@ class ProductsViewModel @Inject constructor(
                     )
                 }
 
-            ).flow.collect {
+            ).flow.cachedIn(viewModelScope).collect {
                 _dataProduct.value = it
             }
         }

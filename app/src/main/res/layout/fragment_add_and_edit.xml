@@ -27,6 +27,16 @@
                 android:background="#D9D9D9">
 
                 <ImageView
+                    android:id="@+id/imgProduct"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:adjustViewBounds="true"
+                    android:scaleType="fitXY"
+                    android:elevation="@dimen/_12sdp"
+                    />
+
+                <ImageView
+                    android:id="@+id/imgUpload"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:layout_margin="@dimen/_8sdp"
@@ -36,10 +46,11 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
+                    android:id="@+id/txtUpload"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/_8sdp"
-                    android:text="تحمسل صوره"
+                    android:text="تحميل صوره"
                     android:textColor="@color/primary"
                     android:textSize="@dimen/_12ssp"
                     android:textStyle="bold"
@@ -116,6 +127,16 @@
             android:padding="@dimen/_16sdp"
             app:layout_constraintTop_toBottomOf="@+id/spinnerCategory" />
 
+        <TextView
+            android:id="@+id/txtSpinnerCountryError"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="برجاء اختار الدوله"
+            android:textColor="#FF0000"
+            android:visibility="invisible"
+            app:layout_constraintStart_toStartOf="@id/spinnerCountry"
+            app:layout_constraintTop_toBottomOf="@+id/spinnerCountry" />
+
         <LinearLayout
             android:id="@+id/linearQuantityAndPrice"
             android:layout_width="match_parent"
@@ -135,10 +156,10 @@
                 app:endIconMode="clear_text">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/txtQuantityDescription"
+                    android:id="@+id/txtQuantity"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:inputType="numberDecimal" />
+                    android:inputType="number" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -152,7 +173,7 @@
                 app:endIconMode="clear_text">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/txtPriceDescription"
+                    android:id="@+id/txtPrice"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:inputType="numberDecimal" />
@@ -169,6 +190,16 @@
 
         </LinearLayout>
 
+        <TextView
+            android:id="@+id/txtSpinnerCurrencyError"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="برجاء اختار العمله"
+            android:textColor="#FF0000"
+            android:visibility="invisible"
+            app:layout_constraintEnd_toEndOf="@id/linearQuantityAndPrice"
+            app:layout_constraintTop_toBottomOf="@+id/linearQuantityAndPrice" />
+
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/txtOriginalPriceContainer"
             style="@style/ThemeOverlay.Material3.TextInputEditText.OutlinedBox"
@@ -182,7 +213,7 @@
             app:layout_constraintTop_toBottomOf="@id/linearQuantityAndPrice">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/txtOriginalPriceDescription"
+                android:id="@+id/txtOriginalPrice"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:inputType="numberDecimal" />
@@ -206,6 +237,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/_8sdp"
             android:orientation="horizontal"
+            android:visibility="gone"
             app:layout_constraintTop_toBottomOf="@id/switchOffer">
 
             <com.google.android.material.textfield.TextInputLayout
@@ -215,14 +247,14 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/_4sdp"
                 android:layout_weight="1"
-                android:hint="الكميه"
+                android:hint="سعر العرض"
                 app:endIconMode="clear_text">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/txtPriceOfferDescription"
+                    android:id="@+id/txtPriceOffer"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:inputType="number" />
+                    android:inputType="numberDecimal" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -232,11 +264,11 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/_4sdp"
                 android:layout_weight="1"
-                android:hint="السعر البيع"
+                android:hint="عدد المرات"
                 app:endIconMode="clear_text">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/txtOfferNumDescription"
+                    android:id="@+id/txtOfferNum"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:inputType="number" />

@@ -25,7 +25,7 @@ class ProductsPagingAdapter(private val listener: OnButton1ClickListener) :Pagin
             oldItem: ProductResponse.Data,
             newItem: ProductResponse.Data
         ): Boolean {
-            return oldItem.image == newItem.image &&
+            return oldItem.image?.url == newItem.image?.url &&
                     oldItem.name == newItem.name
         }
 
@@ -40,7 +40,7 @@ class ProductsPagingAdapter(private val listener: OnButton1ClickListener) :Pagin
         RecyclerView.ViewHolder(binding.root) {
         fun bind(data: ProductResponse.Data) {
 
-            Glide.with(binding.root).load(data.image).into(binding.imgProduct)
+            Glide.with(binding.root).load(data.image?.url).into(binding.imgProduct)
             binding.txtProductName.text = data.name
 
         }

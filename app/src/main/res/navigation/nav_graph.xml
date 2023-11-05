@@ -144,5 +144,9 @@
         android:id="@+id/addAndEditFragment"
         android:name="com.devYoussef.nb3elkhieradmin.ui.home.product.add.AddAndEditFragment"
         android:label="fragment_add_and_edit"
-        tools:layout="@layout/fragment_add_and_edit" />
+        tools:layout="@layout/fragment_add_and_edit" >
+        <argument
+            android:name="id"
+            app:argType="string" />
+    </fragment>
 </navigation>

@@ -1,8 +1,11 @@
 package com.devYoussef.nb3elkhieradmin.ui.home.product
 
+import android.content.Context
+import android.net.Uri
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.paging.LoadState
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
@@ -16,14 +19,9 @@ import com.devYoussef.nb3elkhieradmin.utils.Status
 import com.devYoussef.nb3elkhieradmin.utils.WebServices
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -34,6 +32,15 @@ class ProductsViewModel @Inject constructor(
     private val repo: Repo
 ) : ViewModel() {
 
+    private val _fileName = MutableLiveData("")
+    val fileName: LiveData<String>
+        get() = _fileName
+
+    // new added
+    fun setFileName(name: String) {
+        _fileName.value = name
+    }
+
     private val _data: MutableStateFlow<PagingData<ProductResponse.Data>> =
         MutableStateFlow(PagingData.empty())
     val data = _data.asStateFlow()
@@ -42,8 +49,21 @@ class ProductsViewModel @Inject constructor(
         MutableStateFlow(PagingData.empty())
     val dataProduct = _dataProduct.asStateFlow()
 
+    private val _stateProduct = MutableStateFlow(AuthState())
+    val stateProduct = _stateProduct.asStateFlow()
+
+    private val _stateAddProduct = MutableStateFlow(AuthState())
+    val stateAddProduct = _stateAddProduct.asStateFlow()
+
     private val _state = MutableStateFlow(AuthState())
     val state = _state.asStateFlow()
+
+    private val _stateCategory = MutableStateFlow(AuthState())
+    val stateCategory = _stateCategory.asStateFlow()
+
+    init {
+        getCategory()
+    }
 
     fun deleteProduct(id:String) = viewModelScope.launch {
         repo.deleteProduct(id).collect { status ->
@@ -67,6 +87,138 @@ class ProductsViewModel @Inject constructor(
 
                 is Status.Error -> {
                     _state.update { result ->
+                        result.copy(
+                            isLoading = false,
+                            error = status.message,
+                            success = null,
+                            status = null
+                        )
+                    }
+                }
+            }
+        }
+    }
+
+    private fun getCategory() = viewModelScope.launch {
+        repo.getCategory().collect { status ->
+            when (status) {
+                is Status.Loading -> {
+                    _stateCategory.update { result ->
+                        result.copy(isLoading = true)
+                    }
+                }
+
+                is Status.Success -> {
+                    _stateCategory.update { result ->
+                        result.copy(
+                            isLoading = false,
+                            status = status.data.status.toString(),
+                            error = null,
+                            category = status.data
+                        )
+                    }
+                }
+
+                is Status.Error -> {
+                    _stateCategory.update { result ->
+                        result.copy(
+                            isLoading = false,
+                            error = status.message,
+                            status = null
+                        )
+                    }
+                }
+            }
+        }
+    }
+
+     fun getOneProduct(id:String) = viewModelScope.launch {
+        repo.getOneProduct(id).collect { status ->
+            when (status) {
+                is Status.Loading -> {
+                    _stateProduct.update { result ->
+                        result.copy(isLoading = true)
+                    }
+                }
+
+                is Status.Success -> {
+                    _stateProduct.update { result ->
+                        result.copy(
+                            isLoading = false,
+                            status = status.data.status.toString(),
+                            error = null,
+                            product = status.data
+                        )
+                    }
+                }
+
+                is Status.Error -> {
+                    _stateProduct.update { result ->
+                        result.copy(
+                            isLoading = false,
+                            error = status.message,
+                            status = null
+                        )
+                    }
+                }
+            }
+        }
+    }
+
+    fun addProduct(
+        ctx: Context,
+        fileUri: Uri,
+        fileRealPath: String,
+        name: String,
+        price: String,
+        shortDescription: String,
+        country: String,
+        category: String,
+        originalPrice: String,
+        quantity: String,
+        isAvailable: Boolean,
+        isOffered: Boolean,
+        offerPrice: String,
+        offerItemNum: String,
+        priceCurrency: String
+    )=viewModelScope.launch {
+        repo.addProduct(
+            ctx = ctx,
+            fileUri = fileUri,
+            fileRealPath = fileRealPath,
+            name = name,
+            price = price,
+            shortDescription = shortDescription,
+            country = country,
+            category = category,
+            originalPrice = originalPrice,
+            quantity = quantity,
+            isAvailable = isAvailable,
+            isOffer = isOffered,
+            offerPrice = offerPrice,
+            offerItemNum = offerItemNum,
+            priceCurrency = priceCurrency
+        ).collect { status ->
+            when (status) {
+                is Status.Loading -> {
+                    _stateAddProduct.update { result ->
+                        result.copy(isLoading = true)
+                    }
+                }
+
+                is Status.Success -> {
+                    _stateAddProduct.update { result ->
+                        result.copy(
+                            isLoading = false,
+                            status = status.data.status.toString(),
+                            error = null,
+                            success = "تم اضافة المنتج بنجاح"
+                        )
+                    }
+                }
+
+                is Status.Error -> {
+                    _stateAddProduct.update { result ->
                         result.copy(
                             isLoading = false,
                             error = status.message,
@@ -113,11 +265,14 @@ class ProductsViewModel @Inject constructor(
                     )
                 }
 
-            ).flow.cachedIn(viewModelScope).collect {
+            ).flow.cachedIn(viewModelScope).collectLatest {
                 _dataProduct.value = it
+
             }
         }
     }
+
+
 
 
 }

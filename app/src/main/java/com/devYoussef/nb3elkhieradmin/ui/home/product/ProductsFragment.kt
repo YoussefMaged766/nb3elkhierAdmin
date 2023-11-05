@@ -1,14 +1,16 @@
 package com.devYoussef.nb3elkhieradmin.ui.home.product
 
+import android.content.Intent
+import android.graphics.Bitmap
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.EditorInfo
 import androidx.activity.OnBackPressedCallback
-import androidx.core.content.ContextCompat
+import androidx.activity.result.ActivityResultLauncher
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -35,7 +37,7 @@ import retrofit2.HttpException
 class ProductsFragment : Fragment(), ProductsPagingAdapter.OnButton1ClickListener {
     private lateinit var binding: FragmentProductsBinding
     private val viewModel by viewModels<ProductsViewModel>()
-    private  val productAdapter by lazy { ProductsPagingAdapter(this) }
+    private val productAdapter by lazy { ProductsPagingAdapter(this) }
     private val loadDialogBar: LoadDialogBar by lazy {
         LoadDialogBar(requireContext())
     }
@@ -62,7 +64,7 @@ class ProductsFragment : Fragment(), ProductsPagingAdapter.OnButton1ClickListene
         collectDeleteState()
         binding.searchView.addTransitionListener { _, _, end ->
             if (end == SearchView.TransitionState.SHOWN) {
-               requireActivity().onBackPressedDispatcher.addCallback(
+                requireActivity().onBackPressedDispatcher.addCallback(
                     viewLifecycleOwner,
                     object : OnBackPressedCallback(true) {
                         override fun handleOnBackPressed() {
@@ -73,20 +75,28 @@ class ProductsFragment : Fragment(), ProductsPagingAdapter.OnButton1ClickListene
             }
 
         }
+        binding.fabAddProduct.setOnClickListener {
+            val action =
+                ProductsFragmentDirections.actionProductsFragmentToAddAndEditFragment("-1")
+            findNavController().navigate(action)
+        }
+
+
 
     }
 
     private fun callApi() {
         binding.searchView.editText.setOnEditorActionListener() { v, actionId, event ->
             Log.e("callApi1: ", v.text.toString())
-            val action = ProductsFragmentDirections.actionProductsFragmentToSearchResultFragment(v.text.toString())
+            val action =
+                ProductsFragmentDirections.actionProductsFragmentToSearchResultFragment(v.text.toString())
             findNavController().navigate(action)
             binding.searchView.clearFocusAndHideKeyboard()
             true
         }
         viewModel.getPagingProducts()
         binding.swipeRefreshLayout.setOnRefreshListener {
-            viewModel.getPagingProducts()
+            productAdapter.refresh()
             binding.swipeRefreshLayout.isRefreshing = false
         }
 
@@ -94,30 +104,36 @@ class ProductsFragment : Fragment(), ProductsPagingAdapter.OnButton1ClickListene
     }
 
 
-private fun collectDeleteState() {
-    viewLifecycleOwner.lifecycleScope.launch {
-        viewModel.state.collect{
-            when{
-                it.isLoading->{
-                    loadDialogBar.show()
+    private fun collectDeleteState() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.state.collect {
+                when {
+                    it.isLoading -> {
+                        loadDialogBar.show()
+                    }
+
+                    it.error != null -> {
+                        requireContext().showToast(it.error)
+                        loadDialogBar.hide()
+                    }
+
+                    it.status == "success" -> {
+                        requireContext().showToast("تم الحذف بنجاح")
+                        Log.e("collectDeleteState: ", it.success.toString())
+                        loadDialogBar.hide()
+                        productAdapter.refresh()
+                    }
                 }
-                it.error!=null->{
-                    requireContext().showToast(it.error)
-                    loadDialogBar.hide()
-                }
-                it.status=="success"->{
-                    requireContext().showToast(it.success.toString())
-                    loadDialogBar.hide()
-                }
+                Log.e("collectDeleteState1: ", it.status.toString())
             }
         }
     }
-}
+
     private fun collectProductsState() {
         lifecycleScope.launch {
             viewModel.dataProduct.collect {
                 productAdapter.submitData(it)
-                binding.allProductsContent.recyclerViewProducts.adapter =
+                binding.recyclerViewProducts.adapter =
                     productAdapter.withLoadStateHeaderAndFooter(
                         header = LoadStateAdapter { productAdapter.retry() },
                         footer = LoadStateAdapter { productAdapter.retry() }
@@ -128,14 +144,14 @@ private fun collectDeleteState() {
 
         productAdapter.addLoadStateListener { loadState ->
             binding.swipeRefreshLayout.isRefreshing = loadState.refresh is LoadState.Loading
-            Log.e( "collectProductsState: ",productAdapter.itemCount.toString() )
+            Log.e("collectProductsState: ", productAdapter.itemCount.toString())
 
             if (productAdapter.itemCount == 0) {
-                binding.allProductsContent.imgEmptyProducts.visibility = View.VISIBLE
+                binding.imgEmptyProducts.visibility = View.VISIBLE
 
             } else {
-                binding.allProductsContent.imgEmptyProducts.visibility = View.GONE
-                binding.allProductsContent.recyclerViewProducts.visibility = View.VISIBLE
+                binding.imgEmptyProducts.visibility = View.GONE
+                binding.recyclerViewProducts.visibility = View.VISIBLE
             }
 
             handelError(loadState)
@@ -161,15 +177,17 @@ private fun collectDeleteState() {
     }
 
     override fun onButtonEditClick(data: ProductResponse.Data, binding: ProductItemBinding) {
-        findNavController().navigate(R.id.action_productsFragment_to_addAndEditFragment)
+        val action =
+            ProductsFragmentDirections.actionProductsFragmentToAddAndEditFragment(data._id.toString())
+        findNavController().navigate(action)
     }
 
     override fun onButtonDeleteClick(data: ProductResponse.Data, binding: ProductItemBinding) {
-       showDeleteDialog(data)
+        showDeleteDialog(data)
     }
 
 
-    private fun showDeleteDialog(data: ProductResponse.Data){
+    private fun showDeleteDialog(data: ProductResponse.Data) {
         MaterialAlertDialogBuilder(requireContext()).apply {
             setTitle("سيتم حذف المنتج")
             setPositiveButton("اوافق") { _, _ ->

@@ -12,7 +12,8 @@ class ProductsPagingSource(
 ) :
     PagingSource<Int, ProductResponse.Data>() {
     override fun getRefreshKey(state: PagingState<Int, ProductResponse.Data>): Int? {
-        return null
+
+        return state.anchorPosition
     }
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, ProductResponse.Data> {
@@ -25,7 +26,7 @@ class ProductsPagingSource(
 
             LoadResult.Page(
                 response.data,
-                prevKey = null,
+                prevKey = if (currentPage == 1) null else currentPage - 1,
                 nextKey = nextPageNumber
             )
 

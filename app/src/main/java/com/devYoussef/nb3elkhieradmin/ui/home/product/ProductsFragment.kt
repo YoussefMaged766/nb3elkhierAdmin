@@ -161,7 +161,7 @@ private fun collectDeleteState() {
     }
 
     override fun onButtonEditClick(data: ProductResponse.Data, binding: ProductItemBinding) {
-        TODO("Not yet implemented")
+        findNavController().navigate(R.id.action_productsFragment_to_addAndEditFragment)
     }
 
     override fun onButtonDeleteClick(data: ProductResponse.Data, binding: ProductItemBinding) {

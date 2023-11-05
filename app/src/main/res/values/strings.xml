@@ -13,4 +13,8 @@
         <item>ج.م</item>
         <item>$</item>
     </string-array>
+
+    <string-array name="category">
+        <item>القسم</item>
+    </string-array>
 </resources>

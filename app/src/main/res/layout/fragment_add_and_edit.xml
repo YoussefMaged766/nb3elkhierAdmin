@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layoutDirection="ltr"
+    android:layoutDirection="rtl"
     tools:context=".ui.home.product.add.AddAndEditFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -66,7 +66,7 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/txtNameContainer"
-            style="?attr/textInputOutlinedStyle"
+            style="@style/ThemeOverlay.Material3.TextInputEditText.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/_16sdp"
@@ -78,13 +78,12 @@
                 android:id="@+id/txtName"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/white"
                 android:inputType="text" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/txtShortDescriptionContainer"
-            style="?attr/textInputOutlinedStyle"
+            style="@style/ThemeOverlay.Material3.TextInputEditText.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/_16sdp"
@@ -96,7 +95,6 @@
                 android:id="@+id/txtShortDescription"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/white"
                 android:inputType="text" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -105,6 +103,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/_16sdp"
+            android:entries="@array/category"
             android:padding="@dimen/_16sdp"
             app:layout_constraintTop_toBottomOf="@+id/txtShortDescriptionContainer" />
 
@@ -127,7 +126,7 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/txtQuantityContainer"
-                style="?attr/textInputOutlinedStyle"
+                style="@style/ThemeOverlay.Material3.TextInputEditText.OutlinedBox"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/_4sdp"
@@ -139,13 +138,12 @@
                     android:id="@+id/txtQuantityDescription"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@color/white"
                     android:inputType="numberDecimal" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/txtPriceContainer"
-                style="?attr/textInputOutlinedStyle"
+                style="@style/ThemeOverlay.Material3.TextInputEditText.OutlinedBox"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/_4sdp"
@@ -157,7 +155,6 @@
                     android:id="@+id/txtPriceDescription"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@color/white"
                     android:inputType="numberDecimal" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -174,7 +171,7 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/txtOriginalPriceContainer"
-            style="?attr/textInputOutlinedStyle"
+            style="@style/ThemeOverlay.Material3.TextInputEditText.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/_16sdp"
@@ -188,7 +185,6 @@
                 android:id="@+id/txtOriginalPriceDescription"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/white"
                 android:inputType="numberDecimal" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -214,7 +210,7 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/txtPriceOfferContainer"
-                style="?attr/textInputOutlinedStyle"
+                style="@style/ThemeOverlay.Material3.TextInputEditText.OutlinedBox"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/_4sdp"
@@ -226,13 +222,12 @@
                     android:id="@+id/txtPriceOfferDescription"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@color/white"
-                    android:inputType="numberDecimal" />
+                    android:inputType="number" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/txtOfferNumContainer"
-                style="?attr/textInputOutlinedStyle"
+                style="@style/ThemeOverlay.Material3.TextInputEditText.OutlinedBox"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/_4sdp"
@@ -244,7 +239,6 @@
                     android:id="@+id/txtOfferNumDescription"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@color/white"
                     android:inputType="number" />
             </com.google.android.material.textfield.TextInputLayout>
 

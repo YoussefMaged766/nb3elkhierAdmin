@@ -24,6 +24,7 @@ import androidx.core.content.FileProvider
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.devYoussef.nb3elkhieradmin.R
@@ -371,6 +372,7 @@ class AddAndEditFragment : Fragment() {
 
                     it.status == "success" -> {
                         loadDialogBar.hide()
+                        findNavController().navigate(R.id.productsFragment)
                         requireContext().showToast(it.success.toString())
                     }
                 }

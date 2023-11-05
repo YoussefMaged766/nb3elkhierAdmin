@@ -8,7 +8,6 @@
     <fragment
         android:id="@+id/splashFragment"
         android:name="com.devYoussef.nb3elkhieradmin.ui.auth.splash.SplashFragment"
-        android:label="fragment_splash"
         tools:layout="@layout/fragment_splash" >
         <action
             android:id="@+id/action_splashFragment_to_loginFragment"
@@ -22,7 +21,6 @@
     <fragment
         android:id="@+id/loginFragment"
         android:name="com.devYoussef.nb3elkhieradmin.ui.auth.login.LoginFragment"
-        android:label="fragment_login"
         tools:layout="@layout/fragment_login" >
         <action
             android:id="@+id/action_loginFragment_to_homeFragment"
@@ -37,6 +35,103 @@
     <fragment
         android:id="@+id/homeFragment"
         android:name="com.devYoussef.nb3elkhieradmin.ui.home.home.HomeFragment"
-        android:label="fragment_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_homeFragment_to_productsFragment"
+            app:destination="@id/productsFragment"
+            app:enterAnim="@anim/enter_anim"
+            app:exitAnim="@anim/exit_anim"
+            app:popEnterAnim="@anim/pop_exit_anim"
+            app:popExitAnim="@anim/pop_enter_anim"
+            />
+        <action
+            android:id="@+id/action_homeFragment_to_promoCodesFragment"
+            app:destination="@id/promoCodesFragment"
+            app:enterAnim="@anim/enter_anim"
+            app:exitAnim="@anim/exit_anim"
+            app:popEnterAnim="@anim/pop_exit_anim"
+            app:popExitAnim="@anim/pop_enter_anim"
+            />
+        <action
+            android:id="@+id/action_homeFragment_to_bannersFragment"
+            app:destination="@id/bannersFragment"
+            app:enterAnim="@anim/enter_anim"
+            app:exitAnim="@anim/exit_anim"
+            app:popEnterAnim="@anim/pop_exit_anim"
+            app:popExitAnim="@anim/pop_enter_anim"
+            />
+        <action
+            android:id="@+id/action_homeFragment_to_ordersFragment"
+            app:destination="@id/ordersFragment"
+            app:enterAnim="@anim/enter_anim"
+            app:exitAnim="@anim/exit_anim"
+            app:popEnterAnim="@anim/pop_exit_anim"
+            app:popExitAnim="@anim/pop_enter_anim"
+            />
+        <action
+            android:id="@+id/action_homeFragment_to_statisticsFragment"
+            app:destination="@id/statisticsFragment"
+            app:enterAnim="@anim/enter_anim"
+            app:exitAnim="@anim/exit_anim"
+            app:popEnterAnim="@anim/pop_exit_anim"
+            app:popExitAnim="@anim/pop_enter_anim"
+            />
+        <action
+            android:id="@+id/action_homeFragment_to_regionsFragment"
+            app:destination="@id/regionsFragment"
+            app:enterAnim="@anim/enter_anim"
+            app:exitAnim="@anim/exit_anim"
+            app:popEnterAnim="@anim/pop_exit_anim"
+            app:popExitAnim="@anim/pop_enter_anim"
+            />
+        <action
+            android:id="@+id/action_homeFragment_to_blocksFragment"
+            app:destination="@id/blocksFragment"
+            app:enterAnim="@anim/enter_anim"
+            app:exitAnim="@anim/exit_anim"
+            app:popEnterAnim="@anim/pop_exit_anim"
+            app:popExitAnim="@anim/pop_enter_anim"
+            />
+    </fragment>
+    <fragment
+        android:id="@+id/productsFragment"
+        android:name="com.devYoussef.nb3elkhieradmin.ui.home.product.ProductsFragment"
+        tools:layout="@layout/fragment_products" >
+        <action
+            android:id="@+id/action_productsFragment_to_searchResultFragment"
+            app:destination="@id/searchResultFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/promoCodesFragment"
+        android:name="com.devYoussef.nb3elkhieradmin.ui.home.promo.PromoCodesFragment"
+        tools:layout="@layout/fragment_promo_codes" />
+    <fragment
+        android:id="@+id/bannersFragment"
+        android:name="com.devYoussef.nb3elkhieradmin.ui.home.banner.BannersFragment"
+        tools:layout="@layout/fragment_banners" />
+    <fragment
+        android:id="@+id/ordersFragment"
+        android:name="com.devYoussef.nb3elkhieradmin.ui.home.order.OrdersFragment"
+        tools:layout="@layout/fragment_orders" />
+    <fragment
+        android:id="@+id/statisticsFragment"
+        android:name="com.devYoussef.nb3elkhieradmin.ui.home.statistics.StatisticsFragment"
+        tools:layout="@layout/fragment_statistics" />
+    <fragment
+        android:id="@+id/regionsFragment"
+        android:name="com.devYoussef.nb3elkhieradmin.ui.home.regions.RegionsFragment"
+        tools:layout="@layout/fragment_regions" />
+    <fragment
+        android:id="@+id/blocksFragment"
+        android:name="com.devYoussef.nb3elkhieradmin.ui.home.block.BlocksFragment"
+        tools:layout="@layout/fragment_blocks" />
+    <fragment
+        android:id="@+id/searchResultFragment"
+        android:name="com.devYoussef.nb3elkhieradmin.ui.home.product.search.SearchResultFragment"
+        android:label="fragment_search_result"
+        tools:layout="@layout/fragment_search_result" >
+        <argument
+            android:name="query"
+            app:argType="string" />
+    </fragment>
 </navigation>

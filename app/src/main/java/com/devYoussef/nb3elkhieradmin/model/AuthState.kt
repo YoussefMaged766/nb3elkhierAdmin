@@ -6,4 +6,5 @@ data class AuthState(
     val error: String? = null,
     val status :String? = null,
     val login :AuthResponse? = null,
+    val statistics :StatisticsResponse? = null,
 )

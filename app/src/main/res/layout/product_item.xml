@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="130dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardElevation="@dimen/_12sdp"
+    android:backgroundTint="@color/white"
+    app:cardCornerRadius="@dimen/_8sdp"
+    android:layout_margin="@dimen/_8sdp"
+    android:layoutDirection="rtl"
+    >
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            app:layout_constraintWidth_percent=".25"
+            app:layout_constraintStart_toStartOf="parent"
+            android:scaleType="centerCrop"
+            android:adjustViewBounds="true"
+            android:id="@+id/imgProduct" />
+
+        <TextView
+            android:id="@+id/txtProductName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/_8sdp"
+            android:text="اسم المنتج"
+            android:textColor="@color/primary"
+            android:textSize="@dimen/_14ssp"
+            app:layout_constraintEnd_toStartOf="@+id/btnEditProduct"
+            app:layout_constraintStart_toEndOf="@id/imgProduct"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnEditProduct"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/_8sdp"
+            android:text="تعديل"
+            app:cornerRadius="@dimen/_4sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.google.android.material.button.MaterialButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_margin="@dimen/_8sdp"
+            android:text="حذف"
+            app:cornerRadius="@dimen/_4sdp"
+            android:id="@+id/btnDeleteProduct"
+             />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</com.google.android.material.card.MaterialCardView>

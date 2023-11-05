@@ -5,5 +5,11 @@
          <item name="colorPrimary">@color/primary</item>
     </style>
 
+    <style name="ToolbarTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize color of navigation drawer icon and back arrow -->
+        <item name="colorControlNormal">@color/primary</item>
+        <item name="layout_scrollFlags">exitUntilCollapsed</item>
+    </style>
+
     <style name="Theme.Nb3ElkhierAdmin" parent="Base.Theme.Nb3ElkhierAdmin" />
 </resources>

@@ -16,6 +16,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.LinearLayout
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
@@ -77,9 +78,11 @@ class AddAndEditFragment : Fragment() {
         collectCategoryStates()
         if (args.id != "-1") {
             viewModel.getOneProduct(args.id)
+            requireActivity().findViewById<TextView>(R.id.txtTitleToolBar).text = "تعديل المنتج"
         }
         collectOneProductStates()
         collectAddProductsState()
+        collectUpdateProductsState()
         handelSwitches()
         checkPermission()
 
@@ -115,20 +118,24 @@ class AddAndEditFragment : Fragment() {
             val offerPrice = if (isOffered) binding.txtPriceOffer.text.toString() else "0.0"
             val offerItemNum = if (isOffered) binding.txtOfferNum.text.toString() else "0"
 
-            Log.e( "onViewCreated: ",offerPrice.toString() )
-            if (validateInputs(
-                    name,
-                    shortDescription,
-                    isOffered,
-                    quantity,
-                    price,
-                    originalPrice,
-                    offerPrice,
-                    offerItemNum,
-                    imgUri
-                ) && isCountrySelected() && isCurrencySelected()
-            ) {
-                callApiAddProduct()
+            Log.e("onViewCreated: ", offerPrice.toString())
+            if (args.id == "-1") {
+                if (validateInputs(
+                        name,
+                        shortDescription,
+                        isOffered,
+                        quantity,
+                        price,
+                        originalPrice,
+                        offerPrice,
+                        offerItemNum,
+                        imgUri
+                    ) && isCountrySelected() && isCurrencySelected()
+                ) {
+                    callApiAddProduct()
+                }
+            } else {
+                callApiUpdateProduct(args.id)
             }
         }
 
@@ -357,9 +364,87 @@ class AddAndEditFragment : Fragment() {
         )
     }
 
+    private fun callApiUpdateProduct(id: String) {
+        val name = binding.txtName.text.toString()
+        val shortDescription = binding.txtShortDescription.text.toString()
+        val category = binding.spinnerCategory.selectedItem.toString()
+        val country = binding.spinnerCountry.selectedItem.toString()
+        val isAvailable = binding.switchAvailable.isChecked
+        val isOffered = binding.switchOffer.isChecked
+        val quantity = binding.txtQuantity.text.toString()
+        val price = binding.txtPrice.text.toString()
+        val priceCurrency = binding.spinnerCurrency.selectedItem.toString()
+        val originalPrice = binding.txtOriginalPrice.text.toString()
+
+        val offerPrice = if (isOffered) binding.txtPriceOffer.text.toString() else "0.0"
+        val offerItemNum = if (isOffered) binding.txtOfferNum.text.toString() else "0"
+        if (imgUri!=null){
+            viewModel.updateProduct(
+                ctx = requireContext(),
+                fileUri = imgUri!!,
+                fileRealPath = getFilePathFromUri(requireContext(), imgUri!!, viewModel).toString(),
+                name = name,
+                shortDescription = shortDescription,
+                category = category,
+                country = country,
+                isAvailable = isAvailable,
+                isOffered = isOffered,
+                quantity = quantity,
+                price = price,
+                priceCurrency = priceCurrency,
+                originalPrice = originalPrice,
+                offerPrice = offerPrice,
+                offerItemNum = offerItemNum,
+                id = id
+            )
+        } else{
+            viewModel.updateProduct(
+                ctx = requireContext(),
+                name = name,
+                shortDescription = shortDescription,
+                category = category,
+                country = country,
+                isAvailable = isAvailable,
+                isOffered = isOffered,
+                quantity = quantity,
+                price = price,
+                priceCurrency = priceCurrency,
+                originalPrice = originalPrice,
+                offerPrice = offerPrice,
+                offerItemNum = offerItemNum,
+                id = id
+            )
+        }
+
+
+    }
+
     private fun collectAddProductsState() {
         lifecycleScope.launch {
             viewModel.stateAddProduct.collect {
+                when {
+                    it.isLoading -> {
+                        loadDialogBar.show()
+                    }
+
+                    it.error != null -> {
+                        requireContext().showToast(it.error)
+                        loadDialogBar.hide()
+                    }
+
+                    it.status == "success" -> {
+                        loadDialogBar.hide()
+                        findNavController().navigate(R.id.productsFragment)
+                        requireContext().showToast(it.success.toString())
+                    }
+                }
+            }
+        }
+    }
+
+    private fun collectUpdateProductsState() {
+        lifecycleScope.launch {
+            viewModel.stateUpdateProduct.collect {
                 when {
                     it.isLoading -> {
                         loadDialogBar.show()

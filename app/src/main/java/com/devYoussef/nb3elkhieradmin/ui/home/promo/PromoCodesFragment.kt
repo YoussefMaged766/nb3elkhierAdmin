@@ -5,28 +5,37 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
+import android.widget.ImageView
+import androidx.core.widget.doOnTextChanged
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import com.devYoussef.nb3elkhieradmin.R
+import com.devYoussef.nb3elkhieradmin.constant.Constants.showToast
+import com.devYoussef.nb3elkhieradmin.databinding.FragmentPromoCodesBinding
+import com.devYoussef.nb3elkhieradmin.model.PromoCodeModel
+import com.devYoussef.nb3elkhieradmin.utils.LoadDialogBar
+import com.google.android.material.button.MaterialButton
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.materialswitch.MaterialSwitch
+import com.google.android.material.textfield.TextInputLayout
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [PromoCodesFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
+@AndroidEntryPoint
 class PromoCodesFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+
+    private lateinit var binding: FragmentPromoCodesBinding
+    private val viewModel: PromoCodeViewModel by viewModels()
+    private val loadDialogBar: LoadDialogBar by lazy {
+        LoadDialogBar(requireContext())
+    }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+
         }
     }
 
@@ -34,27 +43,155 @@ class PromoCodesFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_promo_codes, container, false)
+        binding = FragmentPromoCodesBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment PromoCodesFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            PromoCodesFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        collectAddPromoState()
+        collectDeleteState()
+        collectUpdateState()
+
+        binding.btnAddPromoCode.setOnClickListener {
+            showDialogAddPromo()
+        }
+    }
+
+    private fun showDialogAddPromo() {
+        val builder = MaterialAlertDialogBuilder(requireContext())
+        val view = layoutInflater.inflate(R.layout.promo_code_item, null)
+        val switchAvailable = view.findViewById<MaterialSwitch>(R.id.switchAvailable)
+
+        switchAvailable.visibility = View.GONE
+        builder.setPositiveButton("اضافه") { dialog, which ->
+
+            callAddPromoCodeApi(
+                switch = switchAvailable,
+                discount = view.findViewById(R.id.txtPrice),
+                num = view.findViewById(R.id.txtNum),
+                discountContainer = view.findViewById(R.id.txtPriceContainer),
+                numContainer = view.findViewById(R.id.txtNumContainer)
+            )
+        }
+        builder.setNegativeButton("الغاء") { dialog, which ->
+            dialog.dismiss()
+        }
+        builder.setView(view)
+        builder.create()
+        builder.show()
+    }
+
+    private fun collectAddPromoState() {
+        lifecycleScope.launch {
+            viewModel.stateAddPromo.collect { state ->
+                if (state.isLoading) {
+                    loadDialogBar.show()
+                }
+
+                if (state.error != null) {
+                    loadDialogBar.hide()
+                    requireContext().showToast(state.error)
+                }
+
+                if (state.status == "success") {
+                    loadDialogBar.hide()
+                    requireContext().showToast("تم اضافه الكود بنجاح")
                 }
             }
+        }
     }
+
+    private fun collectDeleteState() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.stateDeletePromo.collect {
+                when {
+                    it.isLoading -> {
+                        loadDialogBar.show()
+                    }
+
+                    it.error != null -> {
+                        requireContext().showToast(it.error)
+                    }
+
+                    it.success == "success" -> {
+                        requireContext().showToast("تم حذف المنتج بنجاح")
+                    }
+                }
+            }
+        }
+    }
+
+    private fun collectUpdateState() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.stateUpdatePromo.collect {
+                when {
+                    it.isLoading -> {
+                        loadDialogBar.show()
+                    }
+
+                    it.error != null -> {
+                        requireContext().showToast(it.error)
+                    }
+
+                    it.success == "success" -> {
+                        requireContext().showToast("تم تعديل المنتج بنجاح")
+                    }
+                }
+            }
+        }
+    }
+
+    private fun callAddPromoCodeApi(
+        switch: MaterialSwitch,
+        discount: EditText,
+        num: EditText,
+        discountContainer: TextInputLayout,
+        numContainer: TextInputLayout
+    ) {
+        if (inputsValidation(switch, discount, num, discountContainer, numContainer)) {
+            viewModel.addPromo(
+                PromoCodeModel(
+                    isActive = switch.isChecked,
+                    price = discount.text.toString().trim().toDouble(),
+                    timesNum = num.text.toString().trim().toInt()
+                )
+            )
+        }
+
+    }
+
+    private fun inputsValidation(
+        switch: MaterialSwitch,
+        discount: EditText,
+        num: EditText,
+        discountContainer: TextInputLayout,
+        numContainer: TextInputLayout
+    ): Boolean {
+        if (discount.text.toString().trim().isNotEmpty() && num.text.toString().trim()
+                .isNotEmpty() && switch.isChecked
+        ) {
+            return true
+        }
+
+        if (discount.text.isEmpty()) discountContainer.error = "ادخل الخصم"
+
+        if (num.text.isEmpty()) numContainer.error =
+            "ادخل عدد مرات استخدام الكود"
+
+        if (!switch.isChecked) switch.error = "اختر الحاله"
+
+
+
+        discount.doOnTextChanged { _, _, _, _ ->
+            discountContainer.error = null
+        }
+        num.doOnTextChanged { _, _, _, _ ->
+            numContainer.error = null
+        }
+
+        return false
+    }
+
+
 }

@@ -55,6 +55,9 @@ class ProductsViewModel @Inject constructor(
     private val _stateAddProduct = MutableStateFlow(AuthState())
     val stateAddProduct = _stateAddProduct.asStateFlow()
 
+    private val _stateUpdateProduct = MutableStateFlow(AuthState())
+    val stateUpdateProduct = _stateUpdateProduct.asStateFlow()
+
     private val _state = MutableStateFlow(AuthState())
     val state = _state.asStateFlow()
 
@@ -219,6 +222,74 @@ class ProductsViewModel @Inject constructor(
 
                 is Status.Error -> {
                     _stateAddProduct.update { result ->
+                        result.copy(
+                            isLoading = false,
+                            error = status.message,
+                            success = null,
+                            status = null
+                        )
+                    }
+                }
+            }
+        }
+    }
+
+    fun updateProduct(
+        ctx: Context,
+        fileUri: Uri?=null,
+        fileRealPath: String?=null,
+        name: String,
+        price: String,
+        shortDescription: String,
+        country: String,
+        category: String,
+        originalPrice: String,
+        quantity: String,
+        isAvailable: Boolean,
+        isOffered: Boolean,
+        offerPrice: String,
+        offerItemNum: String,
+        priceCurrency: String,
+        id:String
+    )=viewModelScope.launch {
+        repo.updateProduct(
+            ctx = ctx,
+            fileUri = fileUri,
+            fileRealPath = fileRealPath,
+            name = name,
+            price = price,
+            shortDescription = shortDescription,
+            country = country,
+            category = category,
+            originalPrice = originalPrice,
+            quantity = quantity,
+            isAvailable = isAvailable,
+            isOffer = isOffered,
+            offerPrice = offerPrice,
+            offerItemNum = offerItemNum,
+            priceCurrency = priceCurrency,
+            id = id
+        ).collect { status ->
+            when (status) {
+                is Status.Loading -> {
+                    _stateUpdateProduct.update { result ->
+                        result.copy(isLoading = true)
+                    }
+                }
+
+                is Status.Success -> {
+                    _stateUpdateProduct.update { result ->
+                        result.copy(
+                            isLoading = false,
+                            status = status.data.status.toString(),
+                            error = null,
+                            success = "تم تعديل المنتج بنجاح"
+                        )
+                    }
+                }
+
+                is Status.Error -> {
+                    _stateUpdateProduct.update { result ->
                         result.copy(
                             isLoading = false,
                             error = status.message,

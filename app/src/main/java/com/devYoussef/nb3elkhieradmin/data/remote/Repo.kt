@@ -5,6 +5,7 @@ import android.net.Uri
 import android.util.Log
 import com.devYoussef.nb3elkhieradmin.model.AuthResponse
 import com.devYoussef.nb3elkhieradmin.model.LoginModel
+import com.devYoussef.nb3elkhieradmin.model.PromoCodeModel
 import com.devYoussef.nb3elkhieradmin.utils.NetworkUtils
 import com.devYoussef.nb3elkhieradmin.utils.Status
 import com.devYoussef.nb3elkhieradmin.utils.WebServices
@@ -179,6 +180,98 @@ class Repo @Inject constructor(
 
     }
 
+    fun addPromoCode(model:PromoCodeModel) = flow {
+        if (NetworkUtils(context).isNetworkConnected()) {
+            try {
+                emit(Status.Loading)
+
+                val response = webServices.addPromoCode(model)
+                emit(Status.Success(response))
+
+
+            } catch (e: Throwable) {
+                when (e) {
+                    is HttpException -> {
+                        val type = object : TypeToken<AuthResponse>() {}.type
+                        val errorResponse: AuthResponse? =
+                            gson.fromJson(e.response()?.errorBody()!!.charStream(), type)
+                        Log.e("loginUsereeeee: ", errorResponse?.message.toString())
+                        emit(Status.Error(errorResponse?.message.toString()))
+                    }
+
+                    is Exception -> {
+                        Log.e("loginUsereeeee: ", e.message.toString())
+                        emit(Status.Error(e.message.toString()))
+                    }
+                }
+            }
+        } else {
+            emit(Status.Error("برجاء التحقق من الاتصال بالانترنت"))
+        }
+
+    }
+
+    fun updatePromoCode(model:PromoCodeModel) = flow {
+        if (NetworkUtils(context).isNetworkConnected()) {
+            try {
+
+                emit(Status.Loading)
+                val response = webServices.updatePromoCode(model)
+                emit(Status.Success(response))
+
+            } catch (e: Throwable) {
+                when (e) {
+                    is HttpException -> {
+                        val type = object : TypeToken<AuthResponse>() {}.type
+                        val errorResponse: AuthResponse? =
+                            gson.fromJson(e.response()?.errorBody()!!.charStream(), type)
+                        Log.e("loginUsereeeee: ", errorResponse?.message.toString())
+                        emit(Status.Error(errorResponse?.message.toString()))
+                    }
+
+                    is Exception -> {
+                        Log.e("loginUsereeeee: ", e.message.toString())
+                        emit(Status.Error(e.message.toString()))
+                    }
+                }
+            }
+        } else {
+            emit(Status.Error("برجاء التحقق من الاتصال بالانترنت"))
+        }
+
+    }
+
+    fun deletePromoCode(id:String) = flow {
+        if (NetworkUtils(context).isNetworkConnected()) {
+            try {
+                emit(Status.Loading)
+
+                val response = webServices.deletePromoCode(id)
+                emit(Status.Success(response))
+
+
+            } catch (e: Throwable) {
+                when (e) {
+                    is HttpException -> {
+                        val type = object : TypeToken<AuthResponse>() {}.type
+                        val errorResponse: AuthResponse? =
+                            gson.fromJson(e.response()?.errorBody()!!.charStream(), type)
+                        Log.e("loginUsereeeee: ", errorResponse?.message.toString())
+                        emit(Status.Error(errorResponse?.message.toString()))
+                    }
+
+                    is Exception -> {
+                        Log.e("loginUsereeeee: ", e.message.toString())
+                        emit(Status.Error(e.message.toString()))
+                    }
+                }
+            }
+        } else {
+            emit(Status.Error("برجاء التحقق من الاتصال بالانترنت"))
+        }
+
+    }
+
     fun addProduct(
         ctx: Context,
         fileUri: Uri,
@@ -239,6 +332,96 @@ class Repo @Inject constructor(
                     priceOffered = offerPriceRequestBody,
                     itemNum = offerItemNumRequestBody,
                     priceCurrency = priceCurrencyRequestBody
+                )
+                emit(Status.Success(response))
+
+
+            } catch (e: Throwable) {
+                when (e) {
+                    is HttpException -> {
+                        val type = object : TypeToken<AuthResponse>() {}.type
+                        val errorResponse: AuthResponse? =
+                            gson.fromJson(e.response()?.errorBody()!!.charStream(), type)
+                        Log.e("loginUsereeeee: ", errorResponse?.message.toString())
+                        emit(Status.Error(errorResponse?.message.toString()))
+                    }
+
+                    is Exception -> {
+                        Log.e("loginUsereeeee: ", e.message.toString())
+                        emit(Status.Error(e.message.toString()))
+                    }
+                }
+            }
+        } else{
+            emit(Status.Error("برجاء التحقق من الاتصال بالانترنت"))
+        }
+    }
+
+    fun updateProduct(
+        ctx: Context,
+        fileUri: Uri?=null,
+        fileRealPath: String?=null,
+        name: String,
+        price: String,
+        shortDescription: String,
+        country: String,
+        category: String,
+        originalPrice: String,
+        quantity: String,
+        isAvailable: Boolean,
+        isOffer: Boolean,
+        offerPrice: String,
+        offerItemNum: String,
+        priceCurrency: String,
+        id:String
+    ) = flow {
+        emit(Status.Loading)
+        if (NetworkUtils(ctx).isNetworkConnected()) {
+            try {
+                val fileToSend = fileRealPath?.let { fileUri?.let { it1 ->
+                    prepareFilePart("image", it,
+                        it1, ctx)
+                } }
+                val nameRequestBody: RequestBody =
+                    RequestBody.create("text/plain".toMediaTypeOrNull(), name)
+                val priceRequestBody: RequestBody =
+                    RequestBody.create("text/plain".toMediaTypeOrNull(), price)
+                val shortDescriptionRequestBody: RequestBody =
+                    RequestBody.create("text/plain".toMediaTypeOrNull(), shortDescription)
+                val countryRequestBody: RequestBody =
+                    RequestBody.create("text/plain".toMediaTypeOrNull(), country)
+                val categoryRequestBody: RequestBody =
+                    RequestBody.create("text/plain".toMediaTypeOrNull(), category)
+                val originalPriceRequestBody: RequestBody =
+                    RequestBody.create("text/plain".toMediaTypeOrNull(), originalPrice)
+                val quantityRequestBody: RequestBody =
+                    RequestBody.create("text/plain".toMediaTypeOrNull(), quantity)
+                val isAvailableRequestBody: RequestBody =
+                    RequestBody.create("text/plain".toMediaTypeOrNull(), isAvailable.toString())
+                val isOfferRequestBody: RequestBody =
+                    RequestBody.create("text/plain".toMediaTypeOrNull(), isOffer.toString())
+                val offerPriceRequestBody: RequestBody =
+                    RequestBody.create("text/plain".toMediaTypeOrNull(), offerPrice)
+                val offerItemNumRequestBody: RequestBody =
+                    RequestBody.create("text/plain".toMediaTypeOrNull(), offerItemNum)
+                val priceCurrencyRequestBody: RequestBody =
+                    RequestBody.create("text/plain".toMediaTypeOrNull(), priceCurrency)
+
+                val response = webServices.updateProduct(
+                    image = fileToSend,
+                    name = nameRequestBody,
+                    price = priceRequestBody,
+                    shortDescription = shortDescriptionRequestBody,
+                    country = countryRequestBody,
+                    category = categoryRequestBody,
+                    originalPrice = originalPriceRequestBody,
+                    quantity = quantityRequestBody,
+                    isAvailable = isAvailableRequestBody,
+                    isOffered = isOfferRequestBody,
+                    priceOffered = offerPriceRequestBody,
+                    itemNum = offerItemNumRequestBody,
+                    priceCurrency = priceCurrencyRequestBody,
+                    id = id
                 )
                 emit(Status.Success(response))
 

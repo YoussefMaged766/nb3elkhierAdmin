@@ -1,7 +1,8 @@
 package com.devYoussef.nb3elkhieradmin.model
 
 data class PromoCodeModel(
-    val isActive: Boolean?,
-    val price: Double?,
-    val timesNum: Int?
+    val isActive: Boolean?=null,
+    val price: Double?=null  ,
+    val timesNum: Int? =null,
+    val id:String? =null
 )

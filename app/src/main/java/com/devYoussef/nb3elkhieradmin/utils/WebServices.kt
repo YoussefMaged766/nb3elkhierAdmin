@@ -5,6 +5,7 @@ import com.devYoussef.nb3elkhieradmin.model.CategoryResponse
 import com.devYoussef.nb3elkhieradmin.model.LoginModel
 import com.devYoussef.nb3elkhieradmin.model.ProductResponse
 import com.devYoussef.nb3elkhieradmin.model.PromoCodeModel
+import com.devYoussef.nb3elkhieradmin.model.PromoCodeResponse
 import com.devYoussef.nb3elkhieradmin.model.StatisticsResponse
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -88,4 +89,10 @@ interface WebServices {
 
     @PATCH("api/manage/update-promo")
     suspend fun updatePromoCode(@Body model:PromoCodeModel):AuthResponse
+
+    @GET("api/manage/get-promo")
+    suspend fun getAllPromoCode():PromoCodeResponse
+
+    @GET("api/manage/get-promo/{id}")
+    suspend fun getOnePromoCode(@Path("id") id:String):PromoCodeResponse
 }

@@ -1,11 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layoutDirection="rtl"
+    android:id="@+id/swipeRefreshPromoCodes"
     tools:context=".ui.home.promo.PromoCodesFragment">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnAddPromoCode"
@@ -36,7 +42,9 @@
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btnAddPromoCode"
-        tools:listitem="@layout/promo_code_item" />
+        tools:listitem="@layout/promo_code_item"
+        android:id="@+id/rvPromoCodes"
+        />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

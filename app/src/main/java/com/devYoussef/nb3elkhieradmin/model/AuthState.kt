@@ -8,5 +8,6 @@ data class AuthState(
     val login: AuthResponse? = null,
     val statistics: StatisticsResponse? = null,
     val category: CategoryResponse? = null,
-    val product: ProductResponse? = null
+    val product: ProductResponse? = null,
+    val promo : PromoCodeResponse? = null
 )

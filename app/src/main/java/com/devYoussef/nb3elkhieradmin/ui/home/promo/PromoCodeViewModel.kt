@@ -25,6 +25,12 @@ class PromoCodeViewModel @Inject constructor(private val repo: Repo) : ViewModel
     private val _stateUpdatePromo = MutableStateFlow(AuthState())
     val stateUpdatePromo = _stateUpdatePromo.asStateFlow()
 
+    private val _stateAllPromo = MutableStateFlow(AuthState())
+    val stateAllPromo = _stateAllPromo.asStateFlow()
+
+    private val _stateGetOnePromo = MutableStateFlow(AuthState())
+    val stateGetOnePromo = _stateGetOnePromo.asStateFlow()
+
 
     fun deletePromo(id:String) = viewModelScope.launch {
         repo.deletePromoCode(id).collect { status ->
@@ -48,6 +54,74 @@ class PromoCodeViewModel @Inject constructor(private val repo: Repo) : ViewModel
 
                 is Status.Error -> {
                     _stateDeletePromo.update { result ->
+                        result.copy(
+                            isLoading = false,
+                            error = status.message,
+                            success = null,
+                            status = null
+                        )
+                    }
+                }
+            }
+        }
+    }
+
+    fun getOnePromo(id:String) = viewModelScope.launch {
+        repo.getOnePromoCode(id).collect { status ->
+            when (status) {
+                is Status.Loading -> {
+                    _stateGetOnePromo.update { result ->
+                        result.copy(isLoading = true)
+                    }
+                }
+
+                is Status.Success -> {
+                    _stateGetOnePromo.update { result ->
+                        result.copy(
+                            isLoading = false,
+                            status = status.data.status.toString(),
+                            error = null,
+                            promo = status.data
+                        )
+                    }
+                }
+
+                is Status.Error -> {
+                    _stateGetOnePromo.update { result ->
+                        result.copy(
+                            isLoading = false,
+                            error = status.message,
+                            success = null,
+                            status = null
+                        )
+                    }
+                }
+            }
+        }
+    }
+
+    fun getAllPromo() = viewModelScope.launch {
+        repo.getAllPromoCode().collect { status ->
+            when (status) {
+                is Status.Loading -> {
+                    _stateAllPromo.update { result ->
+                        result.copy(isLoading = true)
+                    }
+                }
+
+                is Status.Success -> {
+                    _stateAllPromo.update { result ->
+                        result.copy(
+                            isLoading = false,
+                            status = status.data.status.toString(),
+                            error = null,
+                            promo = status.data
+                        )
+                    }
+                }
+
+                is Status.Error -> {
+                    _stateAllPromo.update { result ->
                         result.copy(
                             isLoading = false,
                             error = status.message,

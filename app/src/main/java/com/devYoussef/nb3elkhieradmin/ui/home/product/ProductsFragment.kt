@@ -75,6 +75,15 @@ class ProductsFragment : Fragment(), ProductsPagingAdapter.OnButton1ClickListene
             }
 
         }
+        requireActivity().onBackPressedDispatcher.addCallback(
+            viewLifecycleOwner,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+
+                    findNavController().navigate(R.id.homeFragment)
+                }
+
+            })
         binding.fabAddProduct.setOnClickListener {
             val action =
                 ProductsFragmentDirections.actionProductsFragmentToAddAndEditFragment("-1")

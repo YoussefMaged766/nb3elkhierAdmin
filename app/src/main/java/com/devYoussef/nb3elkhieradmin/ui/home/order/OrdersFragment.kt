@@ -6,27 +6,24 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.devYoussef.nb3elkhieradmin.R
+import com.devYoussef.nb3elkhieradmin.databinding.FragmentOrdersBinding
+import com.devYoussef.nb3elkhieradmin.ui.adapter.ViewPagerAdapter
+import com.devYoussef.nb3elkhieradmin.ui.home.order.cancel.CancelOrderFragment
+import com.devYoussef.nb3elkhieradmin.ui.home.order.current.CurrentOrderFragment
+import com.devYoussef.nb3elkhieradmin.ui.home.order.past.PastOrderFragment
+import com.devYoussef.nb3elkhieradmin.utils.FadeOutTransformation
+import com.google.android.material.tabs.TabLayoutMediator
+import dagger.hilt.android.AndroidEntryPoint
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [OrdersFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
+@AndroidEntryPoint
 class OrdersFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
 
+    private lateinit var binding: FragmentOrdersBinding
+    private val fadeOutTransformation = FadeOutTransformation()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+
         }
     }
 
@@ -34,27 +31,30 @@ class OrdersFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_orders, container, false)
+        binding = FragmentOrdersBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment OrdersFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            OrdersFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        setUpViewPager()
+    }
+
+    private fun setUpViewPager() {
+
+        val adapter = ViewPagerAdapter(
+            supportFragmentManager = requireActivity().supportFragmentManager,
+            lifecycle = lifecycle
+        )
+        adapter.addFragment(CurrentOrderFragment(), "الطلبات الحاليه")
+        adapter.addFragment(PastOrderFragment(), "الطلبات السابقه")
+        adapter.addFragment(CancelOrderFragment(), "الطلبات الملغيه")
+        binding.viewpager.isSaveEnabled = false
+        binding.viewpager.setPageTransformer(fadeOutTransformation)
+        binding.viewpager.adapter = adapter
+        TabLayoutMediator(binding.tabs, binding.viewpager) { tab, position ->
+            tab.text = adapter.getPageTitle(position)
+            binding.viewpager.setCurrentItem(tab.position, true)
+        }.attach()
     }
 }

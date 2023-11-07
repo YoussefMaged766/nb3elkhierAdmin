@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/_8sdp"
+    android:background="@color/white"
+    android:elevation="@dimen/_8sdp"
+    android:layoutDirection="rtl">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="@dimen/_8sdp">
+
+        <TextView
+            android:id="@+id/txt1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/_4sdp"
+            android:text="رقم الطلب: "
+            android:textColor="@color/primary"
+            android:textSize="@dimen/_14ssp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+
+            />
+
+        <TextView
+            android:id="@+id/txtOrderNumber"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/_8sdp"
+            android:text="رقم الطلب: "
+            android:textColor="@color/primary"
+            android:textSize="@dimen/_14ssp"
+            app:layout_constraintBottom_toBottomOf="@id/txt1"
+            app:layout_constraintStart_toEndOf="@id/txt1"
+            app:layout_constraintTop_toTopOf="@id/txt1" />
+
+        <TextView
+            android:id="@+id/txt3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/_4sdp"
+            android:text="رقم الطلب: "
+            android:textColor="@color/primary"
+            android:textSize="@dimen/_14ssp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/txt1"
+
+            />
+
+        <TextView
+            android:id="@+id/txtShopAddress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/_8sdp"
+            android:text="اسم المحل: "
+            android:textColor="@color/primary"
+            android:textSize="@dimen/_14ssp"
+            app:layout_constraintBottom_toBottomOf="@id/txt3"
+            app:layout_constraintStart_toEndOf="@id/txt3"
+            app:layout_constraintTop_toTopOf="@id/txt3" />
+
+        <TextView
+            android:id="@+id/txtOrderDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/_4sdp"
+            android:text="3/10/2023"
+            android:textColor="#BAB0B0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/txtShopAddress" />
+
+        <TextView
+            android:id="@+id/txt2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/_4sdp"
+            android:text="المبلغ الإجمالي "
+            android:textColor="#BAB0B0"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/txtOrderDate" />
+
+        <TextView
+            android:id="@+id/txtOrderTotalPrice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/_4sdp"
+            android:text=" 200 "
+            android:textColor="@color/black"
+            app:layout_constraintEnd_toEndOf="@id/txt2"
+            app:layout_constraintStart_toStartOf="@+id/txt2"
+            app:layout_constraintTop_toBottomOf="@id/txt2" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/txtOrderNumber"
+            app:layout_constraintBottom_toBottomOf="@id/txtOrderNumber"
+            android:src="@drawable/ic_arrow_details"
+            android:layout_margin="@dimen/_8sdp"
+            android:id="@+id/imgArrowDetails"
+            />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</com.google.android.material.card.MaterialCardView>

@@ -10,11 +10,13 @@ import android.widget.ImageView
 import android.widget.PopupMenu
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.devYoussef.nb3elkhieradmin.R
 import com.devYoussef.nb3elkhieradmin.constant.Constants.showToast
 import com.devYoussef.nb3elkhieradmin.databinding.FragmentCancelOrderBinding
 import com.devYoussef.nb3elkhieradmin.model.OrderResponse
 import com.devYoussef.nb3elkhieradmin.ui.adapter.OrderAdapter
+import com.devYoussef.nb3elkhieradmin.ui.home.order.OrdersFragmentDirections
 import com.devYoussef.nb3elkhieradmin.ui.home.order.OrdersViewModel
 import com.devYoussef.nb3elkhieradmin.utils.LoadDialogBar
 import dagger.hilt.android.AndroidEntryPoint
@@ -22,10 +24,10 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class CancelOrderFragment : Fragment() {
+class CancelOrderFragment : Fragment() , OrderAdapter.OnItemClickListener {
     private lateinit var binding: FragmentCancelOrderBinding
     private val viewModel: OrdersViewModel by viewModels()
-    private val adapter: OrderAdapter by lazy { OrderAdapter() }
+    private val adapter: OrderAdapter by lazy { OrderAdapter(this) }
     private val loadDialogBar: LoadDialogBar by lazy {
         LoadDialogBar(requireContext())
     }
@@ -135,6 +137,11 @@ class CancelOrderFragment : Fragment() {
             popupMenu.show()
         }
 
+    }
+
+    override fun onItemClick(item: OrderResponse.AllOrder) {
+        val action = OrdersFragmentDirections.actionOrdersFragmentToDetailsOrderFragment(item._id.toString() , "cancel")
+        findNavController().navigate(action)
     }
 
 

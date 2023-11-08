@@ -14,11 +14,13 @@ import android.widget.PopupMenu
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.devYoussef.nb3elkhieradmin.R
 import com.devYoussef.nb3elkhieradmin.constant.Constants.showToast
 import com.devYoussef.nb3elkhieradmin.databinding.FragmentCurrentOrderBinding
 import com.devYoussef.nb3elkhieradmin.model.OrderResponse
 import com.devYoussef.nb3elkhieradmin.ui.adapter.OrderAdapter
+import com.devYoussef.nb3elkhieradmin.ui.home.order.OrdersFragmentDirections
 import com.devYoussef.nb3elkhieradmin.ui.home.order.OrdersViewModel
 import com.devYoussef.nb3elkhieradmin.utils.LoadDialogBar
 import dagger.hilt.android.AndroidEntryPoint
@@ -27,10 +29,10 @@ import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class CurrentOrderFragment : Fragment() {
+class CurrentOrderFragment : Fragment(), OrderAdapter.OnItemClickListener {
     private lateinit var binding: FragmentCurrentOrderBinding
     private val viewModel: OrdersViewModel by viewModels()
-    private val adapter: OrderAdapter by lazy { OrderAdapter() }
+    private val adapter: OrderAdapter by lazy { OrderAdapter(this) }
     private val loadDialogBar: LoadDialogBar by lazy {
         LoadDialogBar(requireContext())
     }
@@ -141,6 +143,11 @@ class CurrentOrderFragment : Fragment() {
             popupMenu.show()
         }
 
+    }
+
+    override fun onItemClick(item: OrderResponse.AllOrder) {
+      val action = OrdersFragmentDirections.actionOrdersFragmentToDetailsOrderFragment(item._id.toString() , "current")
+        findNavController().navigate(action)
     }
 
 

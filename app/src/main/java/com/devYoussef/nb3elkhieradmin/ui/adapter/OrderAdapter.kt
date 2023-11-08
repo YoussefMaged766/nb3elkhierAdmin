@@ -8,10 +8,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.devYoussef.nb3elkhieradmin.databinding.OrderItemBinding
 import com.devYoussef.nb3elkhieradmin.model.OrderResponse
 import java.text.SimpleDateFormat
+import java.util.Date
 import java.util.Locale
 import java.util.TimeZone
 
-class OrderAdapter() :
+class OrderAdapter(private val listner : OnItemClickListener) :
     ListAdapter<OrderResponse.AllOrder, OrderAdapter.viewholder>(Companion) {
 
     companion object : DiffUtil.ItemCallback<OrderResponse.AllOrder>() {
@@ -32,6 +33,11 @@ class OrderAdapter() :
 
     }
 
+interface OnItemClickListener {
+    fun onItemClick(item: OrderResponse.AllOrder)
+}
+
+
 
 
 
@@ -39,22 +45,28 @@ class OrderAdapter() :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(data: OrderResponse.AllOrder) {
             binding.txtOrderNumber.text = data.orderNum
-            binding.txtOrderDate.text = formatDate(data.createdAt!!)
+            binding.txtOrderDate.text = convertDateToCustomFormat(data.createdAt!!)
             binding.txtOrderTotalPrice.text = data.totalPrice.toString()
             binding.txtShopAddress.text = data.userId?.shopAddress
 
         }
 
-        private fun formatDate(inputDate: String): String {
-            val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.US)
-            val outputFormat = SimpleDateFormat("hh:mm a|dd-MM-yyyy", Locale.US)
-            outputFormat.timeZone = TimeZone.getTimeZone("UTC")
+        private fun convertDateToCustomFormat(inputDate: String): String {
+            val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.ENGLISH)
+            inputFormat.timeZone = TimeZone.getTimeZone("UTC") // Ensure UTC time zone
 
-            return try {
-                val date = inputFormat.parse(inputDate)
-                outputFormat.format(date!!)
+            val outputFormat = SimpleDateFormat("hh:mm a|dd-MM-yyyy", Locale.ENGLISH)
+            outputFormat.timeZone = TimeZone.getDefault() // Use the default time zone
+
+            val parsedDate: Date? = try {
+                inputFormat.parse(inputDate)
             } catch (e: Exception) {
-                e.printStackTrace()
+                null
+            }
+
+            return if (parsedDate != null) {
+                outputFormat.format(parsedDate)
+            } else {
                 ""
             }
         }
@@ -72,10 +84,9 @@ class OrderAdapter() :
     override fun onBindViewHolder(holder: viewholder, position: Int) {
         holder.bind(getItem(position))
 
-//        holder.binding.imgArrowDetails.setOnClickListener {
-//           val action = OrderFragmentDirections.actionOrderFragmentToDetailsOrderFragment(getItem(holder.absoluteAdapterPosition)._id.toString())
-//            holder.binding.root.findNavController().navigate(action)
-//        }
+        holder.binding.imgArrowDetails.setOnClickListener {
+            listner.onItemClick(getItem(position))
+        }
 
 
     }

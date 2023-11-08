@@ -11,4 +11,6 @@ data class AuthState(
     val product: ProductResponse? = null,
     val promo : PromoCodeResponse? = null,
     val order : OrderResponse? = null,
+    val orderDetails: OrderDetailsResponse? = null,
+    val block: BlockUsersResponse? = null,
 )

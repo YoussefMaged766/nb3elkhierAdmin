@@ -1,8 +1,10 @@
 package com.devYoussef.nb3elkhieradmin.utils
 
 import com.devYoussef.nb3elkhieradmin.model.AuthResponse
+import com.devYoussef.nb3elkhieradmin.model.BlockUsersResponse
 import com.devYoussef.nb3elkhieradmin.model.CategoryResponse
 import com.devYoussef.nb3elkhieradmin.model.LoginModel
+import com.devYoussef.nb3elkhieradmin.model.OrderDetailsResponse
 import com.devYoussef.nb3elkhieradmin.model.OrderResponse
 import com.devYoussef.nb3elkhieradmin.model.ProductResponse
 import com.devYoussef.nb3elkhieradmin.model.PromoCodeModel
@@ -39,7 +41,7 @@ interface WebServices {
     @GET("api/statistics")
     suspend fun getStatistics():StatisticsResponse
 
-    @GET("api/category/get/all")
+    @GET("api/manage/category/all")
     suspend fun getCategory(): CategoryResponse
 
     @GET("api/product/get/{id}")
@@ -82,21 +84,37 @@ interface WebServices {
         @Path("id") id: String
     ):AuthResponse
 
-    @POST("api/manage/new-promo")
+    @POST("api/manage/promo/add")
     suspend fun addPromoCode(@Body model:PromoCodeModel):AuthResponse
 
-    @DELETE("api/manage/delete-promo/{key}")
+    @DELETE("api/manage/promo/delete/{key}")
     suspend fun deletePromoCode(@Path("key") id:String):AuthResponse
 
-    @PATCH("api/manage/update-promo")
+    @PATCH("api/manage/promo/update")
     suspend fun updatePromoCode(@Body model:PromoCodeModel):AuthResponse
 
-    @GET("api/manage/get-promo")
+    @GET("api/manage/promo/all?")
     suspend fun getAllPromoCode():PromoCodeResponse
 
-    @GET("api/manage/get-promo/{id}")
+    @GET("api/manage/promo/one/{id}")
     suspend fun getOnePromoCode(@Path("id") id:String):PromoCodeResponse
 
     @GET("api/order/all-orders")
     suspend fun getAllOrders():OrderResponse
+
+    @GET("api/order/one-order/{id}")
+    suspend fun getOrderDetails(@Path("id") id: String): OrderDetailsResponse
+
+    @GET("api/order/accept/{id}")
+    suspend fun acceptOrder(@Path("id") id:String):AuthResponse
+
+    @GET("api/order/cancel/{id}")
+    suspend fun cancelOrder(@Path("id") id:String):AuthResponse
+
+    @GET("api/user/all")
+    suspend fun getAllBlockedUsers():BlockUsersResponse
+
+    @GET("api/manage/block/{id}")
+    suspend fun blockUser(@Path("id") id:String):AuthResponse
+
 }

@@ -99,10 +99,20 @@
         tools:layout="@layout/fragment_products" >
         <action
             android:id="@+id/action_productsFragment_to_searchResultFragment"
-            app:destination="@id/searchResultFragment" />
+            app:destination="@id/searchResultFragment"
+            app:enterAnim="@anim/enter_anim"
+            app:exitAnim="@anim/exit_anim"
+            app:popEnterAnim="@anim/pop_exit_anim"
+            app:popExitAnim="@anim/pop_enter_anim"
+            />
         <action
             android:id="@+id/action_productsFragment_to_addAndEditFragment"
-            app:destination="@id/addAndEditFragment" />
+            app:destination="@id/addAndEditFragment"
+            app:enterAnim="@anim/enter_anim"
+            app:exitAnim="@anim/exit_anim"
+            app:popEnterAnim="@anim/pop_exit_anim"
+            app:popExitAnim="@anim/pop_enter_anim"
+            />
     </fragment>
     <fragment
         android:id="@+id/promoCodesFragment"
@@ -115,7 +125,16 @@
     <fragment
         android:id="@+id/ordersFragment"
         android:name="com.devYoussef.nb3elkhieradmin.ui.home.order.OrdersFragment"
-        tools:layout="@layout/fragment_orders" />
+        tools:layout="@layout/fragment_orders" >
+        <action
+            android:id="@+id/action_ordersFragment_to_detailsOrderFragment"
+            app:destination="@id/detailsOrderFragment"
+            app:enterAnim="@anim/enter_anim"
+            app:exitAnim="@anim/exit_anim"
+            app:popEnterAnim="@anim/pop_exit_anim"
+            app:popExitAnim="@anim/pop_enter_anim"
+            />
+    </fragment>
     <fragment
         android:id="@+id/statisticsFragment"
         android:name="com.devYoussef.nb3elkhieradmin.ui.home.statistics.StatisticsFragment"
@@ -138,7 +157,12 @@
             app:argType="string" />
         <action
             android:id="@+id/action_searchResultFragment_to_addAndEditFragment"
-            app:destination="@id/addAndEditFragment" />
+            app:destination="@id/addAndEditFragment"
+            app:enterAnim="@anim/enter_anim"
+            app:exitAnim="@anim/exit_anim"
+            app:popEnterAnim="@anim/pop_exit_anim"
+            app:popExitAnim="@anim/pop_enter_anim"
+            />
     </fragment>
     <fragment
         android:id="@+id/addAndEditFragment"
@@ -147,6 +171,18 @@
         tools:layout="@layout/fragment_add_and_edit" >
         <argument
             android:name="id"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/detailsOrderFragment"
+        android:name="com.devYoussef.nb3elkhieradmin.ui.home.order.details.DetailsOrderFragment"
+        android:label="fragment_details_order"
+        tools:layout="@layout/fragment_details_order" >
+        <argument
+            android:name="id"
+            app:argType="string" />
+        <argument
+            android:name="type"
             app:argType="string" />
     </fragment>
 </navigation>

@@ -303,6 +303,161 @@ class Repo @Inject constructor(
 
     }
 
+    fun getOrderDetails(id:String) = flow {
+        if (NetworkUtils(context).isNetworkConnected()) {
+            try {
+                emit(Status.Loading)
+
+                val response = webServices.getOrderDetails(id)
+                emit(Status.Success(response))
+
+
+            } catch (e: Throwable) {
+                when (e) {
+                    is HttpException -> {
+                        val type = object : TypeToken<AuthResponse>() {}.type
+                        val errorResponse: AuthResponse? =
+                            gson.fromJson(e.response()?.errorBody()!!.charStream(), type)
+                        Log.e("loginUsereeeee: ", errorResponse?.message.toString())
+                        emit(Status.Error(errorResponse?.message.toString()))
+                    }
+
+                    is Exception -> {
+                        Log.e("loginUsereeeee: ", e.message.toString())
+                        emit(Status.Error(e.message.toString()))
+                    }
+                }
+            }
+        } else {
+            emit(Status.Error("برجاء التحقق من الاتصال بالانترنت"))
+        }
+
+    }
+
+    fun acceptOrder(id:String) = flow {
+        if (NetworkUtils(context).isNetworkConnected()) {
+            try {
+                emit(Status.Loading)
+
+                val response = webServices.acceptOrder(id)
+                emit(Status.Success(response))
+
+
+            } catch (e: Throwable) {
+                when (e) {
+                    is HttpException -> {
+                        val type = object : TypeToken<AuthResponse>() {}.type
+                        val errorResponse: AuthResponse? =
+                            gson.fromJson(e.response()?.errorBody()!!.charStream(), type)
+                        Log.e("loginUsereeeee: ", errorResponse?.message.toString())
+                        emit(Status.Error(errorResponse?.message.toString()))
+                    }
+
+                    is Exception -> {
+                        Log.e("loginUsereeeee: ", e.message.toString())
+                        emit(Status.Error(e.message.toString()))
+                    }
+                }
+            }
+        } else {
+            emit(Status.Error("برجاء التحقق من الاتصال بالانترنت"))
+        }
+
+    }
+
+    fun declineOrder(id:String) = flow {
+        if (NetworkUtils(context).isNetworkConnected()) {
+            try {
+                emit(Status.Loading)
+
+                val response = webServices.cancelOrder(id)
+                emit(Status.Success(response))
+
+
+            } catch (e: Throwable) {
+                when (e) {
+                    is HttpException -> {
+                        val type = object : TypeToken<AuthResponse>() {}.type
+                        val errorResponse: AuthResponse? =
+                            gson.fromJson(e.response()?.errorBody()!!.charStream(), type)
+                        Log.e("loginUsereeeee: ", errorResponse?.message.toString())
+                        emit(Status.Error(errorResponse?.message.toString()))
+                    }
+
+                    is Exception -> {
+                        Log.e("loginUsereeeee: ", e.message.toString())
+                        emit(Status.Error(e.message.toString()))
+                    }
+                }
+            }
+        } else {
+            emit(Status.Error("برجاء التحقق من الاتصال بالانترنت"))
+        }
+
+    }
+
+    fun blockAndNonUser(id:String) = flow {
+        if (NetworkUtils(context).isNetworkConnected()) {
+            try {
+                emit(Status.Loading)
+
+                val response = webServices.blockUser(id)
+                emit(Status.Success(response))
+
+
+            } catch (e: Throwable) {
+                when (e) {
+                    is HttpException -> {
+                        val type = object : TypeToken<AuthResponse>() {}.type
+                        val errorResponse: AuthResponse? =
+                            gson.fromJson(e.response()?.errorBody()!!.charStream(), type)
+                        Log.e("loginUsereeeee: ", errorResponse?.message.toString())
+                        emit(Status.Error(errorResponse?.message.toString()))
+                    }
+
+                    is Exception -> {
+                        Log.e("loginUsereeeee: ", e.message.toString())
+                        emit(Status.Error(e.message.toString()))
+                    }
+                }
+            }
+        } else {
+            emit(Status.Error("برجاء التحقق من الاتصال بالانترنت"))
+        }
+
+    }
+
+    fun getAllBlockUsers() = flow {
+        if (NetworkUtils(context).isNetworkConnected()) {
+            try {
+                emit(Status.Loading)
+
+                val response = webServices.getAllBlockedUsers()
+                emit(Status.Success(response))
+
+
+            } catch (e: Throwable) {
+                when (e) {
+                    is HttpException -> {
+                        val type = object : TypeToken<AuthResponse>() {}.type
+                        val errorResponse: AuthResponse? =
+                            gson.fromJson(e.response()?.errorBody()!!.charStream(), type)
+                        Log.e("loginUsereeeee: ", errorResponse?.message.toString())
+                        emit(Status.Error(errorResponse?.message.toString()))
+                    }
+
+                    is Exception -> {
+                        Log.e("loginUsereeeee: ", e.message.toString())
+                        emit(Status.Error(e.message.toString()))
+                    }
+                }
+            }
+        } else {
+            emit(Status.Error("برجاء التحقق من الاتصال بالانترنت"))
+        }
+
+    }
+
     fun getAllPromoCode() = flow {
         if (NetworkUtils(context).isNetworkConnected()) {
             try {

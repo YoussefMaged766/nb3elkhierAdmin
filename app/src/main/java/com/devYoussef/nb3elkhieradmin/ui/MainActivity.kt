@@ -100,6 +100,12 @@ class MainActivity : AppCompatActivity() {
                     binding.imgFilter.visibility = View.GONE
 
                 }
+                R.id.detailsOrderFragment -> {
+                    binding.appBar.visibility = View.VISIBLE
+                    binding.txtTitleToolBar.text = "تفاصيل الفاتوره"
+                    binding.imgFilter.visibility = View.GONE
+
+                }
             }
         }
 

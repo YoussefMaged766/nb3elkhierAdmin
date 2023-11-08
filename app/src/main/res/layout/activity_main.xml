@@ -32,6 +32,14 @@
                 android:textColor="@color/primary"
                 android:textSize="20sp"
                 android:textStyle="bold" />
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:id="@+id/imgFilter"
+                android:src="@drawable/baseline_filter_alt_24"
+                android:layout_gravity="end"
+                android:visibility="gone"
+                />
 
         </androidx.appcompat.widget.Toolbar>
 

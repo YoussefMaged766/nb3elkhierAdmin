@@ -272,6 +272,37 @@ class Repo @Inject constructor(
 
     }
 
+    fun getAllOrders() = flow {
+        if (NetworkUtils(context).isNetworkConnected()) {
+            try {
+                emit(Status.Loading)
+
+                val response = webServices.getAllOrders()
+                emit(Status.Success(response))
+
+
+            } catch (e: Throwable) {
+                when (e) {
+                    is HttpException -> {
+                        val type = object : TypeToken<AuthResponse>() {}.type
+                        val errorResponse: AuthResponse? =
+                            gson.fromJson(e.response()?.errorBody()!!.charStream(), type)
+                        Log.e("loginUsereeeee: ", errorResponse?.message.toString())
+                        emit(Status.Error(errorResponse?.message.toString()))
+                    }
+
+                    is Exception -> {
+                        Log.e("loginUsereeeee: ", e.message.toString())
+                        emit(Status.Error(e.message.toString()))
+                    }
+                }
+            }
+        } else {
+            emit(Status.Error("برجاء التحقق من الاتصال بالانترنت"))
+        }
+
+    }
+
     fun getAllPromoCode() = flow {
         if (NetworkUtils(context).isNetworkConnected()) {
             try {

@@ -3,6 +3,7 @@ package com.devYoussef.nb3elkhieradmin.utils
 import com.devYoussef.nb3elkhieradmin.model.AuthResponse
 import com.devYoussef.nb3elkhieradmin.model.CategoryResponse
 import com.devYoussef.nb3elkhieradmin.model.LoginModel
+import com.devYoussef.nb3elkhieradmin.model.OrderResponse
 import com.devYoussef.nb3elkhieradmin.model.ProductResponse
 import com.devYoussef.nb3elkhieradmin.model.PromoCodeModel
 import com.devYoussef.nb3elkhieradmin.model.PromoCodeResponse
@@ -95,4 +96,7 @@ interface WebServices {
 
     @GET("api/manage/get-promo/{id}")
     suspend fun getOnePromoCode(@Path("id") id:String):PromoCodeResponse
+
+    @GET("api/order/all-orders")
+    suspend fun getAllOrders():OrderResponse
 }

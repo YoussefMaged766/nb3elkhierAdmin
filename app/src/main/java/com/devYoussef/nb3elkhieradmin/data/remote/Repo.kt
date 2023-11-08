@@ -211,12 +211,12 @@ class Repo @Inject constructor(
 
     }
 
-    fun updatePromoCode(model:PromoCodeModel) = flow {
+    fun updatePromoCode(model:PromoCodeModel , id:String) = flow {
         if (NetworkUtils(context).isNetworkConnected()) {
             try {
 
                 emit(Status.Loading)
-                val response = webServices.updatePromoCode(model)
+                val response = webServices.updatePromoCode(model , id)
                 emit(Status.Success(response))
 
             } catch (e: Throwable) {

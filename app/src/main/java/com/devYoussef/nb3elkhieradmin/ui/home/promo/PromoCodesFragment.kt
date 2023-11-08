@@ -183,6 +183,7 @@ class PromoCodesFragment : Fragment(), PromoAdapter.OnItemClickListener {
                     it.status == "success" -> {
                         loadDialogBar.hide()
                         requireContext().showToast("تم تعديل المنتج بنجاح")
+                        viewModel.getAllPromo()
                     }
                 }
             }
@@ -261,7 +262,7 @@ class PromoCodesFragment : Fragment(), PromoAdapter.OnItemClickListener {
         return false
     }
 
-    private fun showDialogEditPromo(id: String,data: PromoCodeResponse.Data) {
+    private fun showDialogEditPromo(id: String, data: PromoCodeResponse.Data) {
         val builder = MaterialAlertDialogBuilder(requireContext())
         val view = layoutInflater.inflate(R.layout.promo_code_item, null)
         val switchAvailable = view.findViewById<MaterialSwitch>(R.id.switchAvailable)
@@ -280,9 +281,8 @@ class PromoCodesFragment : Fragment(), PromoAdapter.OnItemClickListener {
                 PromoCodeModel(
                     isActive = switchAvailable.isChecked,
                     price = txtPrice.text.toString().trim().toDouble(),
-                    timesNum = txtNum.text.toString().trim().toInt(),
-                    id = id
-                )
+                    timesNum = txtNum.text.toString().trim().toInt()
+                ), id
             )
         }
         builder.setNegativeButton("حذف ") { dialog, which ->
@@ -297,7 +297,7 @@ class PromoCodesFragment : Fragment(), PromoAdapter.OnItemClickListener {
     }
 
     override fun onItemClick(data: PromoCodeResponse.Data) {
-        showDialogEditPromo(data._id!!,data)
+        showDialogEditPromo(data._id!!, data)
 
     }
 

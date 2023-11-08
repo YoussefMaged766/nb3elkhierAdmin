@@ -168,8 +168,8 @@ class PromoCodeViewModel @Inject constructor(private val repo: Repo) : ViewModel
         }
     }
 
-    fun updatePromo(model:PromoCodeModel) = viewModelScope.launch {
-        repo.updatePromoCode(model).collect { status ->
+    fun updatePromo(model:PromoCodeModel , id:String) = viewModelScope.launch {
+        repo.updatePromoCode(model , id).collect { status ->
             when (status) {
                 is Status.Loading -> {
                     _stateUpdatePromo.update { result ->

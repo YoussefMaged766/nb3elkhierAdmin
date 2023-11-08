@@ -39,7 +39,7 @@ interface WebServices {
     suspend fun deleteProduct(@Path("id") id: String): AuthResponse
 
     @GET("api/statistics")
-    suspend fun getStatistics():StatisticsResponse
+    suspend fun getStatistics(): StatisticsResponse
 
     @GET("api/manage/category/all")
     suspend fun getCategory(): CategoryResponse
@@ -63,7 +63,7 @@ interface WebServices {
         @Part("isOffered") isOffered: RequestBody,
         @Part("offer[0][priceOffered]") priceOffered: RequestBody,
         @Part("offer[0][itemNum]") itemNum: RequestBody,
-    ):AuthResponse
+    ): AuthResponse
 
     @Multipart
     @PATCH("api/product/update/{id}")
@@ -82,39 +82,39 @@ interface WebServices {
         @Part("offer[0][priceOffered]") priceOffered: RequestBody,
         @Part("offer[0][itemNum]") itemNum: RequestBody,
         @Path("id") id: String
-    ):AuthResponse
+    ): AuthResponse
 
     @POST("api/manage/promo/add")
-    suspend fun addPromoCode(@Body model:PromoCodeModel):AuthResponse
+    suspend fun addPromoCode(@Body model: PromoCodeModel): AuthResponse
 
     @DELETE("api/manage/promo/delete/{key}")
-    suspend fun deletePromoCode(@Path("key") id:String):AuthResponse
+    suspend fun deletePromoCode(@Path("key") id: String): AuthResponse
 
-    @PATCH("api/manage/promo/update")
-    suspend fun updatePromoCode(@Body model:PromoCodeModel):AuthResponse
+    @PATCH("api/manage/promo/update/{id}")
+    suspend fun updatePromoCode(@Body model: PromoCodeModel, @Path("id") id: String): AuthResponse
 
     @GET("api/manage/promo/all?")
-    suspend fun getAllPromoCode():PromoCodeResponse
+    suspend fun getAllPromoCode(): PromoCodeResponse
 
     @GET("api/manage/promo/one/{id}")
-    suspend fun getOnePromoCode(@Path("id") id:String):PromoCodeResponse
+    suspend fun getOnePromoCode(@Path("id") id: String): PromoCodeResponse
 
     @GET("api/order/all-orders")
-    suspend fun getAllOrders():OrderResponse
+    suspend fun getAllOrders(): OrderResponse
 
     @GET("api/order/one-order/{id}")
     suspend fun getOrderDetails(@Path("id") id: String): OrderDetailsResponse
 
     @GET("api/order/accept/{id}")
-    suspend fun acceptOrder(@Path("id") id:String):AuthResponse
+    suspend fun acceptOrder(@Path("id") id: String): AuthResponse
 
     @GET("api/order/cancel/{id}")
-    suspend fun cancelOrder(@Path("id") id:String):AuthResponse
+    suspend fun cancelOrder(@Path("id") id: String): AuthResponse
 
     @GET("api/user/all")
-    suspend fun getAllBlockedUsers():BlockUsersResponse
+    suspend fun getAllBlockedUsers(): BlockUsersResponse
 
     @GET("api/manage/block/{id}")
-    suspend fun blockUser(@Path("id") id:String):AuthResponse
+    suspend fun blockUser(@Path("id") id: String): AuthResponse
 
 }

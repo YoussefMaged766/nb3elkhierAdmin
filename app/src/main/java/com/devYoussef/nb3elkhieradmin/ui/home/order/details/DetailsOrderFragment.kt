@@ -110,7 +110,7 @@ class DetailsOrderFragment : Fragment() {
                         binding.rvOrderDetails.adapter = adapter
                         binding.txtOrderNumber.text = it.orderDetails?.userOrder?.get(0)?.orderNum
                         binding.txtShopAddress.text =
-                            it.orderDetails?.userOrder?.get(0)?.userId?.shopAddress
+                            it.orderDetails?.userOrder?.get(0)?.userId?.shopName
                         binding.txtNotes.text = it.orderDetails?.userOrder?.get(0)?.note
                         binding.txtDate.text =
                             convertDateToCustomFormat(it.orderDetails?.userOrder?.get(0)?.createdAt!!)

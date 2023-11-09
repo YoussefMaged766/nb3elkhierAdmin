@@ -10,6 +10,7 @@ import com.devYoussef.nb3elkhieradmin.model.OrderResponse
 import com.devYoussef.nb3elkhieradmin.model.ProductResponse
 import com.devYoussef.nb3elkhieradmin.model.PromoCodeModel
 import com.devYoussef.nb3elkhieradmin.model.PromoCodeResponse
+import com.devYoussef.nb3elkhieradmin.model.RegionsResponse
 import com.devYoussef.nb3elkhieradmin.model.StatisticsResponse
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -121,7 +122,6 @@ interface WebServices {
     @GET("api/manage/banner/all?")
     suspend fun getAllBanner(): BannerResponse
 
-
     @Multipart
     @POST("api/manage/banner/add")
     suspend fun addBanner(
@@ -129,6 +129,22 @@ interface WebServices {
     ): AuthResponse
 
     @DELETE("api/manage/banner/delete/{id}")
-    suspend fun deleteBanner(@Path("id") id:String): AuthResponse
+    suspend fun deleteBanner(@Path("id") id: String): AuthResponse
+
+    @POST("api/manage/region/add")
+    suspend fun addRegion(@Body model: LoginModel): AuthResponse
+
+    @PATCH("api/manage/region/update/{id}")
+    suspend fun updateRegion(@Body model: LoginModel , @Path("id") id: String): AuthResponse
+
+    @GET("api/manage/region/one/{id}")
+    suspend fun getOneRegion(@Path("id") id: String): RegionsResponse
+
+    @GET("api/manage/region/all")
+    suspend fun getAllRegions(): RegionsResponse
+
+    @DELETE("api/manage/region/delete/{id}")
+    suspend fun deleteRegion(@Path("id") id: String): AuthResponse
+
 
 }

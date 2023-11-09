@@ -555,6 +555,161 @@ class Repo @Inject constructor(
 
     }
 
+    fun addRegion(model: LoginModel) = flow {
+        if (NetworkUtils(context).isNetworkConnected()) {
+            try {
+                emit(Status.Loading)
+
+                val response = webServices.addRegion(model)
+                emit(Status.Success(response))
+
+
+            } catch (e: Throwable) {
+                when (e) {
+                    is HttpException -> {
+                        val type = object : TypeToken<AuthResponse>() {}.type
+                        val errorResponse: AuthResponse? =
+                            gson.fromJson(e.response()?.errorBody()!!.charStream(), type)
+                        Log.e("loginUsereeeee: ", errorResponse?.message.toString())
+                        emit(Status.Error(errorResponse?.message.toString()))
+                    }
+
+                    is Exception -> {
+                        Log.e("loginUsereeeee: ", e.message.toString())
+                        emit(Status.Error(e.message.toString()))
+                    }
+                }
+            }
+        } else {
+            emit(Status.Error("برجاء التحقق من الاتصال بالانترنت"))
+        }
+
+    }
+
+    fun updateRegion(model: LoginModel , id: String) = flow {
+        if (NetworkUtils(context).isNetworkConnected()) {
+            try {
+                emit(Status.Loading)
+
+                val response = webServices.updateRegion(model,id)
+                emit(Status.Success(response))
+
+
+            } catch (e: Throwable) {
+                when (e) {
+                    is HttpException -> {
+                        val type = object : TypeToken<AuthResponse>() {}.type
+                        val errorResponse: AuthResponse? =
+                            gson.fromJson(e.response()?.errorBody()!!.charStream(), type)
+                        Log.e("loginUsereeeee: ", errorResponse?.message.toString())
+                        emit(Status.Error(errorResponse?.message.toString()))
+                    }
+
+                    is Exception -> {
+                        Log.e("loginUsereeeee: ", e.message.toString())
+                        emit(Status.Error(e.message.toString()))
+                    }
+                }
+            }
+        } else {
+            emit(Status.Error("برجاء التحقق من الاتصال بالانترنت"))
+        }
+
+    }
+
+    fun deleteRegion(id:String) = flow {
+        if (NetworkUtils(context).isNetworkConnected()) {
+            try {
+                emit(Status.Loading)
+
+                val response = webServices.deleteRegion(id)
+                emit(Status.Success(response))
+
+
+            } catch (e: Throwable) {
+                when (e) {
+                    is HttpException -> {
+                        val type = object : TypeToken<AuthResponse>() {}.type
+                        val errorResponse: AuthResponse? =
+                            gson.fromJson(e.response()?.errorBody()!!.charStream(), type)
+                        Log.e("loginUsereeeee: ", errorResponse?.message.toString())
+                        emit(Status.Error(errorResponse?.message.toString()))
+                    }
+
+                    is Exception -> {
+                        Log.e("loginUsereeeee: ", e.message.toString())
+                        emit(Status.Error(e.message.toString()))
+                    }
+                }
+            }
+        } else {
+            emit(Status.Error("برجاء التحقق من الاتصال بالانترنت"))
+        }
+
+    }
+
+    fun getOneRegion(id:String) = flow {
+        if (NetworkUtils(context).isNetworkConnected()) {
+            try {
+                emit(Status.Loading)
+
+                val response = webServices.getOneRegion(id)
+                emit(Status.Success(response))
+
+
+            } catch (e: Throwable) {
+                when (e) {
+                    is HttpException -> {
+                        val type = object : TypeToken<AuthResponse>() {}.type
+                        val errorResponse: AuthResponse? =
+                            gson.fromJson(e.response()?.errorBody()!!.charStream(), type)
+                        Log.e("loginUsereeeee: ", errorResponse?.message.toString())
+                        emit(Status.Error(errorResponse?.message.toString()))
+                    }
+
+                    is Exception -> {
+                        Log.e("loginUsereeeee: ", e.message.toString())
+                        emit(Status.Error(e.message.toString()))
+                    }
+                }
+            }
+        } else {
+            emit(Status.Error("برجاء التحقق من الاتصال بالانترنت"))
+        }
+
+    }
+
+    fun getAllRegion() = flow {
+        if (NetworkUtils(context).isNetworkConnected()) {
+            try {
+                emit(Status.Loading)
+
+                val response = webServices.getAllRegions()
+                emit(Status.Success(response))
+
+
+            } catch (e: Throwable) {
+                when (e) {
+                    is HttpException -> {
+                        val type = object : TypeToken<AuthResponse>() {}.type
+                        val errorResponse: AuthResponse? =
+                            gson.fromJson(e.response()?.errorBody()!!.charStream(), type)
+                        Log.e("loginUsereeeee: ", errorResponse?.message.toString())
+                        emit(Status.Error(errorResponse?.message.toString()))
+                    }
+
+                    is Exception -> {
+                        Log.e("loginUsereeeee: ", e.message.toString())
+                        emit(Status.Error(e.message.toString()))
+                    }
+                }
+            }
+        } else {
+            emit(Status.Error("برجاء التحقق من الاتصال بالانترنت"))
+        }
+
+    }
+
     fun getAllPromoCode() = flow {
         if (NetworkUtils(context).isNetworkConnected()) {
             try {
@@ -807,4 +962,6 @@ class Repo @Inject constructor(
         )
         return MultipartBody.Part.createFormData(partName, file.name, requestFile)
     }
+
+
 }

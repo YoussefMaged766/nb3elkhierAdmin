@@ -1,10 +1,17 @@
 package com.devYoussef.nb3elkhieradmin.ui.home.statistics
 
+import android.content.pm.ActivityInfo
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.webkit.WebChromeClient
+import android.webkit.WebSettings
+import androidx.core.view.MenuProvider
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
@@ -13,6 +20,7 @@ import com.devYoussef.nb3elkhieradmin.constant.Constants.showToast
 import com.devYoussef.nb3elkhieradmin.databinding.FragmentStatisticsBinding
 import com.devYoussef.nb3elkhieradmin.utils.LoadDialogBar
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -41,8 +49,17 @@ class StatisticsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.getStatistics()
-        collectState()
+//        viewModel.getStatistics()
+//        collectState()
+//        setupWebView()
+        addMenu()
+        setupWebView(viewModel.getLink().value)
+        lifecycleScope.launch {
+            viewModel.getLink().collect{
+                setupWebView(it)
+            }
+        }
+
     }
 
     private fun collectState() {
@@ -59,13 +76,63 @@ class StatisticsFragment : Fragment() {
                     }
 
                     it.success == "Python script exited" -> {
-                        Glide.with(requireContext()).load(it.statistics?.data?.image?.url)
-                            .into(binding.imageViewStatistics)
+//                        Glide.with(requireContext()).load(it.statistics?.data?.image?.url)
+//                            .into(binding.imageViewStatistics)
                         loadDialogBar.hide()
                     }
                 }
             }
         }
+    }
+
+    private fun setupWebView(link: String) {
+        binding.webViewStatistics.loadData(link, "text/html", "utf-8")
+        binding.webViewStatistics.webChromeClient = WebChromeClient()
+        val webSettings = binding.webViewStatistics.settings
+        webSettings.javaScriptEnabled = true
+        webSettings.loadWithOverviewMode = true
+        webSettings.useWideViewPort = true
+        webSettings.allowFileAccess = true
+
+        // Enable zoom
+        webSettings.setSupportZoom(true)
+        webSettings.builtInZoomControls = true
+        webSettings.displayZoomControls = true
+
+    }
+
+    private fun addMenu() {
+        requireActivity().addMenuProvider(object : MenuProvider {
+            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                menuInflater.inflate(R.menu.statstics_menu, menu)
+            }
+
+            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                when (menuItem.itemId) {
+                    R.id.action_30Days -> {
+                        viewModel.setLink("<iframe id=\"igraph\" scrolling=\"no\" style=\"border:none;\" seamless=\"seamless\" src=\"https://plotly.com/~Muhammed_Zidan/400.embed\" height=\"525\" width=\"100%\"></iframe>\n")
+                        return true
+                    }
+
+                    R.id.action_revenue -> {
+                        viewModel.setLink("<iframe id=\"igraph\" scrolling=\"no\" style=\"border:none;\" seamless=\"seamless\" src=\"https://plotly.com/~Muhammed_Zidan/397.embed\" height=\"525\" width=\"100%\"></iframe>\n")
+                        return true
+                    }
+
+                    R.id.action_Category -> {
+                        viewModel.setLink("<iframe id=\"igraph\" scrolling=\"no\" style=\"border:none;\" seamless=\"seamless\" src=\"https://plotly.com/~Muhammed_Zidan/403.embed\" height=\"525\" width=\"100%\"></iframe>\n")
+                        return true
+                    }
+
+                    R.id.action_Selling -> {
+                        viewModel.setLink("<iframe id=\"igraph\" scrolling=\"no\" style=\"border:none;\" seamless=\"seamless\" src=\"https://plotly.com/~Muhammed_Zidan/405.embed\" height=\"525\" width=\"100%\"></iframe>")
+                        return true
+                    }
+                }
+                return false
+            }
+
+        })
     }
 
 

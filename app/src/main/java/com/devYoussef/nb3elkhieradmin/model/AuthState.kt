@@ -13,5 +13,6 @@ data class AuthState(
     val order : OrderResponse? = null,
     val orderDetails: OrderDetailsResponse? = null,
     val block: BlockUsersResponse? = null,
-    val banner: BannerResponse? = null
+    val banner: BannerResponse? = null,
+    val region : RegionsResponse? = null
 )

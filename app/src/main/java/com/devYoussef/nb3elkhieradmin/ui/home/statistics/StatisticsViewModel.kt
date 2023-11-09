@@ -7,6 +7,7 @@ import com.devYoussef.nb3elkhieradmin.model.AuthState
 import com.devYoussef.nb3elkhieradmin.utils.Status
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -14,6 +15,17 @@ import javax.inject.Inject
 
 @HiltViewModel
 class StatisticsViewModel @Inject constructor(private val repo: Repo) : ViewModel() {
+
+    private val linkFlow =
+        MutableStateFlow("<iframe id=\"igraph\" scrolling=\"no\" style=\"border:none;\" seamless=\"seamless\" src=\"https://plotly.com/~Muhammed_Zidan/400.embed\" height=\"525\" width=\"100%\"></iframe>\n")
+
+    fun setLink(link: String) {
+        linkFlow.value = link
+    }
+
+    fun getLink(): StateFlow<String> = linkFlow
+
+
     private val _state = MutableStateFlow(AuthState())
     val state = _state.asStateFlow()
 

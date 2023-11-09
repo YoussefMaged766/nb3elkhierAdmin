@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/action_30Days"
+        android:title="الاداء العاد اخر 30 يوم" />
+
+    <item
+        android:id="@+id/action_revenue"
+        android:title="اعلى او اقل 10 منتجات ايرادات" />
+
+    <item
+        android:id="@+id/action_Category"
+        android:title="اداء الاقسام" />
+
+    <item
+        android:id="@+id/action_Selling"
+        android:title="مبيعات اخر 30 يوم" />
+
+</menu>

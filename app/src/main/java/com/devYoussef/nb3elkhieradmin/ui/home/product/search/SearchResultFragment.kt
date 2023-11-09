@@ -83,7 +83,6 @@ class SearchResultFragment : Fragment(), ProductsPagingAdapter.OnButton1ClickLis
                     }
 
                     it.status == "success" -> {
-                        requireContext().showToast("تم الحذف بنجاح")
                         Log.e("collectDeleteState: ", it.success.toString())
                         loadDialogBar.hide()
                         searchAdapter.refresh()

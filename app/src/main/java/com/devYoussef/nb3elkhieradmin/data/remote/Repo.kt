@@ -180,7 +180,7 @@ class Repo @Inject constructor(
 
     }
 
-    fun addPromoCode(model:PromoCodeModel) = flow {
+    fun addPromoCode(model: PromoCodeModel) = flow {
         if (NetworkUtils(context).isNetworkConnected()) {
             try {
                 emit(Status.Loading)
@@ -211,12 +211,12 @@ class Repo @Inject constructor(
 
     }
 
-    fun updatePromoCode(model:PromoCodeModel , id:String) = flow {
+    fun updatePromoCode(model: PromoCodeModel, id: String) = flow {
         if (NetworkUtils(context).isNetworkConnected()) {
             try {
 
                 emit(Status.Loading)
-                val response = webServices.updatePromoCode(model , id)
+                val response = webServices.updatePromoCode(model, id)
                 emit(Status.Success(response))
 
             } catch (e: Throwable) {
@@ -241,7 +241,7 @@ class Repo @Inject constructor(
 
     }
 
-    fun getOnePromoCode(id:String) = flow {
+    fun getOnePromoCode(id: String) = flow {
         if (NetworkUtils(context).isNetworkConnected()) {
             try {
                 emit(Status.Loading)
@@ -303,7 +303,7 @@ class Repo @Inject constructor(
 
     }
 
-    fun getOrderDetails(id:String) = flow {
+    fun getOrderDetails(id: String) = flow {
         if (NetworkUtils(context).isNetworkConnected()) {
             try {
                 emit(Status.Loading)
@@ -334,7 +334,7 @@ class Repo @Inject constructor(
 
     }
 
-    fun acceptOrder(id:String) = flow {
+    fun acceptOrder(id: String) = flow {
         if (NetworkUtils(context).isNetworkConnected()) {
             try {
                 emit(Status.Loading)
@@ -365,7 +365,7 @@ class Repo @Inject constructor(
 
     }
 
-    fun declineOrder(id:String) = flow {
+    fun declineOrder(id: String) = flow {
         if (NetworkUtils(context).isNetworkConnected()) {
             try {
                 emit(Status.Loading)
@@ -396,7 +396,7 @@ class Repo @Inject constructor(
 
     }
 
-    fun blockAndNonUser(id:String) = flow {
+    fun blockAndNonUser(id: String) = flow {
         if (NetworkUtils(context).isNetworkConnected()) {
             try {
                 emit(Status.Loading)
@@ -458,6 +458,103 @@ class Repo @Inject constructor(
 
     }
 
+    fun getAllBanners() = flow {
+        if (NetworkUtils(context).isNetworkConnected()) {
+            try {
+                emit(Status.Loading)
+
+                val response = webServices.getAllBanner()
+                emit(Status.Success(response))
+
+
+            } catch (e: Throwable) {
+                when (e) {
+                    is HttpException -> {
+                        val type = object : TypeToken<AuthResponse>() {}.type
+                        val errorResponse: AuthResponse? =
+                            gson.fromJson(e.response()?.errorBody()!!.charStream(), type)
+                        Log.e("loginUsereeeee: ", errorResponse?.message.toString())
+                        emit(Status.Error(errorResponse?.message.toString()))
+                    }
+
+                    is Exception -> {
+                        Log.e("loginUsereeeee: ", e.message.toString())
+                        emit(Status.Error(e.message.toString()))
+                    }
+                }
+            }
+        } else {
+            emit(Status.Error("برجاء التحقق من الاتصال بالانترنت"))
+        }
+
+    }
+
+    fun addBanners(
+        ctx: Context,
+        fileUri: Uri,
+        fileRealPath: String
+    ) = flow {
+        if (NetworkUtils(context).isNetworkConnected()) {
+            try {
+                emit(Status.Loading)
+                val fileToSend = prepareFilePart("image", fileRealPath, fileUri, ctx)
+                val response = webServices.addBanner(image = fileToSend)
+                emit(Status.Success(response))
+
+
+            } catch (e: Throwable) {
+                when (e) {
+                    is HttpException -> {
+                        val type = object : TypeToken<AuthResponse>() {}.type
+                        val errorResponse: AuthResponse? =
+                            gson.fromJson(e.response()?.errorBody()!!.charStream(), type)
+                        Log.e("loginUsereeeee: ", errorResponse?.message.toString())
+                        emit(Status.Error(errorResponse?.message.toString()))
+                    }
+
+                    is Exception -> {
+                        Log.e("loginUsereeeee: ", e.message.toString())
+                        emit(Status.Error(e.message.toString()))
+                    }
+                }
+            }
+        } else {
+            emit(Status.Error("برجاء التحقق من الاتصال بالانترنت"))
+        }
+
+    }
+
+    fun deleteBanners(id: String) = flow {
+        if (NetworkUtils(context).isNetworkConnected()) {
+            try {
+                emit(Status.Loading)
+
+                val response = webServices.deleteBanner(id)
+                emit(Status.Success(response))
+
+
+            } catch (e: Throwable) {
+                when (e) {
+                    is HttpException -> {
+                        val type = object : TypeToken<AuthResponse>() {}.type
+                        val errorResponse: AuthResponse? =
+                            gson.fromJson(e.response()?.errorBody()!!.charStream(), type)
+                        Log.e("loginUsereeeee: ", errorResponse?.message.toString())
+                        emit(Status.Error(errorResponse?.message.toString()))
+                    }
+
+                    is Exception -> {
+                        Log.e("loginUsereeeee: ", e.message.toString())
+                        emit(Status.Error(e.message.toString()))
+                    }
+                }
+            }
+        } else {
+            emit(Status.Error("برجاء التحقق من الاتصال بالانترنت"))
+        }
+
+    }
+
     fun getAllPromoCode() = flow {
         if (NetworkUtils(context).isNetworkConnected()) {
             try {
@@ -488,7 +585,7 @@ class Repo @Inject constructor(
 
     }
 
-    fun deletePromoCode(id:String) = flow {
+    fun deletePromoCode(id: String) = flow {
         if (NetworkUtils(context).isNetworkConnected()) {
             try {
                 emit(Status.Loading)
@@ -599,15 +696,15 @@ class Repo @Inject constructor(
                     }
                 }
             }
-        } else{
+        } else {
             emit(Status.Error("برجاء التحقق من الاتصال بالانترنت"))
         }
     }
 
     fun updateProduct(
         ctx: Context,
-        fileUri: Uri?=null,
-        fileRealPath: String?=null,
+        fileUri: Uri? = null,
+        fileRealPath: String? = null,
         name: String,
         price: String,
         shortDescription: String,
@@ -620,15 +717,19 @@ class Repo @Inject constructor(
         offerPrice: String,
         offerItemNum: String,
         priceCurrency: String,
-        id:String
+        id: String
     ) = flow {
         emit(Status.Loading)
         if (NetworkUtils(ctx).isNetworkConnected()) {
             try {
-                val fileToSend = fileRealPath?.let { fileUri?.let { it1 ->
-                    prepareFilePart("image", it,
-                        it1, ctx)
-                } }
+                val fileToSend = fileRealPath?.let {
+                    fileUri?.let { it1 ->
+                        prepareFilePart(
+                            "image", it,
+                            it1, ctx
+                        )
+                    }
+                }
                 val nameRequestBody: RequestBody =
                     RequestBody.create("text/plain".toMediaTypeOrNull(), name)
                 val priceRequestBody: RequestBody =
@@ -689,7 +790,7 @@ class Repo @Inject constructor(
                     }
                 }
             }
-        } else{
+        } else {
             emit(Status.Error("برجاء التحقق من الاتصال بالانترنت"))
         }
     }

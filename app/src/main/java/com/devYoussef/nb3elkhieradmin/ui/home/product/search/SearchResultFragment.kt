@@ -1,6 +1,7 @@
 package com.devYoussef.nb3elkhieradmin.ui.home.product.search
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -8,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.paging.CombinedLoadStates
 import androidx.paging.LoadState
@@ -19,8 +21,10 @@ import com.devYoussef.nb3elkhieradmin.databinding.ProductItemBinding
 import com.devYoussef.nb3elkhieradmin.model.AuthResponse
 import com.devYoussef.nb3elkhieradmin.model.ProductResponse
 import com.devYoussef.nb3elkhieradmin.ui.adapter.paging.ProductsPagingAdapter
+import com.devYoussef.nb3elkhieradmin.ui.home.product.ProductsFragmentDirections
 import com.devYoussef.nb3elkhieradmin.ui.home.product.ProductsViewModel
 import com.devYoussef.nb3elkhieradmin.utils.LoadDialogBar
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import dagger.hilt.android.AndroidEntryPoint
@@ -58,6 +62,36 @@ class SearchResultFragment : Fragment(), ProductsPagingAdapter.OnButton1ClickLis
         val title  = requireActivity().findViewById<TextView>(R.id.txtTitleToolBar)
         title.text = args.query
         viewModel.getPagingSearchedProducts(args.query)
+        binding.swipeRefreshLayout.setOnRefreshListener {
+            searchAdapter.refresh()
+            binding.swipeRefreshLayout.isRefreshing = false
+        }
+        collectDeleteState()
+    }
+
+    private fun collectDeleteState() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.state.collect {
+                when {
+                    it.isLoading -> {
+                        loadDialogBar.show()
+                    }
+
+                    it.error != null -> {
+                        requireContext().showToast(it.error)
+                        loadDialogBar.hide()
+                    }
+
+                    it.status == "success" -> {
+                        requireContext().showToast("تم الحذف بنجاح")
+                        Log.e("collectDeleteState: ", it.success.toString())
+                        loadDialogBar.hide()
+                        searchAdapter.refresh()
+                    }
+                }
+                Log.e("collectDeleteState1: ", it.status.toString())
+            }
+        }
     }
 
     private fun collectSearchState() {
@@ -69,23 +103,19 @@ class SearchResultFragment : Fragment(), ProductsPagingAdapter.OnButton1ClickLis
                         header = LoadStateAdapter { searchAdapter.retry() },
                         footer = LoadStateAdapter { searchAdapter.retry() }
                     )
-
-                searchAdapter.addLoadStateListener { loadState ->
-                    if (loadState.refresh is LoadState.Loading) {
-                        loadDialogBar.show()
-                    } else {
-                        loadDialogBar.hide()
-                    }
-
-                    if (searchAdapter.itemCount == 0) {
-                        binding.imgEmptySearchProducts.visibility = View.VISIBLE
-                    } else {
-                        binding.imgEmptySearchProducts.visibility = View.GONE
-                    }
-
-                    handelError(loadState)
-                }
             }
+
+        }
+        searchAdapter.addLoadStateListener { loadState ->
+            binding.swipeRefreshLayout.isRefreshing = loadState.refresh is LoadState.Loading
+
+            if (searchAdapter.itemCount == 0) {
+                binding.imgEmptySearchProducts.visibility = View.VISIBLE
+            } else {
+                binding.imgEmptySearchProducts.visibility = View.GONE
+            }
+
+            handelError(loadState)
         }
     }
     private fun handelError(loadStates: CombinedLoadStates) {
@@ -108,12 +138,25 @@ class SearchResultFragment : Fragment(), ProductsPagingAdapter.OnButton1ClickLis
 
 
     override fun onButtonEditClick(data: ProductResponse.Data, binding: ProductItemBinding) {
-        TODO("Not yet implemented")
+        val action =
+            SearchResultFragmentDirections.actionSearchResultFragmentToAddAndEditFragment(data._id.toString())
+        findNavController().navigate(action)
     }
 
     override fun onButtonDeleteClick(data: ProductResponse.Data, binding: ProductItemBinding) {
-        TODO("Not yet implemented")
+        showDeleteDialog(data)
     }
-
+    private fun showDeleteDialog(data: ProductResponse.Data) {
+        MaterialAlertDialogBuilder(requireContext()).apply {
+            setTitle("سيتم حذف المنتج")
+            setPositiveButton("اوافق") { _, _ ->
+                viewModel.deleteProduct(data._id.toString())
+            }
+            setNegativeButton("رجوع") { dialog, _ ->
+                dialog.dismiss()
+            }
+            show()
+        }
+    }
 
 }

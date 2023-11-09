@@ -1,6 +1,7 @@
 package com.devYoussef.nb3elkhieradmin.utils
 
 import com.devYoussef.nb3elkhieradmin.model.AuthResponse
+import com.devYoussef.nb3elkhieradmin.model.BannerResponse
 import com.devYoussef.nb3elkhieradmin.model.BlockUsersResponse
 import com.devYoussef.nb3elkhieradmin.model.CategoryResponse
 import com.devYoussef.nb3elkhieradmin.model.LoginModel
@@ -116,5 +117,18 @@ interface WebServices {
 
     @GET("api/manage/block/{id}")
     suspend fun blockUser(@Path("id") id: String): AuthResponse
+
+    @GET("api/manage/banner/all?")
+    suspend fun getAllBanner(): BannerResponse
+
+
+    @Multipart
+    @POST("api/manage/banner/add")
+    suspend fun addBanner(
+        @Part image: MultipartBody.Part? = null,
+    ): AuthResponse
+
+    @DELETE("api/manage/banner/delete/{id}")
+    suspend fun deleteBanner(@Path("id") id:String): AuthResponse
 
 }

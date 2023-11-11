@@ -13,6 +13,8 @@ import android.webkit.WebChromeClient
 import android.webkit.WebSettings
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.devYoussef.nb3elkhieradmin.R
@@ -105,8 +107,8 @@ class StatisticsFragment : Fragment() {
         requireActivity().addMenuProvider(object : MenuProvider {
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
                 menuInflater.inflate(R.menu.statstics_menu, menu)
-            }
 
+            }
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
                 when (menuItem.itemId) {
                     R.id.action_30Days -> {
@@ -128,11 +130,13 @@ class StatisticsFragment : Fragment() {
                         viewModel.setLink("<iframe id=\"igraph\" scrolling=\"no\" style=\"border:none;\" seamless=\"seamless\" src=\"https://chart-studio.plotly.com/~youssefmaged/21.embed\" height=\"525\" width=\"100%\"></iframe>")
                         return true
                     }
+
+
                 }
                 return false
             }
 
-        })
+        } ,viewLifecycleOwner, Lifecycle.State.RESUMED)
     }
 
 

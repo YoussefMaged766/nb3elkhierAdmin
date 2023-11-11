@@ -2,7 +2,10 @@ package com.devYoussef.nb3elkhieradmin.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Menu
 import android.view.View
+import androidx.activity.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
@@ -19,6 +22,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var appBarConfiguration: AppBarConfiguration
     lateinit var navController: NavController
     private lateinit var navHostFragment: NavHostFragment
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -29,6 +33,8 @@ class MainActivity : AppCompatActivity() {
                 R.id.homeFragment
             )
         )
+
+
 
         setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
@@ -63,7 +69,6 @@ class MainActivity : AppCompatActivity() {
                     binding.appBar.visibility = View.VISIBLE
                     binding.txtTitleToolBar.text = "البرومو كود"
                     binding.imgFilter.visibility = View.GONE
-
                 }
                 R.id.ordersFragment -> {
                     binding.appBar.visibility = View.VISIBLE
@@ -74,7 +79,6 @@ class MainActivity : AppCompatActivity() {
                     binding.appBar.visibility = View.VISIBLE
                     binding.txtTitleToolBar.text = "البانرات"
                     binding.imgFilter.visibility = View.GONE
-
                 }
                 R.id.statisticsFragment -> {
                     binding.appBar.visibility = View.VISIBLE
@@ -86,18 +90,17 @@ class MainActivity : AppCompatActivity() {
                     binding.appBar.visibility = View.VISIBLE
                     binding.txtTitleToolBar.text = "المناطق"
                     binding.imgFilter.visibility = View.GONE
-
                 }
                 R.id.blocksFragment -> {
                     binding.appBar.visibility = View.VISIBLE
                     binding.txtTitleToolBar.text = "القائمه السوداء"
                     binding.imgFilter.visibility = View.GONE
-
                 }
                 R.id.addAndEditFragment -> {
                     binding.appBar.visibility = View.VISIBLE
                     binding.txtTitleToolBar.text = "اضافه منتج"
                     binding.imgFilter.visibility = View.GONE
+
 
                 }
                 R.id.detailsOrderFragment -> {
@@ -113,6 +116,9 @@ class MainActivity : AppCompatActivity() {
     override fun onSupportNavigateUp(): Boolean {
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
+
+
+
 
 
 }

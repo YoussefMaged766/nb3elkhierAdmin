@@ -5,7 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.devYoussef.nb3elkhieradmin.R
+import androidx.fragment.app.activityViewModels
 import com.devYoussef.nb3elkhieradmin.databinding.FragmentOrdersBinding
 import com.devYoussef.nb3elkhieradmin.ui.adapter.ViewPagerAdapter
 import com.devYoussef.nb3elkhieradmin.ui.home.order.cancel.CancelOrderFragment
@@ -20,6 +20,7 @@ class OrdersFragment : Fragment() {
 
     private lateinit var binding: FragmentOrdersBinding
     private val fadeOutTransformation = FadeOutTransformation()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -38,6 +39,7 @@ class OrdersFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setUpViewPager()
+
     }
 
     private fun setUpViewPager() {
@@ -57,4 +59,5 @@ class OrdersFragment : Fragment() {
             binding.viewpager.setCurrentItem(tab.position, true)
         }.attach()
     }
+
 }

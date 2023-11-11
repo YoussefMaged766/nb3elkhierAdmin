@@ -110,22 +110,22 @@ class StatisticsFragment : Fragment() {
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
                 when (menuItem.itemId) {
                     R.id.action_30Days -> {
-                        viewModel.setLink("<iframe id=\"igraph\" scrolling=\"no\" style=\"border:none;\" seamless=\"seamless\" src=\"https://plotly.com/~Muhammed_Zidan/400.embed\" height=\"525\" width=\"100%\"></iframe>\n")
+                        viewModel.setLink("<iframe id=\"igraph\" scrolling=\"no\" style=\"border:none;\" seamless=\"seamless\" src=\"https://chart-studio.plotly.com/~youssefmaged/14.embed\" height=\"525\" width=\"100%\"></iframe>\n")
                         return true
                     }
 
                     R.id.action_revenue -> {
-                        viewModel.setLink("<iframe id=\"igraph\" scrolling=\"no\" style=\"border:none;\" seamless=\"seamless\" src=\"https://plotly.com/~Muhammed_Zidan/397.embed\" height=\"525\" width=\"100%\"></iframe>\n")
+                        viewModel.setLink("<iframe id=\"igraph\" scrolling=\"no\" style=\"border:none;\" seamless=\"seamless\" src=\"https://chart-studio.plotly.com/~youssefmaged/16.embed\" height=\"525\" width=\"100%\"></iframe>\n")
                         return true
                     }
 
                     R.id.action_Category -> {
-                        viewModel.setLink("<iframe id=\"igraph\" scrolling=\"no\" style=\"border:none;\" seamless=\"seamless\" src=\"https://plotly.com/~Muhammed_Zidan/403.embed\" height=\"525\" width=\"100%\"></iframe>\n")
+                        viewModel.setLink("<iframe id=\"igraph\" scrolling=\"no\" style=\"border:none;\" seamless=\"seamless\" src=\"https://chart-studio.plotly.com/~youssefmaged/19.embed\" height=\"525\" width=\"100%\"></iframe>\n")
                         return true
                     }
 
                     R.id.action_Selling -> {
-                        viewModel.setLink("<iframe id=\"igraph\" scrolling=\"no\" style=\"border:none;\" seamless=\"seamless\" src=\"https://plotly.com/~Muhammed_Zidan/405.embed\" height=\"525\" width=\"100%\"></iframe>")
+                        viewModel.setLink("<iframe id=\"igraph\" scrolling=\"no\" style=\"border:none;\" seamless=\"seamless\" src=\"https://chart-studio.plotly.com/~youssefmaged/21.embed\" height=\"525\" width=\"100%\"></iframe>")
                         return true
                     }
                 }

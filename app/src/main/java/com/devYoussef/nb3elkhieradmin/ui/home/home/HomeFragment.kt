@@ -68,6 +68,9 @@ class HomeFragment : Fragment() {
         binding.imageViewArrowBlocks.setOnClickListener {
             findNavController().navigate(R.id.action_homeFragment_to_blocksFragment)
         }
+        binding.imageViewArrowUsers.setOnClickListener {
+            findNavController().navigate(R.id.action_homeFragment_to_usersFragment)
+        }
     }
 
 

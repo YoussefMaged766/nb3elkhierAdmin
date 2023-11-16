@@ -12,6 +12,7 @@ import com.devYoussef.nb3elkhieradmin.model.PromoCodeModel
 import com.devYoussef.nb3elkhieradmin.model.PromoCodeResponse
 import com.devYoussef.nb3elkhieradmin.model.RegionsResponse
 import com.devYoussef.nb3elkhieradmin.model.StatisticsResponse
+import com.devYoussef.nb3elkhieradmin.model.UsersResponse
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.http.Body
@@ -118,6 +119,9 @@ interface WebServices {
 
     @GET("api/user/blocked")
     suspend fun getAllBlockedUsers(): BlockUsersResponse
+
+    @GET("api/user/all")
+    suspend fun getAllUsers(): UsersResponse
 
     @GET("api/manage/block/{id}")
     suspend fun blockUser(@Path("id") id: String): AuthResponse

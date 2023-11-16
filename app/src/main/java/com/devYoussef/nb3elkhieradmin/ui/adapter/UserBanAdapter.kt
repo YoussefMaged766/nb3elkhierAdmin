@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.devYoussef.nb3elkhieradmin.R
 import com.devYoussef.nb3elkhieradmin.databinding.PromoCodeItemBinding
 import com.devYoussef.nb3elkhieradmin.databinding.UserBanItemBinding
 import com.devYoussef.nb3elkhieradmin.model.BlockUsersResponse
@@ -45,7 +46,12 @@ class UserBanAdapter(private var listner: OnItemClickListener) :
     class viewholder(var binding: UserBanItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(data: BlockUsersResponse.User) {
-           Glide.with(itemView).load(data.image?.url).into(binding.imgUserBan)
+            if (data.image?.url == null){
+                binding.imgUserBan.setImageResource(R.drawable.img_default_user)
+            } else{
+                Glide.with(itemView).load(data.image.url).into(binding.imgUserBan)
+            }
+
             binding.txtUserNameBan.text = data.userName
             binding.txtUserShopNameBan.text = data.shopName
 

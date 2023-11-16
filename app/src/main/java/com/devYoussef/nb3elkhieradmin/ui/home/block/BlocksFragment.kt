@@ -60,8 +60,14 @@ class BlocksFragment : Fragment(), UserBanAdapter.OnItemClickListener {
 
                     it.status == "success" -> {
                         loadDialogBar.hide()
-                        adapter.submitList(it.block?.user)
-                        binding.recyclerBlocks.adapter = adapter
+                        if (it.block?.user.isNullOrEmpty()) {
+                            binding.imgNoBlock.visibility = View.VISIBLE
+                        } else {
+                            binding.imgNoBlock.visibility = View.GONE
+                            adapter.submitList(it.block?.user)
+                            binding.recyclerBlocks.adapter = adapter
+                        }
+
                     }
 
                     it.error != null -> {

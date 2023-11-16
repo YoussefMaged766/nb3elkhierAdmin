@@ -1,268 +1,305 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.home.home.HomeFragment"
     android:layoutDirection="rtl"
-    >
+    tools:context=".ui.home.home.HomeFragment">
 
-    <View
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="100dp"
-        app:layout_constraintTop_toTopOf="parent"
-        android:background="@color/primary"
-        android:id="@+id/view"
-        />
+        android:layout_height="match_parent">
 
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/imageViewProduct"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:background="@drawable/circle_background"
-        android:src="@drawable/ic_product"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/view"
-        android:layout_margin="@dimen/_12sdp"
-        />
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toEndOf="@id/imageViewProduct"
-        app:layout_constraintTop_toTopOf="@id/imageViewProduct"
-        app:layout_constraintBottom_toBottomOf="@id/imageViewProduct"
-        android:layout_marginStart="@dimen/_8sdp"
-        android:text="المنتج"
-        android:textColor="@color/black"
-        android:textSize="@dimen/_18ssp"
-        android:id="@+id/textViewProduct"
-        />
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:backgroundTint="@color/white"
-        app:elevation="0dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="@id/imageViewProduct"
-        app:layout_constraintBottom_toBottomOf="@id/imageViewProduct"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginEnd="@dimen/_16sdp"
-        android:src="@drawable/ic_arrow_details"
-        android:id="@+id/imageViewArrowProduct"
-        />
+        <View
+            android:id="@+id/view"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:background="@color/primary"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/imageViewPromoCode"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:background="@drawable/circle_background"
-        android:src="@drawable/ic_promo_code"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/imageViewProduct"
-        android:layout_margin="@dimen/_12sdp"
-        />
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toEndOf="@id/imageViewPromoCode"
-        app:layout_constraintTop_toTopOf="@id/imageViewPromoCode"
-        app:layout_constraintBottom_toBottomOf="@id/imageViewPromoCode"
-        android:layout_marginStart="@dimen/_8sdp"
-        android:text="برومو كود"
-        android:textColor="@color/black"
-        android:textSize="@dimen/_18ssp"
-        android:id="@+id/textViewPromoCode"
-        />
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:backgroundTint="@color/white"
-        app:elevation="0dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="@id/imageViewPromoCode"
-        app:layout_constraintBottom_toBottomOf="@id/imageViewPromoCode"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginEnd="@dimen/_16sdp"
-        android:src="@drawable/ic_arrow_details"
-        android:id="@+id/imageViewArrowPromoCode"
-        />
+        <ImageView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:src="@drawable/logo2"
+            />
 
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/imageViewBanner"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:background="@drawable/circle_background"
-        android:src="@drawable/ic_banner"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/imageViewPromoCode"
-        android:layout_margin="@dimen/_12sdp"
-        />
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toEndOf="@id/imageViewBanner"
-        app:layout_constraintTop_toTopOf="@id/imageViewBanner"
-        app:layout_constraintBottom_toBottomOf="@id/imageViewBanner"
-        android:layout_marginStart="@dimen/_8sdp"
-        android:text="Banner"
-        android:textColor="@color/black"
-        android:textSize="@dimen/_18ssp"
-        android:id="@+id/textViewBanner"
-        />
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:backgroundTint="@color/white"
-        app:elevation="0dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="@id/imageViewBanner"
-        app:layout_constraintBottom_toBottomOf="@id/imageViewBanner"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginEnd="@dimen/_16sdp"
-        android:src="@drawable/ic_arrow_details"
-        android:id="@+id/imageViewArrowBanner"
-        />
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/imageViewProduct"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_margin="@dimen/_12sdp"
+            android:background="@drawable/circle_background"
+            android:src="@drawable/ic_product"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/view" />
 
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/imageViewOrders"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:background="@drawable/circle_background"
-        android:src="@drawable/ic_orders"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/imageViewBanner"
-        android:layout_margin="@dimen/_12sdp"
-        />
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toEndOf="@id/imageViewOrders"
-        app:layout_constraintTop_toTopOf="@id/imageViewOrders"
-        app:layout_constraintBottom_toBottomOf="@id/imageViewOrders"
-        android:layout_marginStart="@dimen/_8sdp"
-        android:text="الفواتير"
-        android:textColor="@color/black"
-        android:textSize="@dimen/_18ssp"
-        android:id="@+id/textViewOrders"
-        />
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:backgroundTint="@color/white"
-        app:elevation="0dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="@id/imageViewOrders"
-        app:layout_constraintBottom_toBottomOf="@id/imageViewOrders"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginEnd="@dimen/_16sdp"
-        android:src="@drawable/ic_arrow_details"
-        android:id="@+id/imageViewArrowOrders"
-        />
+        <TextView
+            android:id="@+id/textViewProduct"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_8sdp"
+            android:text="المنتج"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_18ssp"
+            app:layout_constraintBottom_toBottomOf="@id/imageViewProduct"
+            app:layout_constraintStart_toEndOf="@id/imageViewProduct"
+            app:layout_constraintTop_toTopOf="@id/imageViewProduct" />
 
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/imageViewStatistics"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:background="@drawable/circle_background"
-        android:src="@drawable/ic_statstics"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/imageViewOrders"
-        android:layout_margin="@dimen/_12sdp"
-        />
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toEndOf="@id/imageViewStatistics"
-        app:layout_constraintTop_toTopOf="@id/imageViewStatistics"
-        app:layout_constraintBottom_toBottomOf="@id/imageViewStatistics"
-        android:layout_marginStart="@dimen/_8sdp"
-        android:text="الاحصائيات"
-        android:textColor="@color/black"
-        android:textSize="@dimen/_18ssp"
-        android:id="@+id/textViewStatistics"
-        />
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:backgroundTint="@color/white"
-        app:elevation="0dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="@id/imageViewStatistics"
-        app:layout_constraintBottom_toBottomOf="@id/imageViewStatistics"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginEnd="@dimen/_16sdp"
-        android:src="@drawable/ic_arrow_details"
-        android:id="@+id/imageViewArrowStatistics"
-        />
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/imageViewArrowProduct"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/_16sdp"
+            android:backgroundTint="@color/white"
+            android:src="@drawable/ic_arrow_details"
+            app:elevation="0dp"
+            app:layout_constraintBottom_toBottomOf="@id/imageViewProduct"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/imageViewProduct" />
 
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/imageViewRegions"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:background="@drawable/circle_background"
-        android:src="@drawable/ic_regions"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/imageViewStatistics"
-        android:layout_margin="@dimen/_12sdp"
-        />
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toEndOf="@id/imageViewRegions"
-        app:layout_constraintTop_toTopOf="@id/imageViewRegions"
-        app:layout_constraintBottom_toBottomOf="@id/imageViewRegions"
-        android:layout_marginStart="@dimen/_8sdp"
-        android:text="المناطق"
-        android:textColor="@color/black"
-        android:textSize="@dimen/_18ssp"
-        android:id="@+id/textViewRegions"
-        />
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:backgroundTint="@color/white"
-        app:elevation="0dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="@id/imageViewRegions"
-        app:layout_constraintBottom_toBottomOf="@id/imageViewRegions"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginEnd="@dimen/_16sdp"
-        android:src="@drawable/ic_arrow_details"
-        android:id="@+id/imageViewArrowRegions"
-        />
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/imageViewPromoCode"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_margin="@dimen/_12sdp"
+            android:background="@drawable/circle_background"
+            android:src="@drawable/ic_promo_code"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/imageViewProduct" />
 
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/imageViewBlocks"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:background="@drawable/circle_background"
-        android:src="@drawable/ic_block"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/imageViewRegions"
-        android:layout_margin="@dimen/_12sdp"
-        />
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toEndOf="@id/imageViewBlocks"
-        app:layout_constraintTop_toTopOf="@id/imageViewBlocks"
-        app:layout_constraintBottom_toBottomOf="@id/imageViewBlocks"
-        android:layout_marginStart="@dimen/_8sdp"
-        android:text="القائمه السوداء"
-        android:textColor="@color/black"
-        android:textSize="@dimen/_18ssp"
-        android:id="@+id/textViewBlocks"
-        />
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:backgroundTint="@color/white"
-        app:elevation="0dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="@id/imageViewBlocks"
-        app:layout_constraintBottom_toBottomOf="@id/imageViewBlocks"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginEnd="@dimen/_16sdp"
-        android:src="@drawable/ic_arrow_details"
-        android:id="@+id/imageViewArrowBlocks"
-        />
+        <TextView
+            android:id="@+id/textViewPromoCode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_8sdp"
+            android:text="برومو كود"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_18ssp"
+            app:layout_constraintBottom_toBottomOf="@id/imageViewPromoCode"
+            app:layout_constraintStart_toEndOf="@id/imageViewPromoCode"
+            app:layout_constraintTop_toTopOf="@id/imageViewPromoCode" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/imageViewArrowPromoCode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/_16sdp"
+            android:backgroundTint="@color/white"
+            android:src="@drawable/ic_arrow_details"
+            app:elevation="0dp"
+            app:layout_constraintBottom_toBottomOf="@id/imageViewPromoCode"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/imageViewPromoCode" />
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/imageViewBanner"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_margin="@dimen/_12sdp"
+            android:background="@drawable/circle_background"
+            android:src="@drawable/ic_banner"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/imageViewPromoCode" />
+
+        <TextView
+            android:id="@+id/textViewBanner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_8sdp"
+            android:text="Banner"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_18ssp"
+            app:layout_constraintBottom_toBottomOf="@id/imageViewBanner"
+            app:layout_constraintStart_toEndOf="@id/imageViewBanner"
+            app:layout_constraintTop_toTopOf="@id/imageViewBanner" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/imageViewArrowBanner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/_16sdp"
+            android:backgroundTint="@color/white"
+            android:src="@drawable/ic_arrow_details"
+            app:elevation="0dp"
+            app:layout_constraintBottom_toBottomOf="@id/imageViewBanner"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/imageViewBanner" />
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/imageViewOrders"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_margin="@dimen/_12sdp"
+            android:background="@drawable/circle_background"
+            android:src="@drawable/ic_orders"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/imageViewBanner" />
+
+        <TextView
+            android:id="@+id/textViewOrders"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_8sdp"
+            android:text="الفواتير"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_18ssp"
+            app:layout_constraintBottom_toBottomOf="@id/imageViewOrders"
+            app:layout_constraintStart_toEndOf="@id/imageViewOrders"
+            app:layout_constraintTop_toTopOf="@id/imageViewOrders" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/imageViewArrowOrders"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/_16sdp"
+            android:backgroundTint="@color/white"
+            android:src="@drawable/ic_arrow_details"
+            app:elevation="0dp"
+            app:layout_constraintBottom_toBottomOf="@id/imageViewOrders"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/imageViewOrders" />
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/imageViewStatistics"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_margin="@dimen/_12sdp"
+            android:background="@drawable/circle_background"
+            android:src="@drawable/ic_statstics"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/imageViewOrders" />
+
+        <TextView
+            android:id="@+id/textViewStatistics"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_8sdp"
+            android:text="الاحصائيات"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_18ssp"
+            app:layout_constraintBottom_toBottomOf="@id/imageViewStatistics"
+            app:layout_constraintStart_toEndOf="@id/imageViewStatistics"
+            app:layout_constraintTop_toTopOf="@id/imageViewStatistics" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/imageViewArrowStatistics"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/_16sdp"
+            android:backgroundTint="@color/white"
+            android:src="@drawable/ic_arrow_details"
+            app:elevation="0dp"
+            app:layout_constraintBottom_toBottomOf="@id/imageViewStatistics"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/imageViewStatistics" />
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/imageViewRegions"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_margin="@dimen/_12sdp"
+            android:background="@drawable/circle_background"
+            android:src="@drawable/ic_regions"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/imageViewStatistics" />
+
+        <TextView
+            android:id="@+id/textViewRegions"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_8sdp"
+            android:text="المناطق"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_18ssp"
+            app:layout_constraintBottom_toBottomOf="@id/imageViewRegions"
+            app:layout_constraintStart_toEndOf="@id/imageViewRegions"
+            app:layout_constraintTop_toTopOf="@id/imageViewRegions" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/imageViewArrowRegions"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/_16sdp"
+            android:backgroundTint="@color/white"
+            android:src="@drawable/ic_arrow_details"
+            app:elevation="0dp"
+            app:layout_constraintBottom_toBottomOf="@id/imageViewRegions"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/imageViewRegions" />
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/imageViewBlocks"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_margin="@dimen/_12sdp"
+            android:background="@drawable/circle_background"
+            android:src="@drawable/ic_block"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/imageViewRegions" />
+
+        <TextView
+            android:id="@+id/textViewBlocks"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_8sdp"
+            android:text="القائمه السوداء"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_18ssp"
+            app:layout_constraintBottom_toBottomOf="@id/imageViewBlocks"
+            app:layout_constraintStart_toEndOf="@id/imageViewBlocks"
+            app:layout_constraintTop_toTopOf="@id/imageViewBlocks" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/imageViewArrowBlocks"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/_16sdp"
+            android:backgroundTint="@color/white"
+            android:src="@drawable/ic_arrow_details"
+            app:elevation="0dp"
+            app:layout_constraintBottom_toBottomOf="@id/imageViewBlocks"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/imageViewBlocks" />
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/imageViewUsers"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_margin="@dimen/_12sdp"
+            android:layout_marginTop="12dp"
+            android:background="@drawable/circle_background"
+            android:src="@drawable/ic_users"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/imageViewBlocks" />
+
+        <TextView
+            android:id="@+id/textViewUsers"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_8sdp"
+            android:text="المستخدمين"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_18ssp"
+            app:layout_constraintBottom_toBottomOf="@id/imageViewUsers"
+            app:layout_constraintStart_toEndOf="@id/imageViewUsers"
+            app:layout_constraintTop_toTopOf="@id/imageViewUsers" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/imageViewArrowUsers"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/_16sdp"
+            android:backgroundTint="@color/white"
+            android:src="@drawable/ic_arrow_details"
+            app:elevation="0dp"
+            app:layout_constraintBottom_toBottomOf="@id/imageViewUsers"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/imageViewUsers" />
 
 
-
-
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

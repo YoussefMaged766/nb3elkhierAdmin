@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.devYoussef.nb3elkhieradmin.data.remote.Repo
 import com.devYoussef.nb3elkhieradmin.model.AuthState
+import com.devYoussef.nb3elkhieradmin.model.LoginModel
 import com.devYoussef.nb3elkhieradmin.utils.Status
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -23,6 +24,10 @@ class OrderDetailsViewModel @Inject constructor(private val repo: Repo):ViewMode
 
     private val _stateDeclineOrder = MutableStateFlow(AuthState())
     val stateDeclineOrder = _stateDeclineOrder.asStateFlow()
+
+    private val _stateDeleteOrder = MutableStateFlow(AuthState())
+    val stateDeleteOrder = _stateDeleteOrder.asStateFlow()
+
 
     private val _stateBlock = MutableStateFlow(AuthState())
     val stateBlock = _stateBlock.asStateFlow()
@@ -61,6 +66,39 @@ class OrderDetailsViewModel @Inject constructor(private val repo: Repo):ViewMode
         }
     }
 
+    fun deleteProductFromOrder(loginModel: LoginModel) = viewModelScope.launch{
+        repo.deleteProductFromOrder(loginModel).collect { status ->
+            when (status) {
+                is Status.Loading -> {
+                    _stateDeleteOrder.update { result ->
+                        result.copy(isLoading = true)
+                    }
+                }
+
+                is Status.Success -> {
+                    _stateDeleteOrder.update { result ->
+                        result.copy(
+                            isLoading = false,
+                            status = status.data.status.toString(),
+                            error = null,
+                            success = "تم حذف المنتج من الطلب بنجاح"
+                        )
+                    }
+                }
+
+                is Status.Error -> {
+                    _stateDeleteOrder.update { result ->
+                        result.copy(
+                            isLoading = false,
+                            error = status.message,
+                            success = null,
+                            status = null
+                        )
+                    }
+                }
+            }
+        }
+    }
     fun acceptOrder(id:String) = viewModelScope.launch {
         repo.acceptOrder(id).collect { status ->
             when (status) {

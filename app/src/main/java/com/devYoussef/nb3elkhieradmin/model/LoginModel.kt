@@ -7,5 +7,7 @@ data class LoginModel(
     val fcmToken :String? = null,
     val region: String? = null,
     val limit:Double? = null,
-    val country: String? = null
+    val country: String? = null,
+    val orderId: String? = null,
+    val productId: String? = null
 )

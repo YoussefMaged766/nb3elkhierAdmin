@@ -13,6 +13,8 @@ import androidx.navigation.fragment.navArgs
 import com.devYoussef.nb3elkhieradmin.R
 import com.devYoussef.nb3elkhieradmin.constant.Constants.showToast
 import com.devYoussef.nb3elkhieradmin.databinding.FragmentDetailsOrderBinding
+import com.devYoussef.nb3elkhieradmin.model.LoginModel
+import com.devYoussef.nb3elkhieradmin.model.OrderDetailsResponse
 import com.devYoussef.nb3elkhieradmin.ui.adapter.OrderDetailsAdapter
 import com.devYoussef.nb3elkhieradmin.utils.LoadDialogBar
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -26,11 +28,11 @@ import java.util.Locale
 import java.util.TimeZone
 
 @AndroidEntryPoint
-class DetailsOrderFragment : Fragment() {
+class DetailsOrderFragment : Fragment() , OrderDetailsAdapter.OnItemClickListener {
     private lateinit var binding: FragmentDetailsOrderBinding
     private val args by navArgs<DetailsOrderFragmentArgs>()
     private val viewModel: OrderDetailsViewModel by viewModels()
-    private val adapter: OrderDetailsAdapter by lazy { OrderDetailsAdapter() }
+    private val adapter: OrderDetailsAdapter by lazy { OrderDetailsAdapter(this,  args.type ) }
     private val loadDialogBar: LoadDialogBar by lazy {
         LoadDialogBar(requireContext())
     }
@@ -61,6 +63,7 @@ class DetailsOrderFragment : Fragment() {
         collectDeclineOrderStates()
         orderCollectStates()
         collectBanUsersStates()
+        collectDeleteProductStates()
         binding.btnAccept.setOnClickListener {
             showAcceptDialog(args.id)
         }
@@ -77,6 +80,7 @@ class DetailsOrderFragment : Fragment() {
                 binding.btnDecline.visibility = View.VISIBLE
                 binding.txt10.visibility = View.VISIBLE
                 binding.txtBan.visibility = View.VISIBLE
+
             }
 
             "past" -> {
@@ -157,7 +161,7 @@ class DetailsOrderFragment : Fragment() {
                     it.status == "success" -> {
                         loadDialogBar.hide()
                         requireContext().showToast("تم قبول الطلب")
-                        findNavController().navigate(R.id.ordersFragment)
+                        findNavController().popBackStack()
                     }
 
                     it.error != null -> {
@@ -180,7 +184,7 @@ class DetailsOrderFragment : Fragment() {
                     it.status == "success" -> {
                         loadDialogBar.hide()
                         requireContext().showToast("تم رفض الطلب")
-                        findNavController().navigate(R.id.ordersFragment)
+                        findNavController().popBackStack()
                     }
 
                     it.error != null -> {
@@ -203,7 +207,7 @@ class DetailsOrderFragment : Fragment() {
                     it.status == "success" -> {
                         loadDialogBar.hide()
                         requireContext().showToast("تم حظر المستخدم")
-                        findNavController().navigate(R.id.ordersFragment)
+                        findNavController().popBackStack()
                     }
 
                     it.error != null -> {
@@ -215,6 +219,25 @@ class DetailsOrderFragment : Fragment() {
         }
     }
 
+    private fun collectDeleteProductStates() {
+        lifecycleScope.launch {
+            viewModel.stateDeleteOrder.collect {
+                when {
+                    it.isLoading -> {
+                    }
+
+                    it.status == "success" -> {
+                        requireContext().showToast(it.success.toString())
+
+                    }
+
+                    it.error != null -> {
+                        requireContext().showToast(it.error)
+                    }
+                }
+            }
+        }
+    }
 
     private fun convertDateToCustomFormat(inputDate: String): String {
         val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.ENGLISH)
@@ -273,6 +296,24 @@ class DetailsOrderFragment : Fragment() {
                 viewModel.declineOrder(id)
             }
             .show()
+    }
+
+    private fun showDeleteDialog(id: String) {
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle("حذف المنتج")
+            .setMessage("هل تريد حذف هذا المنتج من الطلب؟")
+            .setNegativeButton("الغاء") { dialog, which ->
+                dialog.dismiss()
+            }
+            .setPositiveButton("حذف") { dialog, which ->
+                viewModel.deleteProductFromOrder(LoginModel(productId = id , orderId = args.id))
+                viewModel.getOrderDetails(args.id)
+            }
+            .show()
+    }
+
+    override fun onItemClick(position: Int, item: OrderDetailsResponse.UserOrder.Product) {
+      showDeleteDialog(item._id!!)
     }
 
 }

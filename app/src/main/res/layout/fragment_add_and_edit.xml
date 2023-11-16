@@ -153,13 +153,15 @@
                 android:layout_margin="@dimen/_4sdp"
                 android:layout_weight="1"
                 android:hint="الكميه"
-                app:endIconMode="clear_text">
+                app:endIconMode="clear_text"
+                android:enabled="false">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/txtQuantity"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:inputType="number" />
+                    android:inputType="number"
+                    android:text="0.0"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout

@@ -2,6 +2,7 @@ package com.devYoussef.nb3elkhieradmin.ui.home.statistics
 
 import android.content.pm.ActivityInfo
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.Menu
@@ -56,6 +57,7 @@ class StatisticsFragment : Fragment() {
 //        setupWebView()
         addMenu()
         setupWebView(viewModel.getLink().value)
+        Log.e( "onViewCreated: ",viewModel.getLink().value.toString() )
         lifecycleScope.launch {
             viewModel.getLink().collect{
                 setupWebView(it)
@@ -112,7 +114,7 @@ class StatisticsFragment : Fragment() {
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
                 when (menuItem.itemId) {
                     R.id.action_30Days -> {
-                        viewModel.setLink("<iframe id=\"igraph\" scrolling=\"no\" style=\"border:none;\" seamless=\"seamless\" src=\"https://chart-studio.plotly.com/~youssefmaged/14.embed\" height=\"525\" width=\"100%\"></iframe>\n")
+                        viewModel.setLink("<iframe id=\"igraph\" scrolling=\"no\" style=\"border:none;\" seamless=\"seamless\" src=\"https://plotly.com/~youssefmaged/14.embed\" height=\"525\" width=\"100%\"></iframe>\n")
                         return true
                     }
 

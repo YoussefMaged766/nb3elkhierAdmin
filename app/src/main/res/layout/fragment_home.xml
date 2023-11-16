@@ -38,7 +38,9 @@
         android:textSize="@dimen/_18ssp"
         android:id="@+id/textViewProduct"
         />
-    <ImageView
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:backgroundTint="@color/white"
+        app:elevation="0dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="@id/imageViewProduct"
@@ -71,7 +73,9 @@
         android:textSize="@dimen/_18ssp"
         android:id="@+id/textViewPromoCode"
         />
-    <ImageView
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:backgroundTint="@color/white"
+        app:elevation="0dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="@id/imageViewPromoCode"
@@ -104,7 +108,9 @@
         android:textSize="@dimen/_18ssp"
         android:id="@+id/textViewBanner"
         />
-    <ImageView
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:backgroundTint="@color/white"
+        app:elevation="0dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="@id/imageViewBanner"
@@ -137,7 +143,9 @@
         android:textSize="@dimen/_18ssp"
         android:id="@+id/textViewOrders"
         />
-    <ImageView
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:backgroundTint="@color/white"
+        app:elevation="0dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="@id/imageViewOrders"
@@ -170,7 +178,9 @@
         android:textSize="@dimen/_18ssp"
         android:id="@+id/textViewStatistics"
         />
-    <ImageView
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:backgroundTint="@color/white"
+        app:elevation="0dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="@id/imageViewStatistics"
@@ -203,7 +213,9 @@
         android:textSize="@dimen/_18ssp"
         android:id="@+id/textViewRegions"
         />
-    <ImageView
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:backgroundTint="@color/white"
+        app:elevation="0dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="@id/imageViewRegions"
@@ -236,7 +248,9 @@
         android:textSize="@dimen/_18ssp"
         android:id="@+id/textViewBlocks"
         />
-    <ImageView
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:backgroundTint="@color/white"
+        app:elevation="0dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="@id/imageViewBlocks"

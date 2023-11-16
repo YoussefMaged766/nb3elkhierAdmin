@@ -205,7 +205,11 @@ class ProductsViewModel @Inject constructor(
             when (status) {
                 is Status.Loading -> {
                     _stateAddProduct.update { result ->
-                        result.copy(isLoading = true)
+                        result.copy(isLoading = true,
+                            error = null,
+                            success = null,
+                            status = null
+                        )
                     }
                 }
 
@@ -273,7 +277,11 @@ class ProductsViewModel @Inject constructor(
             when (status) {
                 is Status.Loading -> {
                     _stateUpdateProduct.update { result ->
-                        result.copy(isLoading = true)
+                        result.copy(isLoading = true,
+                            error = null,
+                            success = null,
+                            status = null
+                        )
                     }
                 }
 

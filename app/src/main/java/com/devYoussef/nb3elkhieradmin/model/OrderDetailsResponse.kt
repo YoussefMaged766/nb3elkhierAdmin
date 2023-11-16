@@ -17,7 +17,7 @@ data class OrderDetailsResponse(
         val products: List<Product>?,
         val promoCode: PromoCode?,
         val quantity: Int?,
-        val totalPrice: Int?,
+        val totalPrice: Double?,
         val updatedAt: String?,
         val userId: UserId?
     ) {
@@ -25,7 +25,7 @@ data class OrderDetailsResponse(
             val _id: String?,
             val productId: ProductId?,
             val quantity: Int?,
-            val totalProductPrice: Int?
+            val totalProductPrice: Double?
         ) {
             data class ProductId(
                 val __v: Int?,
@@ -38,8 +38,8 @@ data class OrderDetailsResponse(
                 val isOffered: Boolean?,
                 val name: String?,
                 val offer: List<Offer?>?,
-                val originalPrice: Int?,
-                val price: Int?,
+                val originalPrice: Double?,
+                val price: Double?,
                 val priceCurrency: String?,
                 val quantity: Int?,
                 val shortDescription: String?,
@@ -53,7 +53,7 @@ data class OrderDetailsResponse(
                 data class Offer(
                     val _id: String?,
                     val itemNum: Int?,
-                    val priceOffered: Int?
+                    val priceOffered: Double?
                 )
             }
         }
@@ -64,7 +64,7 @@ data class OrderDetailsResponse(
             val code: String?,
             val createdAt: String?,
             val isActive: Boolean?,
-            val price: Int?,
+            val price: Double?,
             val timesNum: Int?,
             val updatedAt: String?,
             val usedNum: Int?,

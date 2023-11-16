@@ -2,9 +2,22 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="horizontal"
     android:padding="@dimen/_4sdp"
     android:layoutDirection="rtl">
+
+    <ImageView
+        android:layout_width="20dp"
+        android:layout_height="match_parent"
+        android:src="@drawable/ic_delete"
+        android:backgroundTint="#EBEAE6"
+        app:elevation="0dp"
+        app:tint="#BAB0B0"
+        android:id="@+id/btnDelete"
+        android:layout_gravity="center"
+
+        />
 
     <TextView
         android:id="@+id/txtOrderName"
@@ -15,6 +28,7 @@
         android:text="علبه بيبسي"
         android:textColor="@color/black"
         android:gravity="start"
+        android:layout_gravity="center"
         />
 
     <TextView
@@ -25,6 +39,7 @@
         android:padding="@dimen/_8sdp"
         android:text="quantity"
         android:textColor="#9D9B9B"
+        android:layout_gravity="center"
         android:gravity="center"
         />
 
@@ -37,6 +52,7 @@
         android:text="price"
         android:textColor="#9D9B9B"
         android:gravity="center"
+        android:layout_gravity="center"
         />
 
 

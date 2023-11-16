@@ -17,7 +17,7 @@ import javax.inject.Inject
 class StatisticsViewModel @Inject constructor(private val repo: Repo) : ViewModel() {
 
     private val linkFlow =
-        MutableStateFlow("<iframe id=\"igraph\" scrolling=\"no\" style=\"border:none;\" seamless=\"seamless\" src=\"https://plotly.com/~Muhammed_Zidan/400.embed\" height=\"525\" width=\"100%\"></iframe>\n")
+        MutableStateFlow("<iframe id=\"igraph\" scrolling=\"no\" style=\"border:none;\" seamless=\"seamless\" src=\"https://plotly.com/~youssefmaged/14.embed\" height=\"525\" width=\"100%\"></iframe>\n")
 
     fun setLink(link: String) {
         linkFlow.value = link

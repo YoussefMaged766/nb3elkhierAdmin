@@ -337,7 +337,7 @@ class AddAndEditFragment : Fragment() {
         val country = binding.spinnerCountry.selectedItem.toString()
         val isAvailable = binding.switchAvailable.isChecked
         val isOffered = binding.switchOffer.isChecked
-        val quantity = binding.txtQuantity.text.toString()
+//        val quantity = binding.txtQuantity.text.toString()
         val price = binding.txtPrice.text.toString()
         val priceCurrency = binding.spinnerCurrency.selectedItem.toString()
         val originalPrice = binding.txtOriginalPrice.text.toString()
@@ -355,7 +355,7 @@ class AddAndEditFragment : Fragment() {
             country = country,
             isAvailable = isAvailable,
             isOffered = isOffered,
-            quantity = quantity,
+            quantity = "0.0",
             price = price,
             priceCurrency = priceCurrency,
             originalPrice = originalPrice,
@@ -457,10 +457,11 @@ class AddAndEditFragment : Fragment() {
 
                     it.status == "success" -> {
                         loadDialogBar.hide()
-                        findNavController().navigate(R.id.productsFragment)
+                        findNavController().popBackStack(R.id.productsFragment , false)
                         requireContext().showToast(it.success.toString())
                     }
                 }
+                Log.e( "collectUpdateProductsState: ",it.toString() )
             }
         }
     }

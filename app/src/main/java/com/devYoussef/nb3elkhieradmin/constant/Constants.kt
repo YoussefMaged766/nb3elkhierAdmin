@@ -12,8 +12,8 @@ object Constants {
     fun Context.showToast(message: String) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
-//    const val BASEURL = "http://192.168.1.2:8000/"
-    const val BASEURL = "https://nb-lkhyr-p8d8.onrender.com"
+    const val BASEURL = "https://nb3elker-78938e731963.herokuapp.com/"
+//    const val BASEURL = "https://nb-lkhyr-p8d8.onrender.com"
     val Context.dataStore: DataStore<Preferences> by preferencesDataStore("save")
     const val channelId = "notification_channel"
     const val channelName = "notification_channel_name"

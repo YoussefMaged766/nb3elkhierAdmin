@@ -1,5 +1,6 @@
 package com.devYoussef.nb3elkhieradmin.ui.adapter
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -47,7 +48,8 @@ interface OnItemClickListener {
             binding.txtOrderNumber.text = data.orderNum
             binding.txtOrderDate.text = convertDateToCustomFormat(data.createdAt!!)
             binding.txtOrderTotalPrice.text = data.totalPrice.toString()
-            binding.txtShopAddress.text = data.userId?.shopAddress
+            binding.txtShopAddress.text = data.userId?.shopName
+            Log.e( "bind1: ",data.userId.toString() )
 
         }
 

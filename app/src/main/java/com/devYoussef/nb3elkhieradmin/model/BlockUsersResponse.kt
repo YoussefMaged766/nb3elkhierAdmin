@@ -2,7 +2,7 @@ package com.devYoussef.nb3elkhieradmin.model
 
 data class BlockUsersResponse(
     val status: String?,
-    val user: List<User?>?
+    val user: List<User>?
 ) {
     data class User(
         val __v: Int?,

@@ -9,7 +9,7 @@ import com.devYoussef.nb3elkhieradmin.databinding.OrderDetailsItemBinding
 import com.devYoussef.nb3elkhieradmin.model.OrderDetailsResponse
 
 
-class OrderDetailsAdapter() :
+class OrderDetailsAdapter(val listner: OnItemClickListener ,val  type:String) :
     ListAdapter<OrderDetailsResponse.UserOrder.Product, OrderDetailsAdapter.viewholder>(Companion) {
 
     companion object : DiffUtil.ItemCallback<OrderDetailsResponse.UserOrder.Product>() {
@@ -30,6 +30,10 @@ class OrderDetailsAdapter() :
 
     }
 
+    interface OnItemClickListener {
+        fun onItemClick(position: Int, item: OrderDetailsResponse.UserOrder.Product)
+    }
+
 
     inner class viewholder(var binding: OrderDetailsItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
@@ -37,6 +41,11 @@ class OrderDetailsAdapter() :
             binding.txtOrderName.text = data.productId?.name
             binding.txtTotalPrice.text = "${data.totalProductPrice} ${data.productId?.priceCurrency}"
             binding.txtQuantity.text = data.quantity.toString()
+            if (type == "current") {
+                binding.btnDelete.visibility = ViewGroup.VISIBLE
+            } else {
+                binding.btnDelete.visibility = ViewGroup.GONE
+            }
 
         }
 
@@ -54,5 +63,8 @@ class OrderDetailsAdapter() :
 
     override fun onBindViewHolder(holder: viewholder, position: Int) {
         holder.bind(getItem(position))
+        holder.binding.btnDelete.setOnClickListener {
+            listner.onItemClick(position, getItem(position))
+        }
     }
 }

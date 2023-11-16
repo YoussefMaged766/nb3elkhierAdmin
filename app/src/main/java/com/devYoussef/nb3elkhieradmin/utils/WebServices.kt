@@ -107,13 +107,16 @@ interface WebServices {
     @GET("api/order/one-order/{id}")
     suspend fun getOrderDetails(@Path("id") id: String): OrderDetailsResponse
 
+    @POST("api/order/alter")
+    suspend fun deleteProductFromOrder(@Body loginModel: LoginModel):AuthResponse
+
     @GET("api/order/accept/{id}")
     suspend fun acceptOrder(@Path("id") id: String): AuthResponse
 
     @GET("api/order/cancel/{id}")
     suspend fun cancelOrder(@Path("id") id: String): AuthResponse
 
-    @GET("api/user/all")
+    @GET("api/user/blocked")
     suspend fun getAllBlockedUsers(): BlockUsersResponse
 
     @GET("api/manage/block/{id}")

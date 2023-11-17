@@ -313,7 +313,7 @@ class DetailsOrderFragment : Fragment() , OrderDetailsAdapter.OnItemClickListene
     }
 
     override fun onItemClick(position: Int, item: OrderDetailsResponse.UserOrder.Product) {
-      showDeleteDialog(item._id!!)
+      showDeleteDialog(item.productId?._id!!)
     }
 
 }

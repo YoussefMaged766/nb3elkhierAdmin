@@ -81,8 +81,8 @@ class LoginFragment : Fragment() {
     private suspend fun callApi() {
         viewModel.loginIn(
             LoginModel(
-                userName = binding.txtName.text.toString(),
-                password = binding.txtPassword.text.toString(),
+                userName = binding.txtName.text.toString().trim(),
+                password = binding.txtPassword.text.toString().trim(),
                 fcmToken = FirebaseMessaging.getInstance().getTokenSuspended() ?: ""
             )
         )

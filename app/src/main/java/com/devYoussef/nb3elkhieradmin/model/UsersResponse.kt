@@ -39,7 +39,7 @@ data class UsersResponse(
             val products: List<Product?>?,
             val promoCode: String?,
             val quantity: Int?,
-            val totalPrice: Int?,
+            val totalPrice: Double?,
             val updatedAt: String?,
             val userId: String?
         ) {
@@ -47,7 +47,7 @@ data class UsersResponse(
                 val _id: String?,
                 val productId: String?,
                 val quantity: Int?,
-                val totalProductPrice: Int?
+                val totalProductPrice: Double?
             )
         }
 

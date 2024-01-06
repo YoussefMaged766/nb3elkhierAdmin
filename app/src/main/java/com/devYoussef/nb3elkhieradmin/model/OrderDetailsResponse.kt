@@ -68,7 +68,7 @@ data class OrderDetailsResponse(
             val timesNum: Int?,
             val updatedAt: String?,
             val usedNum: Int?,
-            val userId: List<String?>?
+            val userId: List<String>?
         )
         data class UserId(
             val __v: Int?,

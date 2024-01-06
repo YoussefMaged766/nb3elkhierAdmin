@@ -81,7 +81,7 @@
             android:layout_margin="@dimen/_8sdp"
             android:hint="عدد الكوبونات"
             app:endIconMode="clear_text"
-            app:layout_constraintBottom_toBottomOf="parent"
+
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/txtPriceContainer">
@@ -90,9 +90,32 @@
                 android:id="@+id/txtNum"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:inputType="number"
-                android:backgroundTint="@color/white"/>
+                android:backgroundTint="@color/white"
+                android:inputType="number" />
         </com.google.android.material.textfield.TextInputLayout>
+
+        <Spinner
+            android:id="@+id/spinnerType"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/_8sdp"
+            android:entries="@array/type"
+            android:padding="@dimen/_16sdp"
+            app:layout_constraintTop_toBottomOf="@id/txtNumContainer"
+            />
+
+        <TextView
+            android:id="@+id/txtSpinnerTypeError"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="برجاء اختار النوع"
+            android:textColor="#FF0000"
+            android:visibility="visible"
+            android:layout_margin="@dimen/_8sdp"
+            app:layout_constraintEnd_toEndOf="@id/spinnerType"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/spinnerType" />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

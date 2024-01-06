@@ -1,12 +1,15 @@
 package com.devYoussef.nb3elkhieradmin.ui
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.View
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
+import androidx.navigation.NavDeepLinkBuilder
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
@@ -14,6 +17,7 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import com.devYoussef.nb3elkhieradmin.R
 import com.devYoussef.nb3elkhieradmin.databinding.ActivityMainBinding
+import com.devYoussef.nb3elkhieradmin.ui.home.order.OrdersFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -27,6 +31,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+
 
         appBarConfiguration = AppBarConfiguration(
             setOf(
@@ -112,11 +118,21 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+        Log.e( "onStart: ",intent?.getStringExtra("navigate").toString() )
+        if (intent?.getStringExtra("navigate") == "navigate") {
+            navController.navigate(R.id.ordersFragment)
+        }
+
     }
     override fun onSupportNavigateUp(): Boolean {
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
 
+
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+
+    }
 
 
 

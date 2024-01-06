@@ -171,7 +171,9 @@
             android:background="@drawable/circle_background"
             android:src="@drawable/ic_statstics"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/imageViewOrders" />
+            app:layout_constraintTop_toBottomOf="@id/imageViewOrders"
+            android:visibility="gone"
+            />
 
         <TextView
             android:id="@+id/textViewStatistics"
@@ -183,7 +185,9 @@
             android:textSize="@dimen/_18ssp"
             app:layout_constraintBottom_toBottomOf="@id/imageViewStatistics"
             app:layout_constraintStart_toEndOf="@id/imageViewStatistics"
-            app:layout_constraintTop_toTopOf="@id/imageViewStatistics" />
+            app:layout_constraintTop_toTopOf="@id/imageViewStatistics"
+            android:visibility="gone"
+            />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/imageViewArrowStatistics"
@@ -195,7 +199,9 @@
             app:elevation="0dp"
             app:layout_constraintBottom_toBottomOf="@id/imageViewStatistics"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/imageViewStatistics" />
+            app:layout_constraintTop_toTopOf="@id/imageViewStatistics"
+            android:visibility="gone"
+            />
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/imageViewRegions"
@@ -205,7 +211,7 @@
             android:background="@drawable/circle_background"
             android:src="@drawable/ic_regions"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/imageViewStatistics" />
+            app:layout_constraintTop_toBottomOf="@id/imageViewArrowOrders" />
 
         <TextView
             android:id="@+id/textViewRegions"

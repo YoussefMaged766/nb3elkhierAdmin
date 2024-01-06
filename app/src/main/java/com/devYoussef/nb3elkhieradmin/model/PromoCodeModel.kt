@@ -4,5 +4,6 @@ data class PromoCodeModel(
     val isActive: Boolean?=null,
     val price: Double?=null,
     val timesNum: Int? =null,
-    val id:String? =null
+    val id:String? =null,
+    val unitValue : String? =null,
 )

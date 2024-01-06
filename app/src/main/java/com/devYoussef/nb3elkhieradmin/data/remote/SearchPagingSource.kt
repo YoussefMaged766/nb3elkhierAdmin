@@ -12,8 +12,10 @@ class SearchPagingSource(
 ) :
     PagingSource<Int, ProductResponse.Data>() {
     override fun getRefreshKey(state: PagingState<Int, ProductResponse.Data>): Int? {
-       //TODO: not implemented yet
-        return state.anchorPosition
+        return state.anchorPosition?.let { anchorPosition ->
+            state.closestPageToPosition(anchorPosition)?.prevKey?.plus(1)
+                ?: state.closestPageToPosition(anchorPosition)?.nextKey?.minus(1)
+        }
     }
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, ProductResponse.Data> {

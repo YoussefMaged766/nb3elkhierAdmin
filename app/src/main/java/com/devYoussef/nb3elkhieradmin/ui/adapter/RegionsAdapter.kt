@@ -2,18 +2,10 @@ package com.devYoussef.nb3elkhieradmin.ui.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import com.devYoussef.nb3elkhieradmin.databinding.BannerItemBinding
-import com.devYoussef.nb3elkhieradmin.databinding.PromoCodeItemBinding
 import com.devYoussef.nb3elkhieradmin.databinding.RegionItemBinding
-import com.devYoussef.nb3elkhieradmin.databinding.UserBanItemBinding
-import com.devYoussef.nb3elkhieradmin.model.BannerResponse
-import com.devYoussef.nb3elkhieradmin.model.BlockUsersResponse
-import com.devYoussef.nb3elkhieradmin.model.PromoCodeResponse
 import com.devYoussef.nb3elkhieradmin.model.RegionsResponse
 
 class RegionsAdapter(private var listner: OnItemClickListener) :

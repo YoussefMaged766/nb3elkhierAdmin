@@ -133,15 +133,15 @@
     <fragment
         android:id="@+id/ordersFragment"
         android:name="com.devYoussef.nb3elkhieradmin.ui.home.order.OrdersFragment"
-        tools:layout="@layout/fragment_orders" >
+        tools:layout="@layout/fragment_orders">
         <action
             android:id="@+id/action_ordersFragment_to_detailsOrderFragment"
             app:destination="@id/detailsOrderFragment"
             app:enterAnim="@anim/enter_anim"
             app:exitAnim="@anim/exit_anim"
             app:popEnterAnim="@anim/pop_exit_anim"
-            app:popExitAnim="@anim/pop_enter_anim"
-            />
+            app:popExitAnim="@anim/pop_enter_anim" />
+
     </fragment>
     <fragment
         android:id="@+id/statisticsFragment"

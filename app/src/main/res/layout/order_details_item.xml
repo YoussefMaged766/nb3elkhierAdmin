@@ -12,23 +12,20 @@
         android:layout_height="match_parent"
         android:src="@drawable/ic_delete"
         android:backgroundTint="#EBEAE6"
-        app:elevation="0dp"
         app:tint="#BAB0B0"
         android:id="@+id/btnDelete"
-        android:layout_gravity="center"
-
         />
 
     <TextView
         android:id="@+id/txtOrderName"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="2"
+        android:layout_weight="3"
         android:padding="@dimen/_8sdp"
         android:text="علبه بيبسي"
         android:textColor="@color/black"
-        android:gravity="start"
-        android:layout_gravity="center"
+        android:gravity="center"
+        android:layout_gravity="start"
         />
 
     <TextView
@@ -47,12 +44,11 @@
         android:id="@+id/txtTotalPrice"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:padding="@dimen/_8sdp"
+        android:layout_weight="2"
         android:text="price"
         android:textColor="#9D9B9B"
         android:gravity="center"
-        android:layout_gravity="center"
+
         />
 
 

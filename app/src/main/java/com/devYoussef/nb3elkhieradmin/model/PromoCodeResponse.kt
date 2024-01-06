@@ -15,6 +15,7 @@ data class PromoCodeResponse(
         val timesNum: Int?,
         val updatedAt: String?,
         val usedNum: Int?,
-        val userId: List<String>?
+        val userId: List<String>?,
+        val unitValue:String?
     )
 }

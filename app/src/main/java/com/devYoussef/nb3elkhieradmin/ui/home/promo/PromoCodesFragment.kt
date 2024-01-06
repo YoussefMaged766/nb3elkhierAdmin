@@ -5,14 +5,20 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.Spinner
+import android.widget.TextView
+import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.devYoussef.nb3elkhieradmin.R
 import com.devYoussef.nb3elkhieradmin.constant.Constants.showToast
 import com.devYoussef.nb3elkhieradmin.databinding.FragmentPromoCodesBinding
+import com.devYoussef.nb3elkhieradmin.databinding.PromoCodeItemBinding
 import com.devYoussef.nb3elkhieradmin.model.PromoCodeModel
 import com.devYoussef.nb3elkhieradmin.model.PromoCodeResponse
 import com.devYoussef.nb3elkhieradmin.ui.adapter.PromoAdapter
@@ -74,15 +80,20 @@ class PromoCodesFragment : Fragment(), PromoAdapter.OnItemClickListener {
         val view = layoutInflater.inflate(R.layout.promo_code_item, null)
         val switchAvailable = view.findViewById<MaterialSwitch>(R.id.switchAvailable)
         val txtCode = view.findViewById<TextInputLayout>(R.id.txtCodeContainer)
+        val spinnerTypeError = view.findViewById<TextView>(R.id.txtSpinnerTypeError)
+        spinnerTypeError.visibility = View.VISIBLE
         txtCode.visibility = View.GONE
         switchAvailable.visibility = View.GONE
+
+        isTypeSelected(view.findViewById(R.id.spinnerType) , spinnerTypeError  , view.findViewById(R.id.txtPrice))
         builder.setPositiveButton("اضافه") { dialog, which ->
             callAddPromoCodeApi(
                 switch = switchAvailable,
                 discount = view.findViewById(R.id.txtPrice),
                 num = view.findViewById(R.id.txtNum),
                 discountContainer = view.findViewById(R.id.txtPriceContainer),
-                numContainer = view.findViewById(R.id.txtNumContainer)
+                numContainer = view.findViewById(R.id.txtNumContainer),
+                unitValue = view.findViewById(R.id.spinnerType)
             )
         }
         builder.setNegativeButton("الغاء") { dialog, which ->
@@ -216,14 +227,16 @@ class PromoCodesFragment : Fragment(), PromoAdapter.OnItemClickListener {
         discount: EditText,
         num: EditText,
         discountContainer: TextInputLayout,
-        numContainer: TextInputLayout
+        numContainer: TextInputLayout,
+        unitValue :Spinner
     ) {
         if (inputsValidation(switch, discount, num, discountContainer, numContainer)) {
             viewModel.addPromo(
                 PromoCodeModel(
                     isActive = switch.isChecked,
                     price = discount.text.toString().trim().toDouble(),
-                    timesNum = num.text.toString().trim().toInt()
+                    timesNum = num.text.toString().trim().toInt(),
+                    unitValue = unitValue.selectedItem.toString()
                 )
             )
         }
@@ -262,6 +275,28 @@ class PromoCodesFragment : Fragment(), PromoAdapter.OnItemClickListener {
         return false
     }
 
+    private fun isTypeSelected( unitValue :Spinner , itemSelect : TextView , price:EditText) {
+        unitValue.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+                if (unitValue.selectedItem.toString() == "النوع") {
+                    itemSelect.visibility = View.VISIBLE
+                    itemSelect.text = "اختر النوع"
+                }
+                else if (unitValue.selectedItem.toString() == "%"){
+                    if (price.text.toString().toInt()>=100){
+                        itemSelect.visibility = View.VISIBLE
+                        itemSelect.text = "الخصم لا يمكن ان يكون اقل من 100%"
+                    } else itemSelect.visibility = View.GONE
+                }
+                else itemSelect.visibility = View.GONE
+            }
+
+            override fun onNothingSelected(p0: AdapterView<*>?) {
+                itemSelect.visibility = View.VISIBLE
+            }
+        }
+    }
+
     private fun showDialogEditPromo(id: String, data: PromoCodeResponse.Data) {
         val builder = MaterialAlertDialogBuilder(requireContext())
         val view = layoutInflater.inflate(R.layout.promo_code_item, null)
@@ -271,17 +306,22 @@ class PromoCodesFragment : Fragment(), PromoAdapter.OnItemClickListener {
         val txtNum = view.findViewById<EditText>(R.id.txtNum)
         txtCodeContainer.visibility = View.GONE
 
+        isTypeSelected(view.findViewById(R.id.spinnerType) , view.findViewById(R.id.txtSpinnerTypeError) , txtPrice)
+
+
         viewModel.getOnePromo(id)
         switchAvailable.isChecked = data.isActive!!
         txtPrice.setText(data.price.toString())
         txtNum.setText(data.timesNum.toString())
+        setTypeSpinner(data.unitValue.toString(), PromoCodeItemBinding.bind(view))
 
         builder.setPositiveButton("تعديل") { dialog, which ->
             viewModel.updatePromo(
                 PromoCodeModel(
                     isActive = switchAvailable.isChecked,
                     price = txtPrice.text.toString().trim().toDouble(),
-                    timesNum = txtNum.text.toString().trim().toInt()
+                    timesNum = txtNum.text.toString().trim().toInt(),
+                    unitValue = view.findViewById<Spinner>(R.id.spinnerType).selectedItem.toString()
                 ), id
             )
         }
@@ -294,6 +334,21 @@ class PromoCodesFragment : Fragment(), PromoAdapter.OnItemClickListener {
         builder.setView(view)
         builder.create()
         builder.show()
+    }
+
+    private fun setTypeSpinner(value: String , binding: PromoCodeItemBinding) {
+        val adapter = ArrayAdapter.createFromResource(
+            requireContext(),
+            R.array.type,
+            android.R.layout.simple_spinner_item
+        )
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        binding.spinnerType.adapter = adapter
+        val spinnerArray = resources.getStringArray(R.array.type)
+        val position = spinnerArray.indexOf(value)
+        if (position >= 0) {
+            binding.spinnerType.setSelection(position)
+        }
     }
 
     override fun onItemClick(data: PromoCodeResponse.Data) {

@@ -110,34 +110,37 @@ class DetailsOrderFragment : Fragment() , OrderDetailsAdapter.OnItemClickListene
 
                     it.status == "success" -> {
                         loadDialogBar.hide()
-                        adapter.submitList(it.orderDetails?.userOrder?.get(0)?.products)
-                        binding.rvOrderDetails.adapter = adapter
-                        binding.txtOrderNumber.text = it.orderDetails?.userOrder?.get(0)?.orderNum
-                        binding.txtShopAddress.text =
-                            it.orderDetails?.userOrder?.get(0)?.userId?.shopName
-                        binding.txtNotes.text = it.orderDetails?.userOrder?.get(0)?.note
-                        binding.txtDate.text =
-                            convertDateToCustomFormat(it.orderDetails?.userOrder?.get(0)?.createdAt!!)
-                        binding.txtTotalTotalPrice.text =
-                            "${it.orderDetails.userOrder[0].totalPrice} ${
-                                it.orderDetails.userOrder[0].products?.get(0)?.productId?.priceCurrency
-                            }"
-                        binding.txtTotalQuantity.text =
-                            it.orderDetails.userOrder[0].quantity.toString()
+                        if (!it.orderDetails?.userOrder.isNullOrEmpty()){
+                            adapter.submitList(it.orderDetails?.userOrder?.get(0)?.products)
+                            binding.rvOrderDetails.adapter = adapter
+                            binding.txtOrderNumber.text = it.orderDetails?.userOrder?.get(0)?.orderNum
+                            binding.txtShopAddress.text =
+                                it.orderDetails?.userOrder?.get(0)?.userId?.shopName
+                            binding.txtNotes.text = it.orderDetails?.userOrder?.get(0)?.note
+                            binding.txtDate.text =
+                                convertDateToCustomFormat(it.orderDetails?.userOrder?.get(0)?.createdAt!!)
+                            binding.txtTotalTotalPrice.text =
+                                "${it.orderDetails.userOrder[0].totalPrice} ${
+                                    it.orderDetails.userOrder[0].products?.get(0)?.productId?.priceCurrency
+                                }"
+                            binding.txtTotalQuantity.text =
+                                it.orderDetails.userOrder[0].quantity.toString()
 
-                        val price = it.orderDetails.userOrder[0].promoCode?.price ?: 0.0
-                        binding.txtPromoPrice.text =
-                            "$price ${
-                                it.orderDetails.userOrder[0].products?.get(0)?.productId?.priceCurrency
-                            }"
+                            val price = it.orderDetails.userOrder[0].promoCode?.price ?: 0.0
+                            binding.txtPromoPrice.text =
+                                "$price ${
+                                    it.orderDetails.userOrder[0].products?.get(0)?.productId?.priceCurrency
+                                }"
 
-                        binding.txtBan.setOnClickListener { view ->
-                            showDialogBan(it.orderDetails.userOrder[0].userId?._id!!)
+                            binding.txtBan.setOnClickListener { view ->
+                                showDialogBan(it.orderDetails.userOrder[0].userId?._id!!)
+                            }
+                            if (it.orderDetails.userOrder[0].userId?.isBlocked == true){
+                                binding.txtBan.visibility = View.GONE
+                                binding.txt10.visibility = View.GONE
+                            }
                         }
-                        if (it.orderDetails.userOrder[0].userId?.isBlocked == true){
-                            binding.txtBan.visibility = View.GONE
-                            binding.txt10.visibility = View.GONE
-                        }
+
 
                     }
 

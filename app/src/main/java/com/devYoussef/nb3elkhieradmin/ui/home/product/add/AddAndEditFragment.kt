@@ -135,7 +135,20 @@ class AddAndEditFragment : Fragment() {
                     callApiAddProduct()
                 }
             } else {
-                callApiUpdateProduct(args.id)
+                if (validateInputs2(
+                        name,
+                        shortDescription,
+                        isOffered,
+                        quantity,
+                        price,
+                        originalPrice,
+                        offerPrice,
+                        offerItemNum
+                    ) && isCountrySelected() && isCurrencySelected(
+                    )
+                ) {
+                    callApiUpdateProduct(args.id)
+                }
             }
         }
 
@@ -317,7 +330,7 @@ class AddAndEditFragment : Fragment() {
                         binding.txtQuantity.setText(it.product?.data?.get(0)?.quantity.toString())
                         binding.txtPrice.setText(it.product?.data?.get(0)?.price.toString())
                         setCurrencySpinner(it.product?.data?.get(0)?.priceCurrency.toString())
-                        binding.txtOriginalPrice.setText(it.product?.data?.get(0)?.price.toString())
+                        binding.txtOriginalPrice.setText(it.product?.data?.get(0)?.originalPrice.toString())
                         if (it.product?.data?.get(0)?.isOffered == true) {
                             binding.txtPriceOffer.setText(it.product?.data?.get(0)?.offer?.get(0)?.priceOffered.toString())
                             binding.txtOfferNum.setText(it.product?.data?.get(0)?.offer?.get(0)?.itemNum.toString())
@@ -378,7 +391,7 @@ class AddAndEditFragment : Fragment() {
 
         val offerPrice = if (isOffered) binding.txtPriceOffer.text.toString() else "0.0"
         val offerItemNum = if (isOffered) binding.txtOfferNum.text.toString() else "0"
-        if (imgUri!=null){
+        if (imgUri != null) {
             viewModel.updateProduct(
                 ctx = requireContext(),
                 fileUri = imgUri!!,
@@ -397,7 +410,7 @@ class AddAndEditFragment : Fragment() {
                 offerItemNum = offerItemNum,
                 id = id
             )
-        } else{
+        } else {
             viewModel.updateProduct(
                 ctx = requireContext(),
                 name = name,
@@ -434,7 +447,7 @@ class AddAndEditFragment : Fragment() {
 
                     it.status == "success" -> {
                         loadDialogBar.hide()
-                        findNavController().navigate(R.id.productsFragment)
+                        findNavController().popBackStack()
                         requireContext().showToast(it.success.toString())
                     }
                 }
@@ -457,11 +470,11 @@ class AddAndEditFragment : Fragment() {
 
                     it.status == "success" -> {
                         loadDialogBar.hide()
-                        findNavController().popBackStack(R.id.productsFragment , false)
+                        findNavController().popBackStack()
                         requireContext().showToast(it.success.toString())
                     }
                 }
-                Log.e( "collectUpdateProductsState: ",it.toString() )
+                Log.e("collectUpdateProductsState: ", it.toString())
             }
         }
     }
@@ -540,6 +553,76 @@ class AddAndEditFragment : Fragment() {
 
         return isValid
     }
+
+    private fun validateInputs2(
+        name: String,
+        shortDescription: String,
+        isOffered: Boolean,
+        quantity: String,
+        price: String,
+        originalPrice: String,
+        offerPrice: String,
+        offerItemNum: String
+    ): Boolean {
+        var isValid = true
+
+        if (name.isEmpty()) {
+            binding.txtNameContainer.error = "مطلوب"
+            isValid = false
+        }
+        if (shortDescription.isEmpty()) {
+            binding.txtShortDescriptionContainer.error = "مطلوب"
+            isValid = false
+        }
+        if (quantity.isEmpty()) {
+            binding.txtQuantityContainer.error = "مطلوب"
+            isValid = false
+        }
+        if (price.isEmpty()) {
+            binding.txtPriceContainer.error = "مطلوب"
+            isValid = false
+        }
+        if (originalPrice.isEmpty()) {
+            binding.txtOriginalPriceContainer.error = "مطلوب"
+            isValid = false
+        }
+        if (isOffered) {
+            if (offerPrice.isEmpty()) {
+                binding.txtPriceOfferContainer.error = "مطلوب"
+                isValid = false
+            }
+            if (offerItemNum.isEmpty()) {
+                binding.txtOfferNumContainer.error = "مطلوب"
+                isValid = false
+            }
+        }
+        binding.txtNameContainer.editText?.addTextChangedListener {
+            binding.txtNameContainer.error = null
+        }
+        binding.txtShortDescriptionContainer.editText?.addTextChangedListener {
+            binding.txtShortDescriptionContainer.error = null
+        }
+        binding.txtQuantityContainer.editText?.addTextChangedListener {
+            binding.txtQuantityContainer.error = null
+        }
+        binding.txtPriceContainer.editText?.addTextChangedListener {
+            binding.txtPriceContainer.error = null
+        }
+        binding.txtOriginalPriceContainer.editText?.addTextChangedListener {
+            binding.txtOriginalPriceContainer.error = null
+        }
+        if (isOffered) {
+            binding.txtPriceOfferContainer.editText?.addTextChangedListener {
+                binding.txtPriceOfferContainer.error = null
+            }
+            binding.txtOfferNumContainer.editText?.addTextChangedListener {
+                binding.txtOfferNumContainer.error = null
+            }
+        }
+
+        return isValid
+    }
+
 
     private fun isCountrySelected(): Boolean {
         val text = binding.spinnerCountry.selectedItem.toString()

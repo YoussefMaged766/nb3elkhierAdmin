@@ -26,7 +26,7 @@ data class OrderResponse(
             val _id: String?,
             val productId: ProductId?,
             val quantity: Int?,
-            val totalProductPrice: Int?
+            val totalProductPrice: Double?
         ) {
             data class ProductId(
                 val __v: Int?,

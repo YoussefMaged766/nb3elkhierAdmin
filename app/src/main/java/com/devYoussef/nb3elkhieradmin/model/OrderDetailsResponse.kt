@@ -20,6 +20,7 @@ data class OrderDetailsResponse(
         val totalPrice: Double?,
         val updatedAt: String?,
         val userId: UserId?
+
     ) {
         data class Product(
             val _id: String?,
@@ -68,7 +69,8 @@ data class OrderDetailsResponse(
             val timesNum: Int?,
             val updatedAt: String?,
             val usedNum: Int?,
-            val userId: List<String>?
+            val userId: List<String>?,
+            val unitValue: String?
         )
         data class UserId(
             val __v: Int?,

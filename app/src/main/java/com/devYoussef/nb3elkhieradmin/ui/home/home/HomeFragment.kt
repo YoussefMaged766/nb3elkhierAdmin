@@ -1,6 +1,11 @@
 package com.devYoussef.nb3elkhieradmin.ui.home.home
 
+import android.app.AlertDialog
+import android.content.DialogInterface
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.provider.Settings
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -9,11 +14,13 @@ import androidx.activity.OnBackPressedCallback
 import androidx.navigation.fragment.findNavController
 import com.devYoussef.nb3elkhieradmin.R
 import com.devYoussef.nb3elkhieradmin.databinding.FragmentHomeBinding
+import com.devYoussef.nb3elkhieradmin.utils.NotificationPermissionHandler
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
     private lateinit var binding: FragmentHomeBinding
+    private lateinit var permissionHandler: NotificationPermissionHandler
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -71,7 +78,42 @@ class HomeFragment : Fragment() {
         binding.imageViewArrowUsers.setOnClickListener {
             findNavController().navigate(R.id.action_homeFragment_to_usersFragment)
         }
+
+        permissionHandler = NotificationPermissionHandler(this) { isGranted ->
+            if (!isGranted) {
+                showNotificationPermissionDialog()
+
+            }
+        }
+
+        permissionHandler.checkAndRequestPermission()
+
     }
 
+    private fun showNotificationPermissionDialog() {
+        val builder = AlertDialog.Builder(requireContext())
+
+        val message = "هذا التطبيق يحتاج الى الاذن بالتنبيهات ليتمكن من ارسال التنبيهات لك"
+        builder.setMessage(message)
+
+        builder.setPositiveButton("نعم") { _: DialogInterface, _: Int ->
+            openAppSettings()
+        }
+
+        builder.setNegativeButton("لا") { dialog: DialogInterface, _: Int ->
+            dialog.dismiss()
+        }
+
+        builder.create().show()
+    }
+
+    private fun openAppSettings() {
+        Intent(
+            Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
+            Uri.parse("package:${requireContext().packageName}")
+        ).also {
+            startActivity(it)
+        }
+    }
 
 }

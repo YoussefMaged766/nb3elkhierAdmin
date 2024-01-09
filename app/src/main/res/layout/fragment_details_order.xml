@@ -40,6 +40,30 @@
             app:layout_constraintTop_toTopOf="@id/txt1" />
 
         <TextView
+            android:id="@+id/txt7"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_4sdp"
+            android:layout_marginTop="@dimen/_16sdp"
+            android:text="رقم الهاتف: "
+            android:textColor="@color/primary"
+            android:textSize="@dimen/_14ssp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@id/txtPhone"
+            app:layout_constraintTop_toTopOf="parent"
+            />
+        <TextView
+            android:id="@+id/txtPhone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/_8sdp"
+            android:textColor="#9D9B9B"
+            android:textSize="@dimen/_14ssp"
+            app:layout_constraintBottom_toBottomOf="@id/txt1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/txt1" />
+
+        <TextView
             android:id="@+id/txt2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -91,13 +115,38 @@
             app:layout_constraintStart_toEndOf="@id/txt3"
             app:layout_constraintTop_toTopOf="@id/txt3" />
 
+        <TextView
+            android:id="@+id/txt8"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/_4sdp"
+            android:text="العنوان: "
+            android:textColor="@color/primary"
+            android:textSize="@dimen/_14ssp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/txtDate"
+
+            />
+
+        <TextView
+            android:id="@+id/txtAddress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/_8sdp"
+            android:textColor="#9D9B9B"
+            android:textSize="@dimen/_14ssp"
+            app:layout_constraintBottom_toBottomOf="@id/txt8"
+            app:layout_constraintStart_toEndOf="@id/txt8"
+            app:layout_constraintTop_toTopOf="@id/txt8" />
+
         <View
             android:id="@+id/view"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginTop="@dimen/_8sdp"
             android:background="@color/black"
-            app:layout_constraintTop_toBottomOf="@id/txt3" />
+            app:layout_constraintTop_toBottomOf="@id/txtAddress" />
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/cardView"

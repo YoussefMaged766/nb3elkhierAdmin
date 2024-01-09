@@ -28,11 +28,11 @@ import java.util.Locale
 import java.util.TimeZone
 
 @AndroidEntryPoint
-class DetailsOrderFragment : Fragment() , OrderDetailsAdapter.OnItemClickListener {
+class DetailsOrderFragment : Fragment(), OrderDetailsAdapter.OnItemClickListener {
     private lateinit var binding: FragmentDetailsOrderBinding
     private val args by navArgs<DetailsOrderFragmentArgs>()
     private val viewModel: OrderDetailsViewModel by viewModels()
-    private val adapter: OrderDetailsAdapter by lazy { OrderDetailsAdapter(this,  args.type ) }
+    private val adapter: OrderDetailsAdapter by lazy { OrderDetailsAdapter(this, args.type) }
     private val loadDialogBar: LoadDialogBar by lazy {
         LoadDialogBar(requireContext())
     }
@@ -110,12 +110,15 @@ class DetailsOrderFragment : Fragment() , OrderDetailsAdapter.OnItemClickListene
 
                     it.status == "success" -> {
                         loadDialogBar.hide()
-                        if (!it.orderDetails?.userOrder.isNullOrEmpty()){
+                        if (!it.orderDetails?.userOrder.isNullOrEmpty()) {
                             adapter.submitList(it.orderDetails?.userOrder?.get(0)?.products)
                             binding.rvOrderDetails.adapter = adapter
-                            binding.txtOrderNumber.text = it.orderDetails?.userOrder?.get(0)?.orderNum
+                            binding.txtOrderNumber.text =
+                                it.orderDetails?.userOrder?.get(0)?.orderNum
                             binding.txtShopAddress.text =
                                 it.orderDetails?.userOrder?.get(0)?.userId?.shopName
+                            binding.txtAddress.text = it.orderDetails?.userOrder?.get(0)?.address
+                            binding.txtPhone.text = it.orderDetails?.userOrder?.get(0)?.phone
                             binding.txtNotes.text = it.orderDetails?.userOrder?.get(0)?.note
                             binding.txtDate.text =
                                 convertDateToCustomFormat(it.orderDetails?.userOrder?.get(0)?.createdAt!!)
@@ -135,7 +138,7 @@ class DetailsOrderFragment : Fragment() , OrderDetailsAdapter.OnItemClickListene
                             binding.txtBan.setOnClickListener { view ->
                                 showDialogBan(it.orderDetails.userOrder[0].userId?._id!!)
                             }
-                            if (it.orderDetails.userOrder[0].userId?.isBlocked == true){
+                            if (it.orderDetails.userOrder[0].userId?.isBlocked == true) {
                                 binding.txtBan.visibility = View.GONE
                                 binding.txt10.visibility = View.GONE
                             }
@@ -309,14 +312,14 @@ class DetailsOrderFragment : Fragment() , OrderDetailsAdapter.OnItemClickListene
                 dialog.dismiss()
             }
             .setPositiveButton("حذف") { dialog, which ->
-                viewModel.deleteProductFromOrder(LoginModel(productId = id , orderId = args.id))
+                viewModel.deleteProductFromOrder(LoginModel(productId = id, orderId = args.id))
                 viewModel.getOrderDetails(args.id)
             }
             .show()
     }
 
     override fun onItemClick(position: Int, item: OrderDetailsResponse.UserOrder.Product) {
-      showDeleteDialog(item.productId?._id!!)
+        showDeleteDialog(item.productId?._id!!)
     }
 
 }

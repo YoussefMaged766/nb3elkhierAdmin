@@ -37,6 +37,9 @@ import com.devYoussef.nb3elkhieradmin.utils.LoadDialogBar
 import com.devYoussef.nb3elkhieradmin.utils.getFilePathFromUri
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Deferred
+import kotlinx.coroutines.async
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import java.io.File
@@ -56,7 +59,7 @@ class AddAndEditFragment : Fragment() {
     }
     private val args: AddAndEditFragmentArgs by navArgs()
     private lateinit var categoryArrayAdapter: ArrayAdapter<String>
-    private var categoryListNames = mutableListOf<String>()
+    private lateinit var categoryListNames :Deferred<MutableList<String>>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -323,6 +326,7 @@ class AddAndEditFragment : Fragment() {
                         binding.txtUpload.visibility = View.GONE
                         binding.txtName.setText(it.product?.data?.get(0)?.name)
                         binding.txtShortDescription.setText(it.product?.data?.get(0)?.shortDescription)
+                        Log.e( "collectOneProductStates: ", it.product?.data?.get(0)?.category.toString())
                         setCategorySpinner(it.product?.data?.get(0)?.category.toString())
                         setCountrySpinner(it.product?.data?.get(0)?.country.toString())
                         binding.switchAvailable.isChecked = it.product?.data?.get(0)?.isAvailable!!
@@ -388,6 +392,8 @@ class AddAndEditFragment : Fragment() {
         val price = binding.txtPrice.text.toString()
         val priceCurrency = binding.spinnerCurrency.selectedItem.toString()
         val originalPrice = binding.txtOriginalPrice.text.toString()
+
+        Log.e( "callApiUpdateProduct: ",category.toString() )
 
         val offerPrice = if (isOffered) binding.txtPriceOffer.text.toString() else "0.0"
         val offerItemNum = if (isOffered) binding.txtOfferNum.text.toString() else "0"
@@ -646,11 +652,12 @@ class AddAndEditFragment : Fragment() {
         }
     }
 
-    private fun setCategorySpinner(value: String) {
-        if (categoryListNames.isEmpty()) {
-            return
-        }
-        val position = categoryListNames.indexOf(value)
+    private suspend fun  setCategorySpinner(value: String) {
+//        if (categoryListNames.await().isEmpty()) {
+//            return
+//        }
+        delay(200)
+        val position = categoryListNames.await().indexOf(value)
         if (position >= 0) {
             binding.spinnerCategory.setSelection(position)
         }
@@ -721,10 +728,14 @@ class AddAndEditFragment : Fragment() {
     }
 
     private fun setUpCategorySpinner(list: List<CategoryResponse.Data>?) {
-        categoryListNames = list!!.map { it.name } as MutableList<String>
-        categoryArrayAdapter =
-            ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, categoryListNames)
-        categoryArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        binding.spinnerCategory.adapter = categoryArrayAdapter
+        lifecycleScope.launch{
+            categoryListNames = async { list!!.map { it.name } as MutableList<String> }
+            categoryArrayAdapter =
+                ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, categoryListNames.await())
+            categoryArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            binding.spinnerCategory.adapter = categoryArrayAdapter
+        }
+
+
     }
 }

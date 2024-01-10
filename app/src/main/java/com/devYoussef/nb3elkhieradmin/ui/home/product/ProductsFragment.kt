@@ -16,6 +16,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.paging.CombinedLoadStates
 import androidx.paging.LoadState
+import androidx.recyclerview.widget.RecyclerView
 import com.devYoussef.nab3elkheir.ui.adapter.paging.LoadStateAdapter
 import com.devYoussef.nb3elkhieradmin.R
 import com.devYoussef.nb3elkhieradmin.constant.Constants.showToast
@@ -107,6 +108,21 @@ class ProductsFragment : Fragment(), ProductsPagingAdapter.OnButton1ClickListene
         binding.swipeRefreshLayout.setOnRefreshListener {
             productAdapter.refresh()
             binding.swipeRefreshLayout.isRefreshing = false
+        }
+
+        binding.recyclerViewProducts.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                if (dy > 0 && binding.fabUp.isShown) {
+                    binding.fabUp.hide()
+                } else if (dy < 0 && !binding.fabUp.isShown) {
+                    binding.fabUp.show()
+                }
+            }
+        })
+
+        binding.fabUp.setOnClickListener {
+            binding.recyclerViewProducts.smoothScrollToPosition(0)
+
         }
 
 

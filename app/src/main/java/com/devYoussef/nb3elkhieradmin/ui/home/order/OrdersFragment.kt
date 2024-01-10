@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
@@ -15,6 +16,7 @@ import com.devYoussef.nb3elkhieradmin.ui.home.order.cancel.CancelOrderFragment
 import com.devYoussef.nb3elkhieradmin.ui.home.order.current.CurrentOrderFragment
 import com.devYoussef.nb3elkhieradmin.ui.home.order.past.PastOrderFragment
 import com.devYoussef.nb3elkhieradmin.utils.FadeOutTransformation
+import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -23,7 +25,7 @@ class OrdersFragment : Fragment() {
 
     private lateinit var binding: FragmentOrdersBinding
     private val fadeOutTransformation = FadeOutTransformation()
-
+    private var currentTabIndex: Int = 0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -69,6 +71,24 @@ class OrdersFragment : Fragment() {
             tab.text = adapter.getPageTitle(position)
             binding.viewpager.setCurrentItem(tab.position, true)
         }.attach()
+
+        binding.tabs.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+            override fun onTabSelected(tab: TabLayout.Tab?) {
+                tab?.let {
+                    currentTabIndex = it.position
+                }
+            }
+
+            override fun onTabUnselected(tab: TabLayout.Tab?) {
+                // Not needed for this example
+            }
+
+            override fun onTabReselected(tab: TabLayout.Tab?) {
+                // Not needed for this example
+            }
+        })
     }
+
+
 
 }

@@ -32,10 +32,6 @@ class NotificationPermissionHandler(
                 // Request the permission
                 permissionLauncher.launch(notificationPermission)
             }
-        } else {
-            // Handle devices with SDK version below TIRAMISU if needed
-            // You might want to handle it differently based on your requirements
-            onPermissionResult(false)
         }
     }
 }

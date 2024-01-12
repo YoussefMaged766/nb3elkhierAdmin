@@ -10,6 +10,7 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
+import com.devYoussef.nb3elkhieradmin.data.local.DataStoreRepository
 import com.devYoussef.nb3elkhieradmin.data.remote.ProductsPagingSource
 import com.devYoussef.nb3elkhieradmin.data.remote.Repo
 import com.devYoussef.nb3elkhieradmin.data.remote.SearchPagingSource
@@ -29,12 +30,15 @@ import javax.inject.Inject
 @HiltViewModel
 class ProductsViewModel @Inject constructor(
     private val webServices: WebServices,
-    private val repo: Repo
+    private val repo: Repo,
+    private val dataStoreRepository: DataStoreRepository
 ) : ViewModel() {
+
 
     private val _fileName = MutableLiveData("")
     val fileName: LiveData<String>
         get() = _fileName
+
 
     // new added
     fun setFileName(name: String) {
@@ -68,7 +72,7 @@ class ProductsViewModel @Inject constructor(
         getCategory()
     }
 
-    fun deleteProduct(id:String) = viewModelScope.launch {
+    fun deleteProduct(id: String) = viewModelScope.launch {
         repo.deleteProduct(id).collect { status ->
             when (status) {
                 is Status.Loading -> {
@@ -135,7 +139,7 @@ class ProductsViewModel @Inject constructor(
         }
     }
 
-     fun getOneProduct(id:String) = viewModelScope.launch {
+    fun getOneProduct(id: String) = viewModelScope.launch {
         repo.getOneProduct(id).collect { status ->
             when (status) {
                 is Status.Loading -> {
@@ -184,7 +188,7 @@ class ProductsViewModel @Inject constructor(
         offerPrice: String,
         offerItemNum: String,
         priceCurrency: String
-    )=viewModelScope.launch {
+    ) = viewModelScope.launch {
         repo.addProduct(
             ctx = ctx,
             fileUri = fileUri,
@@ -205,7 +209,8 @@ class ProductsViewModel @Inject constructor(
             when (status) {
                 is Status.Loading -> {
                     _stateAddProduct.update { result ->
-                        result.copy(isLoading = true,
+                        result.copy(
+                            isLoading = true,
                             error = null,
                             success = null,
                             status = null
@@ -240,8 +245,8 @@ class ProductsViewModel @Inject constructor(
 
     fun updateProduct(
         ctx: Context,
-        fileUri: Uri?=null,
-        fileRealPath: String?=null,
+        fileUri: Uri? = null,
+        fileRealPath: String? = null,
         name: String,
         price: String,
         shortDescription: String,
@@ -254,8 +259,8 @@ class ProductsViewModel @Inject constructor(
         offerPrice: String,
         offerItemNum: String,
         priceCurrency: String,
-        id:String
-    )=viewModelScope.launch {
+        id: String
+    ) = viewModelScope.launch {
         repo.updateProduct(
             ctx = ctx,
             fileUri = fileUri,
@@ -277,7 +282,8 @@ class ProductsViewModel @Inject constructor(
             when (status) {
                 is Status.Loading -> {
                     _stateUpdateProduct.update { result ->
-                        result.copy(isLoading = true,
+                        result.copy(
+                            isLoading = true,
                             error = null,
                             success = null,
                             status = null
@@ -331,16 +337,18 @@ class ProductsViewModel @Inject constructor(
         }
     }
 
-    fun getPagingProducts() {
+    fun getPagingProducts(currentPage: Int = 1) {
         viewModelScope.launch(Dispatchers.IO) {
             Pager(
                 config = PagingConfig(
                     pageSize = 15,
                     enablePlaceholders = false
                 ),
+                initialKey = currentPage,
                 pagingSourceFactory = {
                     ProductsPagingSource(
                         webServices = webServices,
+                        dataStoreRepository = dataStoreRepository
                     )
                 }
 
@@ -350,8 +358,6 @@ class ProductsViewModel @Inject constructor(
             }
         }
     }
-
-
 
 
 }

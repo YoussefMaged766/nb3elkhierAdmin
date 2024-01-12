@@ -1,8 +1,5 @@
 package com.devYoussef.nb3elkhieradmin.ui.home.product
 
-import android.content.Intent
-import android.graphics.Bitmap
-import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -10,16 +7,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
-import androidx.activity.result.ActivityResultLauncher
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.paging.CombinedLoadStates
 import androidx.paging.LoadState
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.devYoussef.nab3elkheir.ui.adapter.paging.LoadStateAdapter
 import com.devYoussef.nb3elkhieradmin.R
+import com.devYoussef.nb3elkhieradmin.constant.Constants.dataStore
 import com.devYoussef.nb3elkhieradmin.constant.Constants.showToast
+import com.devYoussef.nb3elkhieradmin.data.local.DataStoreRepository
 import com.devYoussef.nb3elkhieradmin.databinding.FragmentProductsBinding
 import com.devYoussef.nb3elkhieradmin.databinding.ProductItemBinding
 import com.devYoussef.nb3elkhieradmin.model.AuthResponse
@@ -31,6 +30,7 @@ import com.google.android.material.search.SearchView
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 
@@ -41,6 +41,10 @@ class ProductsFragment : Fragment(), ProductsPagingAdapter.OnButton1ClickListene
     private val productAdapter by lazy { ProductsPagingAdapter(this) }
     private val loadDialogBar: LoadDialogBar by lazy {
         LoadDialogBar(requireContext())
+    }
+    private lateinit var dataStoreRepository: DataStoreRepository
+    private val layoutManager by lazy {
+        binding.recyclerViewProducts.layoutManager
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -60,6 +64,7 @@ class ProductsFragment : Fragment(), ProductsPagingAdapter.OnButton1ClickListene
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        dataStoreRepository = DataStoreRepository(requireContext().dataStore)
         callApi()
         collectProductsState()
         collectDeleteState()
@@ -80,7 +85,6 @@ class ProductsFragment : Fragment(), ProductsPagingAdapter.OnButton1ClickListene
             viewLifecycleOwner,
             object : OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {
-
                     findNavController().navigate(R.id.homeFragment)
                 }
 
@@ -90,7 +94,6 @@ class ProductsFragment : Fragment(), ProductsPagingAdapter.OnButton1ClickListene
                 ProductsFragmentDirections.actionProductsFragmentToAddAndEditFragment("-1")
             findNavController().navigate(action)
         }
-
 
 
     }
@@ -104,7 +107,26 @@ class ProductsFragment : Fragment(), ProductsPagingAdapter.OnButton1ClickListene
             binding.searchView.clearFocusAndHideKeyboard()
             true
         }
-        viewModel.getPagingProducts()
+        // get page from datastore
+        lifecycleScope.launch {
+            val page = dataStoreRepository.getPageNumber("page")
+            Log.e( "callApi: ",page.toString() )
+            if (page !=1){
+                if (page != null) {
+                    viewModel.getPagingProducts((page - 1))
+                }
+            } else {
+                viewModel.getPagingProducts(page )
+            }
+
+        }
+
+                lifecycleScope.launch {
+                    val position = dataStoreRepository.getPageNumber("position") ?: 0
+                    binding.recyclerViewProducts.scrollToPosition(position)
+                }
+
+
         binding.swipeRefreshLayout.setOnRefreshListener {
             productAdapter.refresh()
             binding.swipeRefreshLayout.isRefreshing = false
@@ -201,10 +223,37 @@ class ProductsFragment : Fragment(), ProductsPagingAdapter.OnButton1ClickListene
         }
     }
 
-    override fun onButtonEditClick(data: ProductResponse.Data, binding: ProductItemBinding) {
+    override fun onPause() {
+        super.onPause()
+        val layoutManager = binding.recyclerViewProducts.layoutManager
+        if (layoutManager is LinearLayoutManager) {
+            val position = layoutManager.findFirstVisibleItemPosition()
+            lifecycleScope.launch {
+                dataStoreRepository.savePageNumber("position", position)
+                Log.e( "callApi:", position.toString())
+            }
+        }
+    }
+
+//    override fun onDestroyView() {
+//        super.onDestroyView()
+//        Log.e( "callApi:  ","alo" )
+//        binding.recyclerViewProducts.adapter = null
+//        lifecycleScope.launch {
+//            dataStoreRepository.savePageNumber("position", 0)
+//            dataStoreRepository.savePageNumber("page", 1)
+//        }
+//    }
+
+    override fun onButtonEditClick(data: ProductResponse.Data, binding: ProductItemBinding , position: Int) {
         val action =
             ProductsFragmentDirections.actionProductsFragmentToAddAndEditFragment(data._id.toString())
         findNavController().navigate(action)
+            lifecycleScope.launch {
+                Log.e("onButtonEditClick: ", position.toString())
+                dataStoreRepository.savePageNumber("position", position)
+            }
+
     }
 
     override fun onButtonDeleteClick(data: ProductResponse.Data, binding: ProductItemBinding) {

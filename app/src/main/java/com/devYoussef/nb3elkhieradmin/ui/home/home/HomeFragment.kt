@@ -11,17 +11,21 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.devYoussef.nb3elkhieradmin.R
+import com.devYoussef.nb3elkhieradmin.constant.Constants.dataStore
+import com.devYoussef.nb3elkhieradmin.data.local.DataStoreRepository
 import com.devYoussef.nb3elkhieradmin.databinding.FragmentHomeBinding
 import com.devYoussef.nb3elkhieradmin.utils.NotificationPermissionHandler
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
     private lateinit var binding: FragmentHomeBinding
     private lateinit var permissionHandler: NotificationPermissionHandler
-
+    private lateinit var dataStoreRepository: DataStoreRepository
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -47,7 +51,11 @@ class HomeFragment : Fragment() {
                     requireActivity().finish()
                 }
             })
-
+        dataStoreRepository = DataStoreRepository(requireContext().dataStore)
+        lifecycleScope.launch {
+            dataStoreRepository.savePageNumber("position", 0)
+            dataStoreRepository.savePageNumber("page", 1)
+        }
         binding.imageViewArrowProduct.setOnClickListener {
             findNavController().navigate(R.id.action_homeFragment_to_productsFragment)
         }

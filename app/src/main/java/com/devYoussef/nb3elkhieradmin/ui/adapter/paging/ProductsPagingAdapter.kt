@@ -31,7 +31,7 @@ class ProductsPagingAdapter(private val listener: OnButton1ClickListener) :Pagin
 
     }
     interface OnButton1ClickListener {
-        fun onButtonEditClick(data: ProductResponse.Data, binding: ProductItemBinding)
+        fun onButtonEditClick(data: ProductResponse.Data, binding: ProductItemBinding , position: Int)
         fun onButtonDeleteClick(data: ProductResponse.Data, binding: ProductItemBinding)
     }
 
@@ -53,7 +53,7 @@ class ProductsPagingAdapter(private val listener: OnButton1ClickListener) :Pagin
         holder.bind(getItem(holder.absoluteAdapterPosition)!!)
 
         holder.binding.btnEditProduct.setOnClickListener {
-            listener.onButtonEditClick(getItem(holder.absoluteAdapterPosition)!!, holder.binding)
+            listener.onButtonEditClick(getItem(holder.absoluteAdapterPosition)!!, holder.binding , holder.absoluteAdapterPosition)
         }
 
         holder.binding.btnDeleteProduct.setOnClickListener {

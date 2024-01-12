@@ -3,14 +3,17 @@ package com.devYoussef.nb3elkhieradmin.data.remote
 import android.util.Log
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
+import com.devYoussef.nb3elkhieradmin.data.local.DataStoreRepository
 import com.devYoussef.nb3elkhieradmin.model.ProductResponse
 import com.devYoussef.nb3elkhieradmin.utils.WebServices
+import javax.inject.Inject
 
-class ProductsPagingSource(
+class ProductsPagingSource @Inject constructor(
     private val webServices: WebServices,
+    private val dataStoreRepository: DataStoreRepository
+):
+PagingSource<Int, ProductResponse.Data>() {
 
-) :
-    PagingSource<Int, ProductResponse.Data>() {
     override fun getRefreshKey(state: PagingState<Int, ProductResponse.Data>): Int? {
 
         return state.anchorPosition?.let { anchorPosition ->
@@ -21,7 +24,9 @@ class ProductsPagingSource(
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, ProductResponse.Data> {
         return try {
+
             val currentPage = params.key ?: 1
+            dataStoreRepository.savePageNumber("page", currentPage)
 
             val response = webServices.getProducts(page = currentPage )
 

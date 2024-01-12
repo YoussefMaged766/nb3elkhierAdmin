@@ -136,7 +136,7 @@ class SearchResultFragment : Fragment(), ProductsPagingAdapter.OnButton1ClickLis
     }
 
 
-    override fun onButtonEditClick(data: ProductResponse.Data, binding: ProductItemBinding) {
+    override fun onButtonEditClick(data: ProductResponse.Data, binding: ProductItemBinding , position: Int) {
         val action =
             SearchResultFragmentDirections.actionSearchResultFragmentToAddAndEditFragment(data._id.toString())
         findNavController().navigate(action)

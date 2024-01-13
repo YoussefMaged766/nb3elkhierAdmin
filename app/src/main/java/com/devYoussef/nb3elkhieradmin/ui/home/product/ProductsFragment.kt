@@ -31,6 +31,7 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 
@@ -108,23 +109,50 @@ class ProductsFragment : Fragment(), ProductsPagingAdapter.OnButton1ClickListene
             true
         }
         // get page from datastore
+//        lifecycleScope.launch {
+//            val page = dataStoreRepository.getPageNumber("page")
+//            Log.e( "callApi: ",page.toString() )
+//            if (page !=1){
+//                if (page != null) {
+//                    viewModel.getPagingProducts((page - 1))
+//                }
+//            } else {
+//                viewModel.getPagingProducts(page )
+//            }
+//
+//        }
+        binding.recyclerViewProducts.adapter =
+            productAdapter.withLoadStateHeaderAndFooter(
+                header = LoadStateAdapter { productAdapter.retry() },
+                footer = LoadStateAdapter { productAdapter.retry() }
+            )
         lifecycleScope.launch {
             val page = dataStoreRepository.getPageNumber("page")
-            Log.e( "callApi: ",page.toString() )
-            if (page !=1){
+            if (page!=1){
                 if (page != null) {
-                    viewModel.getPagingProducts((page - 1))
-                }
-            } else {
-                viewModel.getPagingProducts(page )
-            }
+                    viewModel.getAllProducts(page - 1).collect{
+                        productAdapter.submitData(it).apply {
+                            val position = dataStoreRepository.getPageNumber("position") ?: 0
+                            binding.recyclerViewProducts.scrollToPosition(position)
+                        }
 
+                    }
+                }
+            } else{
+                viewModel.getAllProducts(page).collect{
+                    productAdapter.submitData(it).apply {
+                        val position = dataStoreRepository.getPageNumber("position") ?: 0
+                        binding.recyclerViewProducts.scrollToPosition(position)
+                    }
+
+                }
+            }
         }
 
-                lifecycleScope.launch {
-                    val position = dataStoreRepository.getPageNumber("position") ?: 0
-                    binding.recyclerViewProducts.scrollToPosition(position)
-                }
+//                lifecycleScope.launch {
+//                    val position = dataStoreRepository.getPageNumber("position") ?: 0
+//                    binding.recyclerViewProducts.scrollToPosition(position)
+//                }
 
 
         binding.swipeRefreshLayout.setOnRefreshListener {
@@ -177,16 +205,16 @@ class ProductsFragment : Fragment(), ProductsPagingAdapter.OnButton1ClickListene
     }
 
     private fun collectProductsState() {
-        lifecycleScope.launch {
-            viewModel.dataProduct.collect {
-                productAdapter.submitData(it)
-                binding.recyclerViewProducts.adapter =
-                    productAdapter.withLoadStateHeaderAndFooter(
-                        header = LoadStateAdapter { productAdapter.retry() },
-                        footer = LoadStateAdapter { productAdapter.retry() }
-                    )
-            }
-        }
+//        lifecycleScope.launch {
+//            viewModel.dataProduct.collect {
+//                productAdapter.submitData(it)
+//                binding.recyclerViewProducts.adapter =
+//                    productAdapter.withLoadStateHeaderAndFooter(
+//                        header = LoadStateAdapter { productAdapter.retry() },
+//                        footer = LoadStateAdapter { productAdapter.retry() }
+//                    )
+//            }
+//        }
 
 
         productAdapter.addLoadStateListener { loadState ->

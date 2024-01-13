@@ -20,6 +20,7 @@ import com.devYoussef.nb3elkhieradmin.utils.Status
 import com.devYoussef.nb3elkhieradmin.utils.WebServices
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
@@ -352,11 +353,26 @@ class ProductsViewModel @Inject constructor(
                     )
                 }
 
-            ).flow.cachedIn(viewModelScope).collectLatest {
-                _dataProduct.value = it
-
-            }
+            ).flow.cachedIn(viewModelScope)
         }
+    }
+
+    fun getAllProducts(currentPage: Int = 1): Flow<PagingData<ProductResponse.Data>> {
+        return Pager(
+            config = PagingConfig(
+                pageSize = 15,
+                enablePlaceholders = false
+            ),
+            initialKey = currentPage,
+            pagingSourceFactory = {
+                ProductsPagingSource(
+                    webServices = webServices,
+                    dataStoreRepository = dataStoreRepository
+                )
+            }
+
+
+        ).flow.cachedIn(viewModelScope)
     }
 
 

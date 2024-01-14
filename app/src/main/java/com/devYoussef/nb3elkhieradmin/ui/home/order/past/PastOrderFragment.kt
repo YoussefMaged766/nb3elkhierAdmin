@@ -61,13 +61,6 @@ class PastOrderFragment : Fragment(), OrderAdapter.OnItemClickListener {
             viewModel.getAllOrder()
             binding.swipeRefreshLayout.isRefreshing = false
         }
-//        addMenu()
-//        lifecycleScope.launch {
-//            viewModel.filteredList.collect {
-//                Log.e( "onViewCreated3: ", it.size.toString())
-//                updateAdapter(it)
-//            }
-//        }
         binding.fabFilter.setOnClickListener {
             showButtonSheet()
         }
@@ -94,7 +87,7 @@ class PastOrderFragment : Fragment(), OrderAdapter.OnItemClickListener {
                         } else {
                             binding.imgNoOrder.visibility = View.GONE
                             binding.ordersRecyclerView.visibility = View.VISIBLE
-                            adapter.submitList(list)
+                            adapter.submitList(list.sortedByDescending { it.createdAt })
                             binding.ordersRecyclerView.adapter = adapter
                         }
 
@@ -109,47 +102,7 @@ class PastOrderFragment : Fragment(), OrderAdapter.OnItemClickListener {
         }
     }
 
-    private fun addMenu() {
-        val imgFilter = requireActivity().findViewById<ImageView>(R.id.imgFilter)
-        imgFilter.setOnClickListener {
-            val popupMenu = PopupMenu(requireContext(), it)
-            popupMenu.menuInflater.inflate(R.menu.filter_menu, popupMenu.menu)
 
-            popupMenu.setOnMenuItemClickListener { item ->
-                when (item.itemId) {
-                    R.id.action_sort_by_date_asc -> {
-                        sortedList = filteredList.value.sortedWith(compareBy { it.createdAt })
-                        viewModel.updateFilteredList(sortedList)
-                        true
-                    }
-
-                    R.id.action_sort_by_date_desc -> {
-                        sortedList =
-                            filteredList.value.sortedWith(compareByDescending { it.createdAt })
-                        viewModel.updateFilteredList(sortedList)
-                        true
-                    }
-
-                    R.id.action_sort_by_price_asc -> {
-                        sortedList = filteredList.value.sortedWith(compareBy { it.totalPrice })
-                        Log.e("addMenu3: ", sortedList.size.toString())
-                        viewModel.updateFilteredList(sortedList)
-                        true
-                    }
-
-                    R.id.action_sort_by_price_desc -> {
-                        sortedList =
-                            filteredList.value.sortedWith(compareByDescending { it.totalPrice })
-                        viewModel.updateFilteredList(sortedList)
-                        true
-                    }
-
-                    else -> false
-                }
-            }
-            popupMenu.show()
-        }
-    }
 
     private fun updateAdapter(filteredListResult: List<OrderResponse.AllOrder>) {
         // Detach adapter from RecyclerView

@@ -69,50 +69,42 @@ class MainActivity : AppCompatActivity() {
                 R.id.productsFragment -> {
                     binding.appBar.visibility = View.VISIBLE
                     binding.txtTitleToolBar.text = "المنتجات"
-                    binding.imgFilter.visibility = View.GONE
                 }
                 R.id.promoCodesFragment -> {
                     binding.appBar.visibility = View.VISIBLE
                     binding.txtTitleToolBar.text = "البرومو كود"
-                    binding.imgFilter.visibility = View.GONE
                 }
                 R.id.ordersFragment -> {
                     binding.appBar.visibility = View.VISIBLE
                     binding.txtTitleToolBar.text = "الفواتير"
-                    binding.imgFilter.visibility = View.VISIBLE
                 }
                 R.id.bannersFragment -> {
                     binding.appBar.visibility = View.VISIBLE
                     binding.txtTitleToolBar.text = "البانرات"
-                    binding.imgFilter.visibility = View.GONE
                 }
                 R.id.statisticsFragment -> {
                     binding.appBar.visibility = View.VISIBLE
                     binding.txtTitleToolBar.text = "الاحصائيات"
-                    binding.imgFilter.visibility = View.GONE
 
                 }
                 R.id.regionsFragment -> {
                     binding.appBar.visibility = View.VISIBLE
                     binding.txtTitleToolBar.text = "المناطق"
-                    binding.imgFilter.visibility = View.GONE
                 }
                 R.id.blocksFragment -> {
                     binding.appBar.visibility = View.VISIBLE
                     binding.txtTitleToolBar.text = "القائمه السوداء"
-                    binding.imgFilter.visibility = View.GONE
                 }
                 R.id.addAndEditFragment -> {
                     binding.appBar.visibility = View.VISIBLE
                     binding.txtTitleToolBar.text = "اضافه منتج"
-                    binding.imgFilter.visibility = View.GONE
 
 
                 }
                 R.id.detailsOrderFragment -> {
                     binding.appBar.visibility = View.VISIBLE
                     binding.txtTitleToolBar.text = "تفاصيل الفاتوره"
-                    binding.imgFilter.visibility = View.GONE
+
 
                 }
             }

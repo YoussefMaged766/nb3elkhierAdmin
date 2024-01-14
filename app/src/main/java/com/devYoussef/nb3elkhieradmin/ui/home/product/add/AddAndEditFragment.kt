@@ -328,8 +328,11 @@ class AddAndEditFragment : Fragment() {
                         binding.txtUpload.visibility = View.GONE
                         binding.txtName.setText(it.product?.data?.get(0)?.name)
                         binding.txtShortDescription.setText(it.product?.data?.get(0)?.shortDescription)
-                        Log.e( "collectOneProductStates: ", it.product?.data?.get(0)?.category.toString())
-                       categoryName =(it.product?.data?.get(0)?.category.toString())
+                        Log.e(
+                            "collectOneProductStates: ",
+                            it.product?.data?.get(0)?.category.toString()
+                        )
+                        categoryName = (it.product?.data?.get(0)?.category.toString())
                         setCountrySpinner(it.product?.data?.get(0)?.country.toString())
                         binding.switchAvailable.isChecked = it.product?.data?.get(0)?.isAvailable!!
                         binding.switchOffer.isChecked = it.product?.data?.get(0)?.isOffered!!
@@ -395,7 +398,7 @@ class AddAndEditFragment : Fragment() {
         val priceCurrency = binding.spinnerCurrency.selectedItem.toString()
         val originalPrice = binding.txtOriginalPrice.text.toString()
 
-        Log.e( "callApiUpdateProduct: ",category.toString() )
+        Log.e("callApiUpdateProduct: ", category.toString())
 
         val offerPrice = if (isOffered) binding.txtPriceOffer.text.toString() else "0.0"
         val offerItemNum = if (isOffered) binding.txtOfferNum.text.toString() else "0"
@@ -736,10 +739,14 @@ class AddAndEditFragment : Fragment() {
                     categoryListNames.addAll(it.map { category -> category.name!! })
 
                     categoryArrayAdapter =
-                        ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, categoryListNames)
+                        ArrayAdapter(
+                            requireContext(),
+                            android.R.layout.simple_spinner_item,
+                            categoryListNames
+                        )
                     categoryArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
                     binding.spinnerCategory.adapter = categoryArrayAdapter
-
+                    delay(500)
                     updateCategorySpinner()
                 }
             } else {

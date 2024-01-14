@@ -17,12 +17,15 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.devYoussef.nb3elkhieradmin.R
 import com.devYoussef.nb3elkhieradmin.constant.Constants.showToast
+import com.devYoussef.nb3elkhieradmin.databinding.BottomSheetFilterBinding
 import com.devYoussef.nb3elkhieradmin.databinding.FragmentCurrentOrderBinding
+import com.devYoussef.nb3elkhieradmin.model.FilterType
 import com.devYoussef.nb3elkhieradmin.model.OrderResponse
 import com.devYoussef.nb3elkhieradmin.ui.adapter.OrderAdapter
 import com.devYoussef.nb3elkhieradmin.ui.home.order.OrdersFragmentDirections
 import com.devYoussef.nb3elkhieradmin.ui.home.order.OrdersViewModel
 import com.devYoussef.nb3elkhieradmin.utils.LoadDialogBar
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.filter
@@ -61,12 +64,8 @@ class CurrentOrderFragment : Fragment(), OrderAdapter.OnItemClickListener {
             viewModel.getAllOrder()
             binding.swipeRefreshLayout.isRefreshing = false
         }
-        addMenu()
-        lifecycleScope.launch {
-            viewModel.filteredList.collect {
-                Log.e( "onViewCreated1: ", it.size.toString())
-                updateAdapter(it)
-            }
+        binding.fabFilter.setOnClickListener {
+            showButtonSheet()
         }
     }
 
@@ -91,7 +90,7 @@ class CurrentOrderFragment : Fragment(), OrderAdapter.OnItemClickListener {
                         } else {
                             binding.imgNoOrder.visibility = View.GONE
                             binding.ordersRecyclerView.visibility = View.VISIBLE
-                            adapter.submitList(list)
+                            adapter.submitList(list.sortedByDescending { it.createdAt })
                             binding.ordersRecyclerView.adapter = adapter
                         }
 
@@ -106,48 +105,6 @@ class CurrentOrderFragment : Fragment(), OrderAdapter.OnItemClickListener {
         }
     }
 
-    private fun addMenu() {
-        val imgFilter = requireActivity().findViewById<ImageView>(R.id.imgFilter)
-        imgFilter.setOnClickListener {
-            val popupMenu = PopupMenu(requireContext(), it)
-            popupMenu.menuInflater.inflate(R.menu.filter_menu, popupMenu.menu)
-
-            popupMenu.setOnMenuItemClickListener { item ->
-                when (item.itemId) {
-                    R.id.action_sort_by_date_asc -> {
-                        val sortedList = filteredList.value.sortedWith(compareBy { it.createdAt })
-                        viewModel.updateFilteredList(sortedList)
-                        true
-                    }
-
-                    R.id.action_sort_by_date_desc -> {
-                        val sortedList =
-                            filteredList.value.sortedWith(compareByDescending { it.createdAt })
-                        viewModel.updateFilteredList(sortedList)
-                        true
-                    }
-
-                    R.id.action_sort_by_price_asc -> {
-                        val sortedList = filteredList.value.sortedWith(compareBy { it.totalPrice })
-                        Log.e( "addMenu1: ",sortedList.size.toString() )
-                        viewModel.updateFilteredList(sortedList)
-                        true
-                    }
-
-                    R.id.action_sort_by_price_desc -> {
-                        val sortedList =
-                            filteredList.value.sortedWith(compareByDescending { it.totalPrice })
-                        viewModel.updateFilteredList(sortedList)
-                        true
-                    }
-
-                    else -> false
-                }
-            }
-            popupMenu.show()
-        }
-    }
-
     private fun updateAdapter(filteredListResult: List<OrderResponse.AllOrder>) {
         // Detach adapter from RecyclerView
         binding.ordersRecyclerView.adapter = null
@@ -157,6 +114,45 @@ class CurrentOrderFragment : Fragment(), OrderAdapter.OnItemClickListener {
 
         // Attach adapter back to RecyclerView
         binding.ordersRecyclerView.adapter = adapter
+    }
+
+    private fun showButtonSheet() {
+        val dialog = BottomSheetDialog(requireContext())
+        val binding = BottomSheetFilterBinding.inflate(layoutInflater)
+
+        binding.btnSave.setOnClickListener {
+            val selectedRadioButtonId = binding.rgFilter.checkedRadioButtonId
+            val filterType = when (selectedRadioButtonId) {
+                R.id.rbNew -> FilterType.DATE_DESC
+                R.id.rbOld -> FilterType.DATE_ASC
+                R.id.rbExpensive -> FilterType.PRICE_DESC
+                R.id.rbCheap -> FilterType.PRICE_ASC
+                else -> null
+            }
+            Log.e("Selected RadioButton ID: ", selectedRadioButtonId.toString())
+
+            val sortedList = sortList(
+                filteredList.value,
+                filterType ?: return@setOnClickListener
+            )
+            Log.e("showButtonSheet: ", sortedList.size.toString())
+            updateAdapter(sortedList)
+            dialog.dismiss()
+        }
+        dialog.setContentView(binding.root)
+        dialog.show()
+
+    }
+    private fun sortList(
+        list: List<OrderResponse.AllOrder>,
+        sortingType: FilterType
+    ): List<OrderResponse.AllOrder> {
+        return when (sortingType) {
+            FilterType.DATE_ASC -> list.sortedBy { it.createdAt }
+            FilterType.DATE_DESC -> list.sortedByDescending { it.createdAt }
+            FilterType.PRICE_ASC -> list.sortedBy { it.totalPrice }
+            FilterType.PRICE_DESC -> list.sortedByDescending { it.totalPrice }
+        }
     }
 
     override fun onItemClick(item: OrderResponse.AllOrder) {

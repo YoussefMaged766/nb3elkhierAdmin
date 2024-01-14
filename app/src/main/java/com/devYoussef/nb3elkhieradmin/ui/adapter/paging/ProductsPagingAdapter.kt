@@ -3,6 +3,7 @@ package com.devYoussef.nb3elkhieradmin.ui.adapter.paging
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -27,7 +28,8 @@ class ProductsPagingAdapter(private val listener: OnButton1ClickListener) :Pagin
             newItem: dummyProduct
         ): Boolean {
             return oldItem.data.image?.url == newItem.data.image?.url &&
-                    oldItem.data.name == newItem.data.name
+                    oldItem.data.name == newItem.data.name &&
+                    oldItem.data.isAvailable == newItem.data.isAvailable
         }
 
     }
@@ -43,6 +45,8 @@ class ProductsPagingAdapter(private val listener: OnButton1ClickListener) :Pagin
 
             Glide.with(binding.root).load(data.data.image?.url).into(binding.imgProduct)
             binding.txtProductName.text = data.data.name
+
+            binding.overlay.isVisible = data.data.isAvailable != true
         }
 
     }

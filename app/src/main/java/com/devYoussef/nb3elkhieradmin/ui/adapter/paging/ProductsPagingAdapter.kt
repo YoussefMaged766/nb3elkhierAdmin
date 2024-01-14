@@ -50,16 +50,20 @@ class ProductsPagingAdapter(private val listener: OnButton1ClickListener) :Pagin
     }
 
     override fun onBindViewHolder(holder: viewholder, position: Int) {
-        holder.bind(getItem(holder.absoluteAdapterPosition)!!)
+        if (position < itemCount) {
+            val item = getItem(position)
+            if (item != null) {
+                holder.bind(item)
 
-        holder.binding.btnEditProduct.setOnClickListener {
-            listener.onButtonEditClick(getItem(holder.absoluteAdapterPosition)!!, holder.binding , holder.absoluteAdapterPosition)
+                holder.binding.btnEditProduct.setOnClickListener {
+                    listener.onButtonEditClick(item, holder.binding , position)
+                }
+
+                holder.binding.btnDeleteProduct.setOnClickListener {
+                    listener.onButtonDeleteClick(item, holder.binding)
+                }
+            }
         }
-
-        holder.binding.btnDeleteProduct.setOnClickListener {
-            listener.onButtonDeleteClick(getItem(holder.absoluteAdapterPosition)!!, holder.binding)
-        }
-
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): viewholder {

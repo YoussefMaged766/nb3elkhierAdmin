@@ -59,7 +59,8 @@ class AddAndEditFragment : Fragment() {
     }
     private val args: AddAndEditFragmentArgs by navArgs()
     private lateinit var categoryArrayAdapter: ArrayAdapter<String>
-    private lateinit var categoryListNames :Deferred<MutableList<String>>
+    private var categoryListNames: MutableList<String> = mutableListOf()
+    var categoryName = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -78,6 +79,7 @@ class AddAndEditFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewModel.getCategory()
         collectCategoryStates()
         if (args.id != "-1") {
             viewModel.getOneProduct(args.id)
@@ -327,7 +329,7 @@ class AddAndEditFragment : Fragment() {
                         binding.txtName.setText(it.product?.data?.get(0)?.name)
                         binding.txtShortDescription.setText(it.product?.data?.get(0)?.shortDescription)
                         Log.e( "collectOneProductStates: ", it.product?.data?.get(0)?.category.toString())
-                        setCategorySpinner(it.product?.data?.get(0)?.category.toString())
+                       categoryName =(it.product?.data?.get(0)?.category.toString())
                         setCountrySpinner(it.product?.data?.get(0)?.country.toString())
                         binding.switchAvailable.isChecked = it.product?.data?.get(0)?.isAvailable!!
                         binding.switchOffer.isChecked = it.product?.data?.get(0)?.isOffered!!
@@ -652,14 +654,13 @@ class AddAndEditFragment : Fragment() {
         }
     }
 
-    private suspend fun  setCategorySpinner(value: String) {
-//        if (categoryListNames.await().isEmpty()) {
-//            return
-//        }
-        delay(200)
-        val position = categoryListNames.await().indexOf(value)
-        if (position >= 0) {
-            binding.spinnerCategory.setSelection(position)
+    private fun updateCategorySpinner() {
+        if (categoryListNames.isNotEmpty()) {
+            val value = categoryName
+            val position = categoryListNames.indexOf(value)
+            if (position >= 0) {
+                binding.spinnerCategory.setSelection(position)
+            }
         }
     }
 
@@ -728,14 +729,22 @@ class AddAndEditFragment : Fragment() {
     }
 
     private fun setUpCategorySpinner(list: List<CategoryResponse.Data>?) {
-        lifecycleScope.launch{
-            categoryListNames = async { list!!.map { it.name } as MutableList<String> }
-            categoryArrayAdapter =
-                ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, categoryListNames.await())
-            categoryArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-            binding.spinnerCategory.adapter = categoryArrayAdapter
+        list?.let {
+            if (it.isNotEmpty()) {
+                lifecycleScope.launch {
+                    categoryListNames.clear() // Clear existing data if any
+                    categoryListNames.addAll(it.map { category -> category.name!! })
+
+                    categoryArrayAdapter =
+                        ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, categoryListNames)
+                    categoryArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                    binding.spinnerCategory.adapter = categoryArrayAdapter
+
+                    updateCategorySpinner()
+                }
+            } else {
+                // Handle case where category list is empty or null
+            }
         }
-
-
     }
 }

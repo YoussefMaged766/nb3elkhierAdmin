@@ -26,7 +26,7 @@ PagingSource<Int, ProductResponse.Data>() {
         return try {
 
             val currentPage = params.key ?: 1
-            dataStoreRepository.savePageNumber("page", currentPage)
+//            dataStoreRepository.savePageNumber("page", currentPage)
 
             val response = webServices.getProducts(page = currentPage )
 

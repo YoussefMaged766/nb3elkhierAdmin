@@ -69,9 +69,7 @@ class ProductsViewModel @Inject constructor(
     private val _stateCategory = MutableStateFlow(AuthState())
     val stateCategory = _stateCategory.asStateFlow()
 
-    init {
-        getCategory()
-    }
+
 
     fun deleteProduct(id: String) = viewModelScope.launch {
         repo.deleteProduct(id).collect { status ->
@@ -107,7 +105,7 @@ class ProductsViewModel @Inject constructor(
         }
     }
 
-    private fun getCategory() = viewModelScope.launch {
+     fun getCategory() = viewModelScope.launch {
         repo.getCategory().collect { status ->
             when (status) {
                 is Status.Loading -> {

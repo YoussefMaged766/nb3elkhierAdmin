@@ -39,7 +39,7 @@ import retrofit2.HttpException
 class ProductsFragment : Fragment(), ProductsPagingAdapter.OnButton1ClickListener {
     private lateinit var binding: FragmentProductsBinding
     private val viewModel by viewModels<ProductsViewModel>()
-    private val productAdapter by lazy { ProductsPagingAdapter(this) }
+    private val productAdapter =  ProductsPagingAdapter(this)
     private val loadDialogBar: LoadDialogBar by lazy {
         LoadDialogBar(requireContext())
     }
@@ -47,7 +47,7 @@ class ProductsFragment : Fragment(), ProductsPagingAdapter.OnButton1ClickListene
     private val layoutManager by lazy {
         binding.recyclerViewProducts.layoutManager
     }
-
+    private var scrollPosition = 0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -128,24 +128,27 @@ class ProductsFragment : Fragment(), ProductsPagingAdapter.OnButton1ClickListene
             )
         lifecycleScope.launch {
             val page = dataStoreRepository.getPageNumber("page")
-            if (page!=1){
-                if (page != null) {
-                    viewModel.getAllProducts(page - 1).collect{
-                        productAdapter.submitData(it).apply {
-                            val position = dataStoreRepository.getPageNumber("position") ?: 0
-                            binding.recyclerViewProducts.scrollToPosition(position)
-                        }
-
-                    }
-                }
-            } else{
-                viewModel.getAllProducts(page).collect{
-                    productAdapter.submitData(it).apply {
-                        val position = dataStoreRepository.getPageNumber("position") ?: 0
-                        binding.recyclerViewProducts.scrollToPosition(position)
-                    }
-
-                }
+//            if (page!=1){
+//                if (page != null) {
+//                    viewModel.getAllProducts(page - 1).collect{
+//                        productAdapter.submitData(it).apply {
+//                            val position = dataStoreRepository.getPageNumber("position") ?: 0
+//                            binding.recyclerViewProducts.scrollToPosition(position)
+//                        }
+//
+//                    }
+//                }
+//            } else{
+//                viewModel.getAllProducts(page).collect{
+//                    productAdapter.submitData(it).apply {
+//                        val position = dataStoreRepository.getPageNumber("position") ?: 0
+//                        binding.recyclerViewProducts.scrollToPosition(position)
+//                    }
+//
+//                }
+//            }
+            viewModel.getAllProducts(page!!).collect{
+                productAdapter.submitData(it)
             }
         }
 
@@ -229,6 +232,8 @@ class ProductsFragment : Fragment(), ProductsPagingAdapter.OnButton1ClickListene
                 binding.recyclerViewProducts.visibility = View.VISIBLE
             }
 
+
+
             handelError(loadState)
         }
     }
@@ -253,14 +258,11 @@ class ProductsFragment : Fragment(), ProductsPagingAdapter.OnButton1ClickListene
 
     override fun onPause() {
         super.onPause()
-        val layoutManager = binding.recyclerViewProducts.layoutManager
-        if (layoutManager is LinearLayoutManager) {
-            val position = layoutManager.findFirstVisibleItemPosition()
-            lifecycleScope.launch {
-                dataStoreRepository.savePageNumber("position", position)
-                Log.e( "callApi:", position.toString())
-            }
-        }
+        scrollPosition = (binding.recyclerViewProducts.layoutManager as LinearLayoutManager).findFirstVisibleItemPosition()
+    }
+    override fun onResume() {
+        super.onResume()
+        binding.recyclerViewProducts.scrollToPosition(scrollPosition)
     }
 
 //    override fun onDestroyView() {
@@ -281,6 +283,13 @@ class ProductsFragment : Fragment(), ProductsPagingAdapter.OnButton1ClickListene
                 Log.e("onButtonEditClick: ", position.toString())
                 dataStoreRepository.savePageNumber("position", position)
             }
+        val currentPage:Int = position/15 +1
+        Log.e( "onButtonEditClick: ",currentPage.toString() )
+        lifecycleScope.launch {
+            dataStoreRepository.savePageNumber("page", currentPage)
+        }
+
+
 
     }
 

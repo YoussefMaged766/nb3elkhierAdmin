@@ -2,7 +2,8 @@ package com.devYoussef.nb3elkhieradmin.model
 
 data class ProductResponse(
     val `data`: List<Data>?,
-    val status: String?
+    val status: String?,
+    val page:Int?
 ) {
     data class Data(
         val __v: Int?,

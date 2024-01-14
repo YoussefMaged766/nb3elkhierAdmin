@@ -20,6 +20,7 @@ import com.devYoussef.nb3elkhieradmin.databinding.FragmentSearchResultBinding
 import com.devYoussef.nb3elkhieradmin.databinding.ProductItemBinding
 import com.devYoussef.nb3elkhieradmin.model.AuthResponse
 import com.devYoussef.nb3elkhieradmin.model.ProductResponse
+import com.devYoussef.nb3elkhieradmin.model.dummyProduct
 import com.devYoussef.nb3elkhieradmin.ui.adapter.paging.ProductsPagingAdapter
 import com.devYoussef.nb3elkhieradmin.ui.home.product.ProductsFragmentDirections
 import com.devYoussef.nb3elkhieradmin.ui.home.product.ProductsViewModel
@@ -136,20 +137,20 @@ class SearchResultFragment : Fragment(), ProductsPagingAdapter.OnButton1ClickLis
     }
 
 
-    override fun onButtonEditClick(data: ProductResponse.Data, binding: ProductItemBinding , position: Int) {
+    override fun onButtonEditClick(data: dummyProduct, binding: ProductItemBinding , position: Int) {
         val action =
-            SearchResultFragmentDirections.actionSearchResultFragmentToAddAndEditFragment(data._id.toString())
+            SearchResultFragmentDirections.actionSearchResultFragmentToAddAndEditFragment(data.data._id.toString())
         findNavController().navigate(action)
     }
 
-    override fun onButtonDeleteClick(data: ProductResponse.Data, binding: ProductItemBinding) {
+    override fun onButtonDeleteClick(data: dummyProduct, binding: ProductItemBinding) {
         showDeleteDialog(data)
     }
-    private fun showDeleteDialog(data: ProductResponse.Data) {
+    private fun showDeleteDialog(data: dummyProduct) {
         MaterialAlertDialogBuilder(requireContext()).apply {
             setTitle("سيتم حذف المنتج")
             setPositiveButton("اوافق") { _, _ ->
-                viewModel.deleteProduct(data._id.toString())
+                viewModel.deleteProduct(data.data._id.toString())
             }
             setNegativeButton("رجوع") { dialog, _ ->
                 dialog.dismiss()

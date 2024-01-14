@@ -23,6 +23,7 @@ import com.devYoussef.nb3elkhieradmin.databinding.FragmentProductsBinding
 import com.devYoussef.nb3elkhieradmin.databinding.ProductItemBinding
 import com.devYoussef.nb3elkhieradmin.model.AuthResponse
 import com.devYoussef.nb3elkhieradmin.model.ProductResponse
+import com.devYoussef.nb3elkhieradmin.model.dummyProduct
 import com.devYoussef.nb3elkhieradmin.ui.adapter.paging.ProductsPagingAdapter
 import com.devYoussef.nb3elkhieradmin.utils.LoadDialogBar
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -60,6 +61,7 @@ class ProductsFragment : Fragment(), ProductsPagingAdapter.OnButton1ClickListene
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentProductsBinding.inflate(inflater, container, false)
+
         return binding.root
     }
 
@@ -256,14 +258,14 @@ class ProductsFragment : Fragment(), ProductsPagingAdapter.OnButton1ClickListene
         }
     }
 
-    override fun onPause() {
-        super.onPause()
-        scrollPosition = (binding.recyclerViewProducts.layoutManager as LinearLayoutManager).findFirstVisibleItemPosition()
-    }
-    override fun onResume() {
-        super.onResume()
-        binding.recyclerViewProducts.scrollToPosition(scrollPosition)
-    }
+//    override fun onPause() {
+//        super.onPause()
+//        scrollPosition = (binding.recyclerViewProducts.layoutManager as LinearLayoutManager).findFirstVisibleItemPosition()
+//    }
+//    override fun onResume() {
+//        super.onResume()
+//        binding.recyclerViewProducts.scrollToPosition(scrollPosition)
+//    }
 
 //    override fun onDestroyView() {
 //        super.onDestroyView()
@@ -275,34 +277,32 @@ class ProductsFragment : Fragment(), ProductsPagingAdapter.OnButton1ClickListene
 //        }
 //    }
 
-    override fun onButtonEditClick(data: ProductResponse.Data, binding: ProductItemBinding , position: Int) {
+    override fun onButtonEditClick(data: dummyProduct, binding: ProductItemBinding , position: Int) {
         val action =
-            ProductsFragmentDirections.actionProductsFragmentToAddAndEditFragment(data._id.toString())
+            ProductsFragmentDirections.actionProductsFragmentToAddAndEditFragment(data.data._id.toString())
         findNavController().navigate(action)
             lifecycleScope.launch {
                 Log.e("onButtonEditClick: ", position.toString())
-                dataStoreRepository.savePageNumber("position", position)
+//                dataStoreRepository.savePageNumber("position", position)
             }
-        val currentPage:Int = position/15 +1
-        Log.e( "onButtonEditClick: ",currentPage.toString() )
+//        val currentPage:Int = position/15 +1
+        Log.e( "onButtonEditClick: ",data.page.toString() )
         lifecycleScope.launch {
-            dataStoreRepository.savePageNumber("page", currentPage)
+            dataStoreRepository.savePageNumber("page", data.page)
         }
-
-
 
     }
 
-    override fun onButtonDeleteClick(data: ProductResponse.Data, binding: ProductItemBinding) {
+    override fun onButtonDeleteClick(data: dummyProduct, binding: ProductItemBinding) {
         showDeleteDialog(data)
     }
 
 
-    private fun showDeleteDialog(data: ProductResponse.Data) {
+    private fun showDeleteDialog(data: dummyProduct) {
         MaterialAlertDialogBuilder(requireContext()).apply {
             setTitle("سيتم حذف المنتج")
             setPositiveButton("اوافق") { _, _ ->
-                viewModel.deleteProduct(data._id.toString())
+                viewModel.deleteProduct(data.data._id.toString())
             }
             setNegativeButton("رجوع") { dialog, _ ->
                 dialog.dismiss()

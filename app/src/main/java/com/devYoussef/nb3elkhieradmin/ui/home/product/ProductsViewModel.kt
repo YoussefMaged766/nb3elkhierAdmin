@@ -16,6 +16,7 @@ import com.devYoussef.nb3elkhieradmin.data.remote.Repo
 import com.devYoussef.nb3elkhieradmin.data.remote.SearchPagingSource
 import com.devYoussef.nb3elkhieradmin.model.AuthState
 import com.devYoussef.nb3elkhieradmin.model.ProductResponse
+import com.devYoussef.nb3elkhieradmin.model.dummyProduct
 import com.devYoussef.nb3elkhieradmin.utils.Status
 import com.devYoussef.nb3elkhieradmin.utils.WebServices
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -46,7 +47,7 @@ class ProductsViewModel @Inject constructor(
         _fileName.value = name
     }
 
-    private val _data: MutableStateFlow<PagingData<ProductResponse.Data>> =
+    private val _data: MutableStateFlow<PagingData<dummyProduct>> =
         MutableStateFlow(PagingData.empty())
     val data = _data.asStateFlow()
 
@@ -68,7 +69,6 @@ class ProductsViewModel @Inject constructor(
 
     private val _stateCategory = MutableStateFlow(AuthState())
     val stateCategory = _stateCategory.asStateFlow()
-
 
 
     fun deleteProduct(id: String) = viewModelScope.launch {
@@ -105,7 +105,7 @@ class ProductsViewModel @Inject constructor(
         }
     }
 
-     fun getCategory() = viewModelScope.launch {
+    fun getCategory() = viewModelScope.launch {
         repo.getCategory().collect { status ->
             when (status) {
                 is Status.Loading -> {
@@ -355,13 +355,13 @@ class ProductsViewModel @Inject constructor(
         }
     }
 
-    fun getAllProducts(currentPage: Int = 1): Flow<PagingData<ProductResponse.Data>> {
+    fun getAllProducts(page: Int = 1): Flow<PagingData<dummyProduct>> {
         return Pager(
             config = PagingConfig(
                 pageSize = 15,
                 enablePlaceholders = false
             ),
-            initialKey = currentPage,
+            initialKey = page,
             pagingSourceFactory = {
                 ProductsPagingSource(
                     webServices = webServices,

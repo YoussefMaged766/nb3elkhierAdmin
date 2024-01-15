@@ -29,7 +29,7 @@ class SearchPagingSource(
             }
             Log.e( "loadPaging: ",query.toString())
 
-            val nextPageNumber =  currentPage + 1
+            val nextPageNumber =  if (response.isNullOrEmpty()) null  else currentPage + 1
 
             LoadResult.Page(
                 response?: listOf(),

@@ -15,6 +15,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.AutoCompleteTextView
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
@@ -36,6 +37,7 @@ import com.devYoussef.nb3elkhieradmin.ui.home.product.ProductsViewModel
 import com.devYoussef.nb3elkhieradmin.utils.LoadDialogBar
 import com.devYoussef.nb3elkhieradmin.utils.getFilePathFromUri
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.android.material.textfield.MaterialAutoCompleteTextView
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.async
@@ -91,6 +93,7 @@ class AddAndEditFragment : Fragment() {
         handelSwitches()
         checkPermission()
 
+
         loadFileGallery = registerForActivityResult(ActivityResultContracts.GetContent()) {
             if (it != null) {
                 imgUri = it
@@ -119,7 +122,7 @@ class AddAndEditFragment : Fragment() {
             val quantity = binding.txtQuantity.text.toString()
             val price = binding.txtPrice.text.toString()
             val originalPrice = binding.txtOriginalPrice.text.toString()
-
+            val category = binding.spinnerCategory2.editText?.text.toString()
             val offerPrice = if (isOffered) binding.txtPriceOffer.text.toString() else "0.0"
             val offerItemNum = if (isOffered) binding.txtOfferNum.text.toString() else "0"
 
@@ -134,7 +137,8 @@ class AddAndEditFragment : Fragment() {
                         originalPrice,
                         offerPrice,
                         offerItemNum,
-                        imgUri
+                        imgUri,
+                        category
                     ) && isCountrySelected() && isCurrencySelected()
                 ) {
                     callApiAddProduct()
@@ -148,7 +152,8 @@ class AddAndEditFragment : Fragment() {
                         price,
                         originalPrice,
                         offerPrice,
-                        offerItemNum
+                        offerItemNum,
+                        category
                     ) && isCountrySelected() && isCurrencySelected(
                     )
                 ) {
@@ -201,6 +206,7 @@ class AddAndEditFragment : Fragment() {
 
 
     }
+
 
     private fun bitmapToUri(bitmap: Bitmap): Uri {
         val imageFile = File(requireContext().cacheDir, "temp_image.jpeg")
@@ -300,7 +306,10 @@ class AddAndEditFragment : Fragment() {
                     }
 
                     it.status == "success" -> {
-                        setUpCategorySpinner(it.category?.data)
+                        if (it.category?.data?.isNotEmpty() == true) {
+                            setUpCategorySpinner(it.category.data)
+                        }
+
                     }
                 }
             }
@@ -328,10 +337,6 @@ class AddAndEditFragment : Fragment() {
                         binding.txtUpload.visibility = View.GONE
                         binding.txtName.setText(it.product?.data?.get(0)?.name)
                         binding.txtShortDescription.setText(it.product?.data?.get(0)?.shortDescription)
-                        Log.e(
-                            "collectOneProductStates: ",
-                            it.product?.data?.get(0)?.category.toString()
-                        )
                         categoryName = (it.product?.data?.get(0)?.category.toString())
                         setCountrySpinner(it.product?.data?.get(0)?.country.toString())
                         binding.switchAvailable.isChecked = it.product?.data?.get(0)?.isAvailable!!
@@ -389,7 +394,7 @@ class AddAndEditFragment : Fragment() {
     private fun callApiUpdateProduct(id: String) {
         val name = binding.txtName.text.toString()
         val shortDescription = binding.txtShortDescription.text.toString()
-        val category = binding.spinnerCategory.selectedItem.toString()
+        val category = binding.spinnerCategory2.editText?.text.toString()
         val country = binding.spinnerCountry.selectedItem.toString()
         val isAvailable = binding.switchAvailable.isChecked
         val isOffered = binding.switchOffer.isChecked
@@ -499,7 +504,8 @@ class AddAndEditFragment : Fragment() {
         originalPrice: String,
         offerPrice: String,
         offerItemNum: String,
-        image: Uri? = null
+        image: Uri? = null,
+        category: String
     ): Boolean {
         var isValid = true
 
@@ -523,6 +529,10 @@ class AddAndEditFragment : Fragment() {
             binding.txtOriginalPriceContainer.error = "مطلوب"
             isValid = false
         }
+        if (category.isEmpty()) {
+            binding.spinnerCategory2.error = "مطلوب"
+            isValid = false
+        }
         if (isOffered) {
             if (offerPrice.isEmpty()) {
                 binding.txtPriceOfferContainer.error = "مطلوب"
@@ -537,7 +547,15 @@ class AddAndEditFragment : Fragment() {
             requireContext().showToast("مطلوب اختيار صورة")
             isValid = false
         }
-
+        val autoCompleteTextView = binding.spinnerCategory2.editText as? AutoCompleteTextView
+        if (autoCompleteTextView != null) {
+            val isCategoryValid =
+                autoCompleteTextView.validator?.isValid(autoCompleteTextView.text) ?: false
+            if (!isCategoryValid) {
+                binding.spinnerCategory2.error = "القسم غير صحيح"
+                isValid = false
+            }
+        }
         binding.txtNameContainer.editText?.addTextChangedListener {
             binding.txtNameContainer.error = null
         }
@@ -552,6 +570,9 @@ class AddAndEditFragment : Fragment() {
         }
         binding.txtOriginalPriceContainer.editText?.addTextChangedListener {
             binding.txtOriginalPriceContainer.error = null
+        }
+        binding.spinnerCategory2.editText?.addTextChangedListener {
+            binding.spinnerCategory2.error = null
         }
         if (isOffered) {
             binding.txtPriceOfferContainer.editText?.addTextChangedListener {
@@ -573,7 +594,8 @@ class AddAndEditFragment : Fragment() {
         price: String,
         originalPrice: String,
         offerPrice: String,
-        offerItemNum: String
+        offerItemNum: String,
+        category: String
     ): Boolean {
         var isValid = true
 
@@ -597,6 +619,10 @@ class AddAndEditFragment : Fragment() {
             binding.txtOriginalPriceContainer.error = "مطلوب"
             isValid = false
         }
+        if (category.isEmpty()) {
+            binding.spinnerCategory2.error = "مطلوب"
+            isValid = false
+        }
         if (isOffered) {
             if (offerPrice.isEmpty()) {
                 binding.txtPriceOfferContainer.error = "مطلوب"
@@ -604,6 +630,24 @@ class AddAndEditFragment : Fragment() {
             }
             if (offerItemNum.isEmpty()) {
                 binding.txtOfferNumContainer.error = "مطلوب"
+                isValid = false
+            }
+        }
+        // validate category
+        val autoCompleteTextView = binding.spinnerCategory2.editText as? AutoCompleteTextView
+        autoCompleteTextView?.validator = object : AutoCompleteTextView.Validator {
+            override fun isValid(text: CharSequence?): Boolean {
+                return categoryListNames.contains(text.toString())
+            }
+            override fun fixText(invalidText: CharSequence?): CharSequence {
+                return ""
+            }
+        }
+        if (autoCompleteTextView != null) {
+            val isCategoryValid =
+                autoCompleteTextView.validator?.isValid(autoCompleteTextView.text) ?: false
+            if (!isCategoryValid) {
+                binding.spinnerCategory2.error = "القسم غير صحيح"
                 isValid = false
             }
         }
@@ -621,6 +665,9 @@ class AddAndEditFragment : Fragment() {
         }
         binding.txtOriginalPriceContainer.editText?.addTextChangedListener {
             binding.txtOriginalPriceContainer.error = null
+        }
+        binding.spinnerCategory2.editText?.addTextChangedListener {
+            binding.spinnerCategory2.error = null
         }
         if (isOffered) {
             binding.txtPriceOfferContainer.editText?.addTextChangedListener {
@@ -662,7 +709,7 @@ class AddAndEditFragment : Fragment() {
             val value = categoryName
             val position = categoryListNames.indexOf(value)
             if (position >= 0) {
-                binding.spinnerCategory.setSelection(position)
+                binding.spinnerCategory2.editText?.setText(categoryListNames[position])
             }
         }
     }
@@ -734,23 +781,30 @@ class AddAndEditFragment : Fragment() {
     private fun setUpCategorySpinner(list: List<CategoryResponse.Data>?) {
         list?.let {
             if (it.isNotEmpty()) {
+//                lifecycleScope.launch {
+//                    categoryListNames.clear() // Clear existing data if any
+//                    categoryListNames.addAll(it.map { category -> category.name!! })
+//
+//                    categoryArrayAdapter =
+//                        ArrayAdapter(
+//                            requireContext(),
+//                            android.R.layout.simple_spinner_item,
+//                            categoryListNames
+//                        )
+//                    categoryArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+//                    binding.spinnerCategory.adapter = categoryArrayAdapter
+//                    delay(500)
+//                    updateCategorySpinner()
+//                }
                 lifecycleScope.launch {
-                    categoryListNames.clear() // Clear existing data if any
                     categoryListNames.addAll(it.map { category -> category.name!! })
-
-                    categoryArrayAdapter =
-                        ArrayAdapter(
-                            requireContext(),
-                            android.R.layout.simple_spinner_item,
-                            categoryListNames
-                        )
-                    categoryArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-                    binding.spinnerCategory.adapter = categoryArrayAdapter
+                    (binding.spinnerCategory2.editText as? MaterialAutoCompleteTextView)?.setSimpleItems(
+                        categoryListNames.toTypedArray()
+                    )
                     delay(500)
                     updateCategorySpinner()
                 }
-            } else {
-                // Handle case where category list is empty or null
+
             }
         }
     }

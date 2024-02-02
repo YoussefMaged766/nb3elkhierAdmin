@@ -31,9 +31,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:adjustViewBounds="true"
-                    android:scaleType="centerCrop"
                     android:elevation="@dimen/_12sdp"
-                    />
+                    android:scaleType="centerCrop" />
 
                 <ImageView
                     android:id="@+id/imgUpload"
@@ -116,7 +115,26 @@
             android:layout_margin="@dimen/_16sdp"
             android:entries="@array/category"
             android:padding="@dimen/_16sdp"
+            android:visibility="gone"
             app:layout_constraintTop_toBottomOf="@+id/txtShortDescriptionContainer" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/spinnerCategory2"
+            android:layout_margin="@dimen/_16sdp"
+            style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+            app:layout_constraintTop_toBottomOf="@+id/txtShortDescriptionContainer">
+
+            <AutoCompleteTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/_16sdp"
+                android:inputType="text"
+                android:hint="القسم"
+                android:id="@+id/actCategory"
+                />
+        </com.google.android.material.textfield.TextInputLayout>
 
         <Spinner
             android:id="@+id/spinnerCountry"
@@ -125,7 +143,7 @@
             android:layout_margin="@dimen/_16sdp"
             android:entries="@array/countries"
             android:padding="@dimen/_16sdp"
-            app:layout_constraintTop_toBottomOf="@+id/spinnerCategory" />
+            app:layout_constraintTop_toBottomOf="@+id/spinnerCategory2" />
 
         <TextView
             android:id="@+id/txtSpinnerCountryError"
@@ -152,16 +170,15 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/_4sdp"
                 android:layout_weight="1"
-                android:hint="الكميه"
-                app:endIconMode="clear_text"
-                android:enabled="false">
+                android:hint="الكميه لكل مستخدم"
+                app:endIconMode="clear_text">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/txtQuantity"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:inputType="number"
-                    android:text="0.0"/>
+                    android:text="0" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout

@@ -32,7 +32,7 @@ PagingSource<Int, dummyProduct>() {
 
             val response = webServices.getProducts(page = currentPage).data?.map {
                 it.toDomain(currentPage)
-            }
+            }?.sortedBy { it.data.isAvailable ==false }
 
             val nextPageNumber = if (response.isNullOrEmpty()) null  else currentPage + 1
 

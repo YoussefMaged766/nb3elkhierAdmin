@@ -132,7 +132,7 @@ class DetailsOrderFragment : Fragment(), OrderDetailsAdapter.OnItemClickListener
                             val price = it.orderDetails.userOrder[0].promoCode?.price ?: 0.0
                             binding.txtPromoPrice.text =
                                 "$price ${
-                                    it.orderDetails.userOrder[0].promoCode?.unitValue
+                                    it.orderDetails.userOrder[0].promoCode?.unitValue?:""
                                 }"
 
                             binding.txtBan.setOnClickListener { view ->

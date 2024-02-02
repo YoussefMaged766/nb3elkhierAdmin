@@ -282,8 +282,8 @@ class PromoCodesFragment : Fragment(), PromoAdapter.OnItemClickListener {
                     itemSelect.visibility = View.VISIBLE
                     itemSelect.text = "اختر النوع"
                 }
-                else if (unitValue.selectedItem.toString() == "%"){
-                    if (price.text.toString().toInt()>=100){
+                if (unitValue.selectedItem.toString() == "%"){
+                    if (price.text.toString().isNotEmpty() && price.text.toString().toInt()>=100){
                         itemSelect.visibility = View.VISIBLE
                         itemSelect.text = "الخصم لا يمكن ان يكون اقل من 100%"
                     } else itemSelect.visibility = View.GONE

@@ -7,6 +7,7 @@ import android.app.PendingIntent
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
+import android.os.Bundle
 import android.util.Log
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationChannelCompat
@@ -28,10 +29,10 @@ class FirebaseMessagingService : FirebaseMessagingService() {
 
 
         if (message.notification != null) {
-            Log.e("onMessageReceived: ", message.data.toString())
+            Log.e("onMessageReceived: ", message.data["id"].toString())
             val title = message.notification!!.title
             val body = message.notification!!.body
-            generateNotification(title!!, body!!)
+            generateNotification(title!!, body!! , message.data["id"].toString())
         }
     }
 
@@ -40,17 +41,27 @@ class FirebaseMessagingService : FirebaseMessagingService() {
         Log.e("onMessageReceived: ", token.toString())
     }
 
-    private fun generateNotification(title: String, message: String) {
+    private fun generateNotification(title: String, message: String , data:String) {
 
         val intent = Intent(applicationContext, MainActivity::class.java)
-        intent.putExtra("navigate", "navigate")
+        intent.putExtra("id", data)
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
 
-        val pendingIntent = PendingIntent.getActivity(applicationContext,1,intent,
-            PendingIntent.FLAG_ONE_SHOT or PendingIntent.FLAG_IMMUTABLE)
+//        val pendingIntent = PendingIntent.getActivity(applicationContext,1,intent,
+//            PendingIntent.FLAG_ONE_SHOT or PendingIntent.FLAG_IMMUTABLE)
 
+        Log.e( "generateNotification: ",intent.extras?.getString("id").toString() )
 
+        val args = Bundle()
+        args.putString("id", data)
+        args.putString("type", "current")
 
+        val pendingIntent = NavDeepLinkBuilder(this)
+            .setComponentName(MainActivity::class.java)
+            .setGraph(R.navigation.nav_graph)
+            .setDestination(R.id.detailsOrderFragment)
+            .setArguments(args)
+            .createPendingIntent()
 
 //
 //        pendingIntent.send()
@@ -64,7 +75,6 @@ class FirebaseMessagingService : FirebaseMessagingService() {
             .setOnlyAlertOnce(true)
             .setContentIntent(pendingIntent)
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-            .addAction(R.drawable.logo2, "show order", pendingIntent)
 
 
         val notificationManager = NotificationManagerCompat.from(this)

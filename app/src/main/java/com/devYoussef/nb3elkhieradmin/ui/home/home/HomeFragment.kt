@@ -90,10 +90,8 @@ class HomeFragment : Fragment() {
         permissionHandler = NotificationPermissionHandler(this) { isGranted ->
             if (!isGranted) {
                 showNotificationPermissionDialog()
-
             }
         }
-
         permissionHandler.checkAndRequestPermission()
 
     }
@@ -103,6 +101,7 @@ class HomeFragment : Fragment() {
 
         val message = "هذا التطبيق يحتاج الى الاذن بالتنبيهات ليتمكن من ارسال التنبيهات لك"
         builder.setMessage(message)
+        builder.setCancelable(false)
 
         builder.setPositiveButton("نعم") { _: DialogInterface, _: Int ->
             openAppSettings()

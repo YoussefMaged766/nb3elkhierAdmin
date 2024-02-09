@@ -18,6 +18,8 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import com.devYoussef.nb3elkhieradmin.R
 import com.devYoussef.nb3elkhieradmin.databinding.ActivityMainBinding
 import com.devYoussef.nb3elkhieradmin.ui.home.order.OrdersFragment
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.firebase.messaging.FirebaseMessaging
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -33,15 +35,18 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
 
+        FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
+            if (!task.isSuccessful) {
+                return@OnCompleteListener
+            }
+            Log.e( "onCreate: ", task.result.toString() )
+            })
 
         appBarConfiguration = AppBarConfiguration(
             setOf(
                 R.id.homeFragment
             )
         )
-
-
-
         setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
@@ -110,12 +115,23 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        Log.e( "onStart: ",intent?.getStringExtra("navigate").toString() )
-        if (intent?.getStringExtra("navigate") == "navigate") {
-            navController.navigate(R.id.ordersFragment)
+//        Log.e( "onStart: ",intent?.getStringExtra("navigate").toString() )
+//        if (intent?.getStringExtra("navigate") == "navigate") {
+//            navController.navigate(R.id.ordersFragment)
+//        }
+//        Log.e("onCreate: ", intent.extras?.getString("type").toString())
+//        if( intent.extras?.getString("type")=="id"){
+//            navController.navigate(R.id.ordersFragment)
+//        }
+        if (intent.extras?.getString("id") != null) {
+            Log.e("onCreate: ", intent.extras?.getString("id").toString())
+            val args = Bundle()
+            args.putString("id", intent.extras?.getString("id"))
+            args.putString("type", "current")
+            navController.navigate(R.id.detailsOrderFragment, args)
         }
-
     }
+
     override fun onSupportNavigateUp(): Boolean {
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }

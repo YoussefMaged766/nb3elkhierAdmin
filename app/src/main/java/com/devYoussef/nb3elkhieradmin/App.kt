@@ -21,6 +21,11 @@ class App :Application() {
             NotificationManager.IMPORTANCE_HIGH
         )
             .setName(Constants.channelName)
+            .setShowBadge(true)
+            .setVibrationEnabled(true)
+            .setLightsEnabled(true)
+            .setImportance(NotificationManager.IMPORTANCE_HIGH)
+            .setVibrationPattern(longArrayOf(1000, 1000, 1000, 1000, 1000))
             .build()
         notificationManager.createNotificationChannel(notificationChannel)
         if (ActivityCompat.checkSelfPermission(

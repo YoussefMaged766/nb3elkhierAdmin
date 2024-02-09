@@ -1,10 +1,13 @@
 package com.devYoussef.nb3elkhieradmin.ui.home.order.details
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -56,9 +59,9 @@ class DetailsOrderFragment : Fragment(), OrderDetailsAdapter.OnItemClickListener
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        Log.e( "onViewCreated: ",args.id.toString() )
         viewModel.getOrderDetails(args.id)
         showButtons()
-
         collectAcceptOrderStates()
         collectDeclineOrderStates()
         orderCollectStates()
@@ -71,6 +74,16 @@ class DetailsOrderFragment : Fragment(), OrderDetailsAdapter.OnItemClickListener
             showDeclineDialog(args.id)
         }
 
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                if (findNavController().previousBackStackEntry != null) {
+                    findNavController().navigate(R.id.ordersFragment)
+                } else {
+                   findNavController().popBackStack()
+                }
+            }
+        })
+
     }
 
     private fun showButtons() {
@@ -82,14 +95,12 @@ class DetailsOrderFragment : Fragment(), OrderDetailsAdapter.OnItemClickListener
                 binding.txtBan.visibility = View.VISIBLE
 
             }
-
             "past" -> {
                 binding.btnAccept.visibility = View.GONE
                 binding.btnDecline.visibility = View.GONE
                 binding.txt10.visibility = View.GONE
                 binding.txtBan.visibility = View.GONE
             }
-
             "cancel" -> {
                 binding.btnAccept.visibility = View.GONE
                 binding.btnDecline.visibility = View.GONE
@@ -100,6 +111,7 @@ class DetailsOrderFragment : Fragment(), OrderDetailsAdapter.OnItemClickListener
         }
     }
 
+    @SuppressLint("SetTextI18n")
     private fun orderCollectStates() {
         lifecycleScope.launch {
             viewModel.stateOrder.collect {
@@ -320,6 +332,20 @@ class DetailsOrderFragment : Fragment(), OrderDetailsAdapter.OnItemClickListener
 
     override fun onItemClick(position: Int, item: OrderDetailsResponse.UserOrder.Product) {
         showDeleteDialog(item.productId?._id!!)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            android.R.id.home -> {
+                if (findNavController().previousBackStackEntry != null) {
+                    findNavController().navigate(R.id.ordersFragment)
+                } else {
+                    findNavController().popBackStack()
+                }
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 
 }

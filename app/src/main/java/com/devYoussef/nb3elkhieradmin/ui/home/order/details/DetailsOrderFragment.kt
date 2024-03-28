@@ -67,6 +67,7 @@ class DetailsOrderFragment : Fragment(), OrderDetailsAdapter.OnItemClickListener
         orderCollectStates()
         collectBanUsersStates()
         collectDeleteProductStates()
+        setHasOptionsMenu(true)
         binding.btnAccept.setOnClickListener {
             showAcceptDialog(args.id)
         }

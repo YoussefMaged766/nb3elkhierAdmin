@@ -109,27 +109,19 @@ class MainActivity : AppCompatActivity() {
                 R.id.detailsOrderFragment -> {
                     binding.appBar.visibility = View.VISIBLE
                     binding.txtTitleToolBar.text = "تفاصيل الفاتوره"
-
-
                 }
             }
         }
 
-//        Log.e( "onStart: ",intent?.getStringExtra("navigate").toString() )
-//        if (intent?.getStringExtra("navigate") == "navigate") {
-//            navController.navigate(R.id.ordersFragment)
-//        }
-//        Log.e("onCreate: ", intent.extras?.getString("type").toString())
-//        if( intent.extras?.getString("type")=="id"){
-//            navController.navigate(R.id.ordersFragment)
-//        }
-        if (intent.extras?.getString("id") != null) {
-            Log.e("onCreate: ", intent.extras?.getString("id").toString())
+
+        if (intent.extras?.getString("orderId") != null) {
+            Log.e("onCreate: ", intent.extras?.getString("orderId").toString())
             val args = Bundle()
-            args.putString("id", intent.extras?.getString("id"))
+            args.putString("id", intent.extras?.getString("orderId"))
             args.putString("type", "current")
             navController.navigate(R.id.detailsOrderFragment, args)
         }
+
     }
 
     override fun onSupportNavigateUp(): Boolean {

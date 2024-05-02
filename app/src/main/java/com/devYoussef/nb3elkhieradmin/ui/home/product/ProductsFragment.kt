@@ -96,6 +96,7 @@ class ProductsFragment : Fragment(), ProductsPagingAdapter.OnButton1ClickListene
             val action =
                 ProductsFragmentDirections.actionProductsFragmentToAddAndEditFragment("-1")
             findNavController().navigate(action)
+
         }
 
 

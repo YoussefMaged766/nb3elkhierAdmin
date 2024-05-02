@@ -130,7 +130,6 @@ class BannersFragment : Fragment(), BannerAdapter.OnItemClickListener {
                             adapter.submitList(it.banner?.data)
                             binding.bannersRecyclerView.adapter = adapter
                         }
-
                     }
                 }
             }

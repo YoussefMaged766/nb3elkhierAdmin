@@ -1,6 +1,9 @@
 package com.devYoussef.nb3elkhieradmin.ui.home.order.details
 
 import android.annotation.SuppressLint
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -59,7 +62,7 @@ class DetailsOrderFragment : Fragment(), OrderDetailsAdapter.OnItemClickListener
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        Log.e( "onViewCreated: ",args.id.toString() )
+        Log.e("onViewCreated: ", args.id.toString())
         viewModel.getOrderDetails(args.id)
         showButtons()
         collectAcceptOrderStates()
@@ -74,16 +77,26 @@ class DetailsOrderFragment : Fragment(), OrderDetailsAdapter.OnItemClickListener
         binding.btnDecline.setOnClickListener {
             showDeclineDialog(args.id)
         }
+        binding.txtPhone.setOnLongClickListener { view ->
+            val clipboard =
+                requireContext().getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+            val clip = ClipData.newPlainText("phone", binding.txtPhone.text)
+            clipboard.setPrimaryClip(clip)
+            requireContext().showToast("تم نسخ الرقم")
+            true
+        }
 
-        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                if (findNavController().previousBackStackEntry != null) {
-                    findNavController().navigate(R.id.ordersFragment)
-                } else {
-                   findNavController().popBackStack()
+        requireActivity().onBackPressedDispatcher.addCallback(
+            viewLifecycleOwner,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    if (findNavController().previousBackStackEntry != null) {
+                        findNavController().navigate(R.id.ordersFragment)
+                    } else {
+                        findNavController().popBackStack()
+                    }
                 }
-            }
-        })
+            })
 
     }
 
@@ -96,12 +109,14 @@ class DetailsOrderFragment : Fragment(), OrderDetailsAdapter.OnItemClickListener
                 binding.txtBan.visibility = View.VISIBLE
 
             }
+
             "past" -> {
                 binding.btnAccept.visibility = View.GONE
                 binding.btnDecline.visibility = View.GONE
                 binding.txt10.visibility = View.GONE
                 binding.txtBan.visibility = View.GONE
             }
+
             "cancel" -> {
                 binding.btnAccept.visibility = View.GONE
                 binding.btnDecline.visibility = View.GONE
@@ -145,7 +160,7 @@ class DetailsOrderFragment : Fragment(), OrderDetailsAdapter.OnItemClickListener
                             val price = it.orderDetails.userOrder[0].promoCode?.price ?: 0.0
                             binding.txtPromoPrice.text =
                                 "$price ${
-                                    it.orderDetails.userOrder[0].promoCode?.unitValue?:""
+                                    it.orderDetails.userOrder[0].promoCode?.unitValue ?: ""
                                 }"
 
                             binding.txtBan.setOnClickListener { view ->
@@ -345,6 +360,7 @@ class DetailsOrderFragment : Fragment(), OrderDetailsAdapter.OnItemClickListener
                 }
                 true
             }
+
             else -> super.onOptionsItemSelected(item)
         }
     }

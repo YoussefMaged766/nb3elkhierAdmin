@@ -131,12 +131,13 @@
 
         <TextView
             android:id="@+id/txtAddress"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/_8sdp"
             android:textColor="#9D9B9B"
             android:textSize="@dimen/_14ssp"
             app:layout_constraintBottom_toBottomOf="@id/txt8"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/txt8"
             app:layout_constraintTop_toTopOf="@id/txt8" />
 

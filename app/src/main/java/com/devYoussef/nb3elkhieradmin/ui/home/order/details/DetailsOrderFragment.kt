@@ -4,7 +4,13 @@ import android.annotation.SuppressLint
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.text.SpannableString
+import android.text.Spanned
+import android.text.method.LinkMovementMethod
+import android.text.style.ClickableSpan
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.MenuItem
@@ -16,6 +22,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.recyclerview.widget.DividerItemDecoration
 import com.devYoussef.nb3elkhieradmin.R
 import com.devYoussef.nb3elkhieradmin.constant.Constants.showToast
 import com.devYoussef.nb3elkhieradmin.databinding.FragmentDetailsOrderBinding
@@ -70,6 +77,7 @@ class DetailsOrderFragment : Fragment(), OrderDetailsAdapter.OnItemClickListener
         orderCollectStates()
         collectBanUsersStates()
         collectDeleteProductStates()
+        setDividerToRecyclerProducts()
         setHasOptionsMenu(true)
         binding.btnAccept.setOnClickListener {
             showAcceptDialog(args.id)
@@ -145,7 +153,11 @@ class DetailsOrderFragment : Fragment(), OrderDetailsAdapter.OnItemClickListener
                                 it.orderDetails?.userOrder?.get(0)?.orderNum
                             binding.txtShopAddress.text =
                                 it.orderDetails?.userOrder?.get(0)?.userId?.shopName
-                            binding.txtAddress.text = it.orderDetails?.userOrder?.get(0)?.address
+
+                            binding.txtAddress.text = addMapHyperLink(
+                                it.orderDetails?.userOrder?.get(0)?.location?.latitude!!,
+                                it.orderDetails.userOrder[0].location?.longitude!!
+                            )
                             binding.txtPhone.text = it.orderDetails?.userOrder?.get(0)?.phone
                             binding.txtNotes.text = it.orderDetails?.userOrder?.get(0)?.note
                             binding.txtDate.text =
@@ -182,6 +194,29 @@ class DetailsOrderFragment : Fragment(), OrderDetailsAdapter.OnItemClickListener
                 }
             }
         }
+    }
+
+    private fun setDividerToRecyclerProducts(){
+        val dividerItemDecoration = DividerItemDecoration(
+            binding.rvOrderDetails.context,
+            DividerItemDecoration.VERTICAL
+        )
+        binding.rvOrderDetails.addItemDecoration(dividerItemDecoration)
+    }
+
+    private fun addMapHyperLink(lat:Double , lon:Double): CharSequence {
+        val mapUrl = "https://www.google.com/maps/search/?api=1&query=${lat},${lon}"
+        val clickableSpan = object : ClickableSpan() {
+            override fun onClick(widget: View) {
+                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(mapUrl))
+                startActivity(intent)
+            }
+        }
+        val ss = SpannableString("اضغط هنا ") // Use the address text as the link text
+        Log.e( "addMapHyperLink: ","$ss $lat $lon" )
+        ss.setSpan(clickableSpan, 0, ss.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+        binding.txtAddress.movementMethod = LinkMovementMethod.getInstance()
+        return ss
     }
 
     private fun collectAcceptOrderStates() {

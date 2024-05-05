@@ -1,55 +1,128 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="horizontal"
-    android:padding="@dimen/_4sdp"
-    android:layoutDirection="rtl">
+    android:layoutDirection="rtl"
+    android:orientation="vertical"
+    android:padding="@dimen/_4sdp">
 
-    <ImageView
-        android:layout_width="20dp"
-        android:layout_height="match_parent"
-        android:src="@drawable/ic_delete"
-        android:backgroundTint="#EBEAE6"
-        app:tint="#BAB0B0"
-        android:id="@+id/btnDelete"
-        />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
 
-    <TextView
-        android:id="@+id/txtOrderName"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="3"
-        android:padding="@dimen/_8sdp"
-        android:text="علبه بيبسي"
-        android:textColor="@color/black"
-        android:gravity="center"
-        android:layout_gravity="start"
-        />
 
-    <TextView
-        android:id="@+id/txtQuantity"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:padding="@dimen/_8sdp"
-        android:text="quantity"
-        android:textColor="#9D9B9B"
-        android:layout_gravity="center"
-        android:gravity="center"
-        />
+        <ImageView
+            android:id="@+id/btnDelete"
+            android:layout_width="20dp"
+            android:layout_height="match_parent"
+            android:backgroundTint="#EBEAE6"
+            android:src="@drawable/ic_delete"
+            app:tint="#BAB0B0" />
 
-    <TextView
-        android:id="@+id/txtTotalPrice"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="2"
-        android:text="price"
-        android:textColor="#9D9B9B"
-        android:gravity="center"
+        <TextView
+            android:id="@+id/txtOrderName"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            android:layout_weight="3"
+            android:gravity="center"
+            android:padding="@dimen/_8sdp"
+            android:text="علبه بيبسي"
+            android:textColor="@color/black" />
 
-        />
+        <TextView
+            android:id="@+id/txtQuantity"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_weight="2"
+            android:gravity="center"
+            android:padding="@dimen/_8sdp"
+            android:text="quantity"
+            android:textColor="#9D9B9B" />
+
+        <TextView
+            android:id="@+id/txtTotalPrice"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1.5"
+            android:gravity="center"
+            android:text="price"
+            android:textColor="#9D9B9B" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <View
+            android:layout_width="20dp"
+            android:layout_height="0dp" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="3" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:id="@+id/offerLayout"
+                android:layout_gravity="center"
+                >
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_gravity="start"
+                    android:src="@drawable/ic_sale" />
+
+                <TextView
+                    android:id="@+id/txtOfferCalculation"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    tools:text=" 2 * 14"
+                    android:layout_marginStart="@dimen/_4sdp"
+                    />
+            </LinearLayout>
+
+
+            <TextView
+                android:id="@+id/txtOfferSign"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="+" />
+
+            <TextView
+                android:id="@+id/txtPriceCalculation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                tools:text=" 2 * 14" />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1.5" />
+
+    </LinearLayout>
 
 
 </LinearLayout>

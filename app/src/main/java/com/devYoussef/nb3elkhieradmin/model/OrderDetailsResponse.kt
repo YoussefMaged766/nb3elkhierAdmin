@@ -14,20 +14,33 @@ data class OrderDetailsResponse(
         val note: String?,
         val orderNum: String?,
         val phone: String?,
-        val products: List<Product>?,
+        val products: List<Product?>?,
         val promoCode: PromoCode?,
         val quantity: Int?,
-        val totalPrice: Double?,
+        val revenue: Int?,
+        val totalPrice: Int?,
         val updatedAt: String?,
-        val userId: UserId?
-
+        val userId: UserId?,
+        val location: Location?
     ) {
+        data class Location(
+            val latitude: Double?,
+            val longitude: Double?
+        )
+
+
         data class Product(
             val _id: String?,
             val productId: ProductId?,
+            val productPrice: Int?,
             val quantity: Int?,
-            val totalProductPrice: Double?
+            val totalProductPrice: Int?,
+            val offer: Offer?
         ) {
+            data class Offer(
+                val offerItems: Int?,
+                val offerPrice: Int?
+            )
             data class ProductId(
                 val __v: Int?,
                 val _id: String?,
@@ -39,10 +52,11 @@ data class OrderDetailsResponse(
                 val isOffered: Boolean?,
                 val name: String?,
                 val offer: List<Offer?>?,
-                val originalPrice: Double?,
-                val price: Double?,
+                val originalPrice: Int?,
+                val price: Int?,
                 val priceCurrency: String?,
                 val quantity: Int?,
+                val quantityLimit: Int?,
                 val shortDescription: String?,
                 val updatedAt: String?
             ) {
@@ -54,8 +68,24 @@ data class OrderDetailsResponse(
                 data class Offer(
                     val _id: String?,
                     val itemNum: Int?,
-                    val priceOffered: Double?
+                    val priceOffered: Int?
                 )
+            }
+            fun isHasOffer(): Boolean {
+                return offer != null
+            }
+            fun getQuantityAfterOffer(): Int {
+                return quantity!!.minus(offer?.offerItems ?: 0)
+            }
+            fun isQuantityLowerThanOffer(): Boolean {
+                return quantity!! < offer?.offerItems!!
+            }
+            fun calculateOfferPrice(): Int {
+                return getQuantityAfterOffer() * offer?.offerPrice!!
+            }
+
+            fun calculatePrice(): Int {
+                return getQuantityAfterOffer() * productPrice!!
             }
         }
 
@@ -65,13 +95,14 @@ data class OrderDetailsResponse(
             val code: String?,
             val createdAt: String?,
             val isActive: Boolean?,
-            val price: Double?,
+            val price: Int?,
             val timesNum: Int?,
+            val unitValue: String?,
             val updatedAt: String?,
             val usedNum: Int?,
-            val userId: List<String>?,
-            val unitValue: String?
+            val userId: List<String?>?
         )
+
         data class UserId(
             val __v: Int?,
             val _id: String?,
@@ -80,23 +111,25 @@ data class OrderDetailsResponse(
             val email: String?,
             val fcmToken: List<String?>?,
             val governorate: String?,
-            val image: Image?,
             val isBlocked: Boolean?,
+            val isCompleted: Boolean?,
+            val location: Location?,
             val ordersId: List<String?>?,
             val password: String?,
             val phone: String?,
             val region: String?,
+            val resendCodeCount: Int?,
             val role: String?,
             val shopAddress: String?,
             val shopName: String?,
             val updatedAt: String?,
-            val userName: String?,
-            val wishlist: List<Any?>?
+            val userName: String?
         ) {
-            data class Image(
-                val public_id: String?,
-                val url: String?
+            data class Location(
+                val latitude: Double?,
+                val longitude: Double?
             )
         }
     }
 }
+

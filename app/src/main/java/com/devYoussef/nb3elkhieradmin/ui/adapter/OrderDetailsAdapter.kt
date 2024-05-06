@@ -67,7 +67,15 @@ class OrderDetailsAdapter(val listner: OnItemClickListener, val type: String) :
 //                        txtOfferCalculation.text = "${data.offer?.offerItems} * ${data.offer?.offerPrice} = ${data.calculateOfferPrice()}"
 //                        txtPriceCalculation.text = "${data.getQuantityAfterOffer()} * ${data.productPrice} = ${data.calculatePrice()}"
                         txtOfferCalculation.text = "${data.offer?.offerItems} * ${data.offer?.offerPrice}"
-                        txtPriceCalculation.text = "${data.getQuantityAfterOffer()} * ${data.productPrice}"
+                        if (data.getQuantityAfterOffer()==0){
+                            binding.txtPriceCalculation.visibility = ViewGroup.GONE
+                            binding.txtOfferSign.visibility = ViewGroup.GONE
+                        }else{
+                            binding.txtPriceCalculation.visibility = ViewGroup.VISIBLE
+                            binding.txtOfferSign.visibility = ViewGroup.VISIBLE
+                            txtPriceCalculation.text = "${data.getQuantityAfterOffer()} * ${data.productPrice}"
+                        }
+
                     }
                 }
             }  else{

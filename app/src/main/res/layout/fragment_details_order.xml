@@ -126,7 +126,6 @@
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/txtDate"
-
             />
 
         <TextView
@@ -141,13 +140,39 @@
             app:layout_constraintStart_toEndOf="@id/txt8"
             app:layout_constraintTop_toTopOf="@id/txt8" />
 
+        <TextView
+            android:id="@+id/txt11"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/_4sdp"
+            android:text="العنوان بالتفصيل: "
+            android:textColor="@color/primary"
+            android:textSize="@dimen/_14ssp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/txtAddress"
+            />
+
+        <TextView
+            android:id="@+id/txtAddressDetails"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/_8sdp"
+            android:textColor="#9D9B9B"
+            android:textSize="@dimen/_14ssp"
+            app:layout_constraintBottom_toBottomOf="@id/txt11"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/txt11"
+            app:layout_constraintTop_toTopOf="@id/txt11" />
+
+
         <View
             android:id="@+id/view"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginTop="@dimen/_8sdp"
             android:background="@color/black"
-            app:layout_constraintTop_toBottomOf="@id/txtAddress" />
+            app:layout_constraintTop_toBottomOf="@id/txtAddressDetails" />
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/cardView"

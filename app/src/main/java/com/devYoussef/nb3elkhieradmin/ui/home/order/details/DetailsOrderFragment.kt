@@ -24,6 +24,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.devYoussef.nb3elkhieradmin.R
+import com.devYoussef.nb3elkhieradmin.constant.Constants.getAddressFromLatLng
 import com.devYoussef.nb3elkhieradmin.constant.Constants.showToast
 import com.devYoussef.nb3elkhieradmin.databinding.FragmentDetailsOrderBinding
 import com.devYoussef.nb3elkhieradmin.model.LoginModel
@@ -154,8 +155,12 @@ class DetailsOrderFragment : Fragment(), OrderDetailsAdapter.OnItemClickListener
                             binding.txtShopAddress.text =
                                 it.orderDetails?.userOrder?.get(0)?.userId?.shopName
 
-                            binding.txtAddress.text = addMapHyperLink(
+                            binding.txtAddress.text =addMapHyperLink(
                                 it.orderDetails?.userOrder?.get(0)?.location?.latitude!!,
+                                it.orderDetails.userOrder[0].location?.longitude!!
+                            )
+                            binding.txtAddressDetails.text = getAddressFromLatLng(
+                                it.orderDetails.userOrder[0].location?.latitude!!,
                                 it.orderDetails.userOrder[0].location?.longitude!!
                             )
                             binding.txtPhone.text = it.orderDetails?.userOrder?.get(0)?.phone

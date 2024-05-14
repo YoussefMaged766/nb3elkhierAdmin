@@ -9,6 +9,7 @@ import android.widget.ArrayAdapter
 import android.widget.Spinner
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.RecyclerView
 import com.devYoussef.nb3elkhieradmin.R
 import com.devYoussef.nb3elkhieradmin.constant.Constants.showToast
 import com.devYoussef.nb3elkhieradmin.databinding.FragmentRegionsBinding
@@ -58,7 +59,18 @@ class RegionsFragment : Fragment(), RegionsAdapter.OnItemClickListener {
         binding.fabAddRegion.setOnClickListener {
             showEditDialog(type = "add")
         }
+
+        binding.regionsRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                if (dy > 0 && binding.fabAddRegion.isShown) {
+                    binding.fabAddRegion.hide()
+                } else if (dy < 0 && !binding.fabAddRegion.isShown) {
+                    binding.fabAddRegion.show()
+                }
+            }
+        })
     }
+
 
     private fun collectGetAllState() {
         viewLifecycleOwner.lifecycleScope.launch {

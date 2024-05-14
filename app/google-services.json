@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "71400558255",
+    "project_id": "nab3-elkhier",
+    "storage_bucket": "nab3-elkhier.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:71400558255:android:67998589c2d7ae1c570e5a",
+        "android_client_info": {
+          "package_name": "com.devYoussef.nab3elkheir"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCqjC6eDaDqt0Uf-Wyzt4doTUyx5LRZMZ4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:71400558255:android:20e39878cb6cd21b570e5a",
+        "android_client_info": {
+          "package_name": "com.devYoussef.nb3elkhieradmin"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCqjC6eDaDqt0Uf-Wyzt4doTUyx5LRZMZ4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

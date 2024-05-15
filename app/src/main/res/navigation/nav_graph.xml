@@ -192,6 +192,9 @@
         <argument
             android:name="type"
             app:argType="string" />
+        <action
+            android:id="@+id/action_detailsOrderFragment_to_addAndEditFragment"
+            app:destination="@id/addAndEditFragment" />
     </fragment>
     <fragment
         android:id="@+id/usersFragment"

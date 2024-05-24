@@ -40,6 +40,7 @@ import retrofit2.HttpException
 class ProductsFragment : Fragment(), ProductsPagingAdapter.OnButton1ClickListener {
     private lateinit var binding: FragmentProductsBinding
     private val viewModel by viewModels<ProductsViewModel>()
+
     private val productAdapter =  ProductsPagingAdapter(this)
     private val loadDialogBar: LoadDialogBar by lazy {
         LoadDialogBar(requireContext())

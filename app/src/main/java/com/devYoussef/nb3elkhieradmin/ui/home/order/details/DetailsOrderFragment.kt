@@ -30,10 +30,18 @@ import com.devYoussef.nb3elkhieradmin.constant.Constants.handleBackButton
 import com.devYoussef.nb3elkhieradmin.constant.Constants.handleToolbarNavigation
 import com.devYoussef.nb3elkhieradmin.constant.Constants.showToast
 import com.devYoussef.nb3elkhieradmin.databinding.FragmentDetailsOrderBinding
+import com.devYoussef.nb3elkhieradmin.databinding.ProductItemBinding
 import com.devYoussef.nb3elkhieradmin.model.LoginModel
 import com.devYoussef.nb3elkhieradmin.model.OrderDetailsResponse
+import com.devYoussef.nb3elkhieradmin.model.OrderResponse
+import com.devYoussef.nb3elkhieradmin.model.ProductResponse
+import com.devYoussef.nb3elkhieradmin.model.dummyProduct
 import com.devYoussef.nb3elkhieradmin.ui.adapter.OrderDetailsAdapter
+import com.devYoussef.nb3elkhieradmin.ui.home.product.ProductsFragmentDirections
+import com.devYoussef.nb3elkhieradmin.ui.home.product.ProductsViewModel
 import com.devYoussef.nb3elkhieradmin.utils.LoadDialogBar
+import com.devYoussef.nb3elkhieradmin.utils.Status
+import com.devYoussef.nb3elkhieradmin.utils.getFilePathFromUri
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -49,6 +57,7 @@ class DetailsOrderFragment : Fragment(), OrderDetailsAdapter.OnItemClickListener
     private lateinit var binding: FragmentDetailsOrderBinding
     private val args by navArgs<DetailsOrderFragmentArgs>()
     private val viewModel: OrderDetailsViewModel by viewModels()
+    private val productsViewModel: ProductsViewModel by viewModels()
     private val adapter: OrderDetailsAdapter by lazy { OrderDetailsAdapter(this, args.type) }
     private val loadDialogBar: LoadDialogBar by lazy {
         LoadDialogBar(requireContext())
@@ -147,9 +156,11 @@ class DetailsOrderFragment : Fragment(), OrderDetailsAdapter.OnItemClickListener
                 when {
                     it.isLoading -> {
                         loadDialogBar.show()
+                        Log.i("TAG", "orderCollectStates: loading ")
                     }
 
                     it.status == "success" -> {
+                        Log.i("TAG", "orderCollectStates: success ")
                         loadDialogBar.hide()
                         if (!it.orderDetails?.userOrder.isNullOrEmpty()) {
                             adapter.submitList(it.orderDetails?.userOrder?.get(0)?.products)
@@ -390,8 +401,73 @@ class DetailsOrderFragment : Fragment(), OrderDetailsAdapter.OnItemClickListener
             .show()
     }
 
+    private fun showCustomizeDialog(id : String){
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle("هل المنتج متاح؟")
+            .setNegativeButton("متاح"){ dialog, which ->
+                showDeleteDialog(id)
+                dialog.dismiss()
+            }
+            .setPositiveButton("غير متاح"){ dialog, which ->
+//                onButtonEditClick(id)
+                showDeleteDialog(id)
+                productsViewModel.getOneProduct(id)
+                lifecycleScope.launch{
+                    productsViewModel.stateProduct.collect{
+                        when{
+                            it.isLoading ->{
+
+                            }
+                            it.status == "success"-> {
+                                Log.i("TAG", "showCustomizeDialog: ${it.product?.data?.get(0)}")
+                                val product = it.product?.data?.get(0)
+                                callApiUpdateProduct(product!!)
+                            }
+                        }
+                    }
+
+                }
+
+            }
+            .show()
+    }
+    private fun callApiUpdateProduct(product: ProductResponse.Data) {
+        val name = product.name
+        val shortDescription = product.shortDescription
+        val category = product.category
+        val country = product.country
+        val isAvailable = false
+        val isOffered = product.isOffered
+        val quantity = product.quantity.toString()
+        val price = product.price.toString()
+        val priceCurrency = product.priceCurrency.toString()
+        val originalPrice = product.originalPrice.toString()
+        val id = product._id
+        Log.e("callApiUpdateProduct: ", category.toString())
+
+        val offerPrice = product.offer?.get(0)?.priceOffered.toString()
+        val offerItemNum = product.offer?.get(0)?.itemNum.toString()
+
+            productsViewModel.updateProduct(
+                ctx = requireContext(),
+                name = name?: "",
+                shortDescription = shortDescription ?: "",
+                category = category ?: "",
+                country = country?: "",
+                isAvailable = isAvailable,
+                isOffered = isOffered!!,
+                quantity = quantity,
+                price = price,
+                priceCurrency = priceCurrency,
+                originalPrice = originalPrice,
+                offerPrice = offerPrice,
+                offerItemNum = offerItemNum,
+                id = id!!
+            )
+    }
+
     override fun onItemClick(position: Int, item: OrderDetailsResponse.UserOrder.Product) {
-        showDeleteDialog(item.productId?._id!!)
+        showCustomizeDialog(item.productId?._id!!)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

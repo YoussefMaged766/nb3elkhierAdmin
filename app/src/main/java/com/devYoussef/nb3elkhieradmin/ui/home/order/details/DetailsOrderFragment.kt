@@ -391,7 +391,6 @@ class DetailsOrderFragment : Fragment(), OrderDetailsAdapter.OnItemClickListener
                 dialog.dismiss()
             }
             .setPositiveButton("حذف") { dialog, which ->
-                showCustomizeDialog(id)
                 viewModel.deleteProductFromOrder(LoginModel(productId = id, orderId = args.id))
                 viewModel.getOrderDetails(args.id)
             }
@@ -402,10 +401,12 @@ class DetailsOrderFragment : Fragment(), OrderDetailsAdapter.OnItemClickListener
         MaterialAlertDialogBuilder(requireContext())
             .setTitle("هل المنتج متاح؟")
             .setNegativeButton("متاح"){ dialog, which ->
+                showDeleteDialog(id)
                 dialog.dismiss()
             }
             .setPositiveButton("غير متاح"){ dialog, which ->
 //                onButtonEditClick(id)
+                showDeleteDialog(id)
                 productsViewModel.getOneProduct(id)
                 lifecycleScope.launch{
                     productsViewModel.stateProduct.collect{
@@ -462,7 +463,7 @@ class DetailsOrderFragment : Fragment(), OrderDetailsAdapter.OnItemClickListener
     }
 
     override fun onItemClick(position: Int, item: OrderDetailsResponse.UserOrder.Product) {
-        showDeleteDialog(item.productId?._id!!)
+        showCustomizeDialog(item.productId?._id!!)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

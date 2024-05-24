@@ -17,6 +17,7 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
+import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -25,6 +26,8 @@ import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.devYoussef.nb3elkhieradmin.R
 import com.devYoussef.nb3elkhieradmin.constant.Constants.getAddressFromLatLng
+import com.devYoussef.nb3elkhieradmin.constant.Constants.handleBackButton
+import com.devYoussef.nb3elkhieradmin.constant.Constants.handleToolbarNavigation
 import com.devYoussef.nb3elkhieradmin.constant.Constants.showToast
 import com.devYoussef.nb3elkhieradmin.databinding.FragmentDetailsOrderBinding
 import com.devYoussef.nb3elkhieradmin.model.LoginModel
@@ -69,6 +72,17 @@ class DetailsOrderFragment : Fragment(), OrderDetailsAdapter.OnItemClickListener
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val toolbar = view.findViewById<Toolbar>(R.id.toolbar)
+
+        val navigationLogic:()->Unit = {
+            if (findNavController().previousBackStackEntry != null) {
+                findNavController().navigate(R.id.ordersFragment)
+            } else {
+                findNavController().popBackStack()
+            }
+        }
+//        handleBackButton(navigationLogic)
+//        handleToolbarNavigation(toolbar, nav igationLogic)
 
         Log.e("onViewCreated: ", args.id.toString())
         viewModel.getOrderDetails(args.id)
@@ -95,17 +109,7 @@ class DetailsOrderFragment : Fragment(), OrderDetailsAdapter.OnItemClickListener
             true
         }
 
-        requireActivity().onBackPressedDispatcher.addCallback(
-            viewLifecycleOwner,
-            object : OnBackPressedCallback(true) {
-                override fun handleOnBackPressed() {
-                    if (findNavController().previousBackStackEntry != null) {
-                        findNavController().navigate(R.id.ordersFragment)
-                    } else {
-                        findNavController().popBackStack()
-                    }
-                }
-            })
+
 
     }
 

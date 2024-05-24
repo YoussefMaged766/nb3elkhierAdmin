@@ -7,6 +7,8 @@ import android.content.pm.PackageManager
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationChannelCompat
 import androidx.core.app.NotificationManagerCompat
+import androidx.emoji2.bundled.BundledEmojiCompatConfig
+import androidx.emoji2.text.EmojiCompat
 import com.devYoussef.nb3elkhieradmin.constant.Constants
 import dagger.hilt.android.HiltAndroidApp
 
@@ -35,5 +37,8 @@ class App :Application() {
         ) {
             return
         }
+
+        val config = BundledEmojiCompatConfig(this)
+        EmojiCompat.init(config)
     }
 }

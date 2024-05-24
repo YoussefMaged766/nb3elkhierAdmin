@@ -9,12 +9,12 @@ plugins {
 
 android {
     namespace = "com.devYoussef.nb3elkhieradmin"
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "com.devYoussef.nb3elkhieradmin"
         minSdk = 28
-        targetSdk = 33
+        targetSdk = 34
         versionCode = 1
         versionName = "1.0"
 
@@ -50,6 +50,8 @@ dependencies {
     implementation("com.google.android.material:material:1.9.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     implementation("com.google.firebase:firebase-messaging-ktx:23.2.1")
+//    implementation ("androidx.emoji:emoji:28.0.0")
+    implementation("androidx.emoji2:emoji2-bundled:1.4.0")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")

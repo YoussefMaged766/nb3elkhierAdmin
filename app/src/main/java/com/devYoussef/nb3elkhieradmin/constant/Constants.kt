@@ -1,12 +1,21 @@
 package com.devYoussef.nb3elkhieradmin.constant
 
 import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.Canvas
 import android.location.Geocoder
+import android.text.Layout
+import android.text.StaticLayout
+import android.text.TextPaint
 import android.util.Log
+import android.widget.ImageView
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
+import androidx.appcompat.widget.Toolbar
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
+import androidx.emoji2.text.EmojiCompat
 import androidx.fragment.app.Fragment
 import com.google.firebase.messaging.FirebaseMessaging
 import kotlinx.coroutines.tasks.await
@@ -46,5 +55,19 @@ object Constants {
             requireContext().showToast("حدث خطأ ما")
         }
         return "لا يوجد عنوان"
+    }
+
+    fun Fragment.handleBackButton(callback: () -> Unit) {
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                callback()
+            }
+        })
+    }
+
+    fun Fragment.handleToolbarNavigation(toolbar: Toolbar, callback: () -> Unit) {
+        toolbar.setNavigationOnClickListener {
+            callback()
+        }
     }
 }
